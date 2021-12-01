@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+/* header */
+header {
+    position: fixed;
+    width: 100%;
+    height: 65px;
+    color: #2E3C7E;
+    background: #fff;
+    box-sizing: border-box;
+    z-index: 100;
+    transition: .3s;
+}
+
+header .logo {
+    font-size: 5rem;
+    letter-spacing: -2px;
+    line-height: 65px;
+    float: left;
+}
+header span {
+    font: 500 1.8rem "Noto Sans KR", sans-serif;
+    display: inline-block;
+    margin-left: 1.2em;
+}
+header nav {float: right;}
+header nav ul li {
+    float: left;
+    padding: 0 1.6666em;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 65px;
+    transition: .3s;
+}
+header nav ul li a {display: inline-block;}
+header nav ul li:hover {
+    background: #2E3C7E;
+    color: #f2f2f2;
+}
+
+/* header on */
+header.on {
+    position: fixed;
+    top: 0; left: 0;
+    color: #222;
+    background: #fff;
+    /* border-bottom: 1.5px solid #222; */
+    box-shadow: 1px 1px 10px #555;
+    z-index: 100;
+}
+
+header.on .logo {font-size: 4rem;}
+header.on span {font-size: 1.4rem;}
+header.on nav ul li {font-size: 1.4rem;}
+header.on nav ul li:hover {background: #222; color: #fff;}

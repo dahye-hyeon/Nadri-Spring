@@ -1,0 +1,95 @@
+@charset "UTF-8";
+​
+/* 기본 설정 */
+html {
+    font: 300 10px "Noto Sans KR", sans-serif;
+    color: #222;
+}
+body {
+    font-size: 1.4rem;
+    background: #fff;
+    height: 100vh;
+    overflow: hidden;
+}
+​
+.container {
+    margin: 0 auto;
+    width: 90%;
+}
+​
+#join {
+    font-weight: 500;
+}
+#join .joinHead {
+    font-weight: 300;
+}
+#join .container {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    width: 500px;
+    height: 100vh;
+    margin: 0 auto;
+}
+#join h2 {
+    height: 300px;
+    font-size: 4rem;
+    line-height: 300px;
+    text-align: center;
+    letter-spacing: -1px;
+}
+#join form .email {
+    position: relative;
+}
+#join .checking {width: 100%;
+    margin-top: 1.33333em;
+    padding: 0.9em;
+    font-size: 1.8rem;
+    text-align: center;
+    background: #2e3c7e;
+    border: 0;
+    color: #fff;
+    position: absolute;
+    top: 0; right: 0;
+    display: inline-block;
+    width: 100px;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+#join form label {
+    display: block;
+    margin-bottom: 1em;
+    font-weight: 600;
+    color: #2e3c7e;
+}
+#join form input:not(.checking) {
+    display: block;
+    width: 100%;
+    margin-bottom: 1.5em;
+    padding: 10px;
+    border: 0; outline: 0;
+    border-bottom: 2px solid #222;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    color: #555;
+}
+#join form input:not(.checking):focus {
+    border: 0;
+    border-bottom: 2px solid #4B60C9;
+}
+#join button {
+    width: 100%;
+    margin-top: 1.33333em;
+    padding: 0.9em;
+    font-size: 1.8rem;
+    text-align: center;
+    background: #2e3c7e;
+    border: 0;
+    color: #fff;
+}
+#join .join {
+    margin-top: 1.5em;
+    text-decoration: underline;
+    text-align: center;
+    color: #2e3c7e;
+}

@@ -1,0 +1,127 @@
+@charset "UTF-8";
+
+/* 기본 설정 */
+html {
+    font: 300 10px "Noto Sans KR", sans-serif;
+    color: #222;
+}
+body {
+    font-size: 1.4rem;
+    background: #fff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    margin: 0 auto;
+    width: 90%;
+}
+
+/* login */
+#login {
+    font-weight: 500;
+}
+#login .loginHead {
+    font-weight: 300;
+}
+#login .container {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    width: 500px;
+    height: 100vh;
+    margin: 0 auto;
+}
+#login h2 {
+    height: 300px;
+    font-size: 4rem;
+    line-height: 300px;
+    text-align: center;
+    letter-spacing: -1px;
+}
+#login form label {
+    display: block;
+    margin-bottom: 1em;
+    font-weight: 600;
+    color: #2e3c7e;
+}
+#login form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 1.5em;
+    padding: 10px;
+    border: 0; outline: 0;
+    border-bottom: 2px solid #222;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    color: #555;
+}
+#login form input:focus {
+    border: 0;
+    border-bottom: 2px solid #4B60C9;
+}
+#login .missing {
+    color: #4B60C9;
+}
+#login button {
+    width: 100%;
+    margin-top: 1.33333em;
+    padding: 0.9em;
+    font-size: 1.8rem;
+    text-align: center;
+    background: #2e3c7e;
+    border: 0;
+    color: #fff;
+}
+#login .join {
+    margin-top: 1.5em;
+    text-decoration: underline;
+    text-align: center;
+    color: #2e3c7e;
+}
+#login h3 {
+    display: inline-block;
+    width: 80%;
+    position: relative;
+    margin: 2em auto;
+    letter-spacing: 1px;
+    text-align: center;
+    letter-spacing: 1px;
+    background: #fff;
+    z-index: 10;
+}
+#login h3::before {left: 0;}
+#login h3::after {
+    right: 0 !important;
+}
+#login h3::before, #login h3::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    width: 30%;
+    height: 1px;
+    background: #2e3c7e;
+    z-index: 1;
+}
+#login .snsIcon {
+    display: flex;
+    justify-content: center;
+}
+#login .snsIcon a {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin: 0 25px;
+    border-radius: 10%;
+    background: #000;
+}
+#login .snsIcon a:nth-child(1) {
+    background: url("../images/logo-naver.png") center/cover;
+}
+#login .snsIcon a:nth-child(2){
+    background: url("../images/logo-kakao.png") center/cover;
+}
+#login .snsIcon a:nth-child(3){
+    background: url("../images/logo-facebook.png") center/cover;
+}

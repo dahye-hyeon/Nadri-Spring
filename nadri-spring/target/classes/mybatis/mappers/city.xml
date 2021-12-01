@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="city">
+	
+	<!-- 유저 정보 불러오기 -->
+	<select id="cityList" resultType="cityVo">
+		select CITY_ID cityId,
+				CITY_NAME cityName,
+				CITY_LATITUDE cityLatitude,
+				CITY_LONGITUDE cityLongitude,
+				CITY_IMAGE_URL cityImageURL,
+				CITY_REGION_ID cityRegionId,
+				CITY_IMAGE_DATA cityImageData
+		from city
+	</select>
+
+</mapper>

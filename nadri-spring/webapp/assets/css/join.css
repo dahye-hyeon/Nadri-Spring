@@ -1,5 +1,5 @@
 @charset "UTF-8";
-​
+
 /* 기본 설정 */
 html {
     font: 300 10px "Noto Sans KR", sans-serif;
@@ -11,12 +11,12 @@ body {
     height: 100vh;
     overflow: hidden;
 }
-​
+
 .container {
     margin: 0 auto;
     width: 90%;
 }
-​
+
 #join {
     font-weight: 500;
 }

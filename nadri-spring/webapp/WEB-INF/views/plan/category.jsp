@@ -22,6 +22,7 @@
 <body>
 
 	<div id="wrap">
+		<div class="bg"></div>
 		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		<section id="main">
 			<div class="container">
@@ -35,7 +36,7 @@
 			</div>
 		</section>
 		<!-- //main -->
-		
+
 		<section id="category">
 			<article class="container">
 				<div class="leftNav">
@@ -65,19 +66,34 @@
 			<article class="container">
 				<div class="cards clear">
 					<ul>
-					<c:forEach items="${categoryList}" var="categorylist">
-						<li class="card"><a href="javascript:;">
-								<ul>
-									<li class="contImg"><img
-										src="${categorylist.cityImageURL}" alt="${categorylist.cityName}"></li>
-									<li class="desc">
-										<h3>${categorylist.cityName}</h3>
-										<p>${categorylist.cityName}</p>
-									</li>
-								</ul>
-						</a></li>
-					
-					</c:forEach>
+						<c:forEach items="${categoryList}" var="categorylist">
+							<div class="popUp ${categorylist.cityId}">
+								<figure>
+									<img src="${categorylist.cityImageURL}" alt="${categorylist.cityName}">
+								</figure>
+								<div class="popupDesc">
+									<a class="exit" href="javascript:;"></a>
+									<h4 class="popupTitle">${categorylist.cityName}</h4>
+									<b>${categorylist.cityName}</b>
+									<p>${categorylist.cityContent}</p>
+									<a
+										href="/Nadri-frontEnd/plan?a=planning&id=${categorylist.cityId}">일정만들기</a>
+								</div>
+								<a href="javascript:;" class="exit"></a>
+							</div>
+							<li class="card"><a href="javascript:;">
+									<ul>
+										<li class="contImg"><img
+											src="${categorylist.cityImageURL}"
+											alt="${categorylist.cityName}"></li>
+										<li class="desc">
+											<h3>${categorylist.cityName}</h3>
+											<p>${categorylist.cityEngName}</p>
+										</li>
+									</ul>
+							</a></li>
+
+						</c:forEach>
 					</ul>
 				</div>
 			</article>
@@ -94,38 +110,55 @@
 	</div>
 
 	<script>
-        $(document).ready(function(){
+		$(document).ready(function() {
 
-            var search = $("#category .leftNav ul li:last-of-type a");
-            var currentPosition = parseInt($(".leftNav").css("top"));
+			var search = $("#category .leftNav ul li:last-of-type a");
+			var currentPosition = parseInt($(".leftNav").css("top"));
 
-            $(window).scroll(function() {
-                var position = $(window).scrollTop();
+			$(window).scroll(function() {
+				var position = $(window).scrollTop();
 
-                if (position > 300) {
-                    $(".leftNav").stop().animate({
-                        position : "fixed",
-                        top : currentPosition + position - 300 + "px"
-                    },'fast', 'swing');
-                    $("header").addClass("on");
-                }else if (position <= 300) {
-                    $(".leftNav").css({
-                        position : "absolute",
-                        top : currentPosition
-                    })
-                    console.log("test");
-                    $("header").removeClass("on");
-                }
-            })
-            
-            $("#category .leftNav ul li").on('click', function() {
-                $("#category .leftNav ul li").removeClass("on");
-                $(this).addClass("on");
-            })
+				if (position > 300) {
+					$(".leftNav").stop().animate({
+						position : "fixed",
+						top : currentPosition + position - 300 + "px"
+					}, 'fast', 'swing');
+					$("header").addClass("on");
+				} else if (position <= 300) {
+					$(".leftNav").css({
+						position : "absolute",
+						top : currentPosition
+					})
+					console.log("test");
+					$("header").removeClass("on");
+				}
+			})
 
-    });
+			$("#category .leftNav ul li").on('click', function() {
+				$("#category .leftNav ul li").removeClass("on");
+				$(this).addClass("on");
+			})
 
+			var $card = $("#category .cards > ul > li")
 
-    </script>
+			$($card).click(function() {
+				console.log("클릭 완료");
+				var $thisClass = $(this).attr('class');
+				var $thisPop = "." + $thisClass;
+				console.log($thisPop);
+				$(".bg").addClass("on");
+				$($thisPop).addClass("on");
+				$(".bg").click(function() {
+					$(".bg").removeClass("on");
+					$($thisPop).removeClass("on");
+				})
+				$(".exit").click(function() {
+					$(".bg").removeClass("on");
+					$($thisPop).removeClass("on");
+				})
+			})
+
+		});
+	</script>
 </body>
 </html>

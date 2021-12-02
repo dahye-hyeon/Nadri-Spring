@@ -13,7 +13,7 @@ public class UsersVo {
 	//회원정보 수정일
 	private String usersUpdateDate;
 	//프로필 사진
-	private String usersImageURL;
+	private String usersImageName;
 	//sns로그인 시 이메일 정보제공 동의여부
 	// 0: 동의안함   1: 동의함
 	private String usersEmailAgreement;
@@ -23,7 +23,7 @@ public class UsersVo {
 	}
 
 	public UsersVo(String usersEmail, String usersName, String usersPassword, String usersRegDate,
-			String usersRoute, String usersUpdateDate, String usersImageURL, String usersEmailAgreement) {
+			String usersRoute, String usersUpdateDate, String usersImageName, String usersEmailAgreement) {
 		super();
 		this.usersEmail = usersEmail;
 		this.usersName = usersName;
@@ -31,7 +31,7 @@ public class UsersVo {
 		this.usersRegDate = usersRegDate;
 		this.usersRoute = usersRoute;
 		this.usersUpdateDate = usersUpdateDate;
-		this.usersImageURL = usersImageURL;
+		this.usersImageName = usersImageName;
 		this.usersEmailAgreement = usersEmailAgreement;
 	}
 
@@ -77,11 +77,11 @@ public class UsersVo {
 	public void setUsersUpdateDate(String usersUpdateDate) {
 		this.usersUpdateDate = usersUpdateDate;
 	}
-	public String getUsersImageURL() {
-		return usersImageURL;
+	public String getUsersImageName() {
+		return usersImageName;
 	}
-	public void setUsersImageURL(String usersImageURL) {
-		this.usersImageURL = usersImageURL;
+	public void setUsersImageName(String usersImageName) {
+		this.usersImageName = usersImageName;
 	}
 	public String getUsersEmailAgreement() {
 		return usersEmailAgreement;
@@ -94,7 +94,7 @@ public class UsersVo {
 	public String toString() {
 		return "UsersVo [usersId=" + usersId + ", usersEmail=" + usersEmail + ", usersName=" + usersName
 				+ ", usersPassword=" + usersPassword + ", usersRegDate=" + usersRegDate + ", usersRoute=" + usersRoute
-				+ ", usersUpdateDate=" + usersUpdateDate + ", usersImageURL=" + usersImageURL
+				+ ", usersUpdateDate=" + usersUpdateDate + ", usersImageName=" + usersImageName
 				+ ", usersEmailAgreement=" + usersEmailAgreement + "]";
 	}
 

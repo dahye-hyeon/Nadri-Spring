@@ -8,7 +8,7 @@ header {
     color: #2E3C7E;
     background: #fff;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 1;
     transition: .3s;
 }
 
@@ -46,7 +46,7 @@ header.on {
     background: #fff;
     /* border-bottom: 1.5px solid #222; */
     box-shadow: 1px 1px 10px #555;
-    z-index: 100;
+    z-index: 1;
 }
 
 header.on .logo {font-size: 4rem;}

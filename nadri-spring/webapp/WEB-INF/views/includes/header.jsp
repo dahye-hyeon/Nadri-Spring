@@ -8,7 +8,7 @@
 UsersVo vo = (UsersVo) session.getAttribute("info");
 System.out.println("check: " + vo);
 %>
-<header style="position: static;">
+<header>
 	<div class="container clear">
 		<div>
 			<a href="#"><h1 class="logo">

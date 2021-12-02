@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/fonts.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+    <style>
+    	header {position: static !important}
+    </style>
 </head>
 <body>
     <div id="wrap">

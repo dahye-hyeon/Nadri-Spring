@@ -13,7 +13,9 @@
 				CITY_LONGITUDE cityLongitude,
 				CITY_IMAGE_URL cityImageURL,
 				CITY_REGION_ID cityRegionId,
-				CITY_IMAGE_DATA cityImageData
+				CITY_IMAGE_DATA cityImageData,
+				CITY_CONTENT cityContent,
+				CITY_ENGNAME cityEngName
 		from city
 	</select>
 

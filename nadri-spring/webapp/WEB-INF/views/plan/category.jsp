@@ -76,12 +76,11 @@
 									<h4 class="popupTitle">${categorylist.cityName}</h4>
 									<b>${categorylist.cityName}</b>
 									<p>${categorylist.cityContent}</p>
-									<a
-										href="/Nadri-frontEnd/plan?a=planning&id=${categorylist.cityId}">일정만들기</a>
+									<a href="/Nadri-frontEnd/plan?a=planning&id=${categorylist.cityId}">일정만들기</a>
 								</div>
 								<a href="javascript:;" class="exit"></a>
 							</div>
-							<li class="card"><a href="javascript:;">
+							<li class="${categorylist.cityId }"><a href="javascript:;" >
 									<ul>
 										<li class="contImg"><img
 											src="${categorylist.cityImageURL}"

@@ -32,8 +32,10 @@
 					console.log("check: "+isExist);
 					if("true" == isExist){
 						$(".hide").text("사용할 수 있는 아이디 입니다.")
+						$('.hide').css('color', 'blue');
 					}else {
 						$(".hide").text("아이디가 중복됐습니다.")	
+						$('.hide').css('color', 'red');
 					}
 					return isExist
 				},
@@ -43,15 +45,25 @@
 			});
 		});	
 	
+		
+		$("#password").keyup(function(){
+			var reg_pw = /^(?=.*[a-zA-Z!@#$%])(?=.*[0-9]).{6,12}/;
+			if(!reg_pw.test($.trim($("[name=usersPassword]").val()))){
+				$('#chkReg').text('영문자+숫자 조합된 6~12자리로 만들어주세요');
+				$('#chkReg').css('color', 'red');
+            }else{
+            	$('#chkReg').text('사용가능한 비밀번호 입니다.');
+            	$('#chkReg').css('color', 'blue');
+            }
+		});
+		
 		$("#chk_password").keyup(function(){
 			if($('#password').val() != $('#chk_password').val()){
 				$('#chkPw').text('입력한 비밀번호가 일치하지 않습니다');
 				$('#chkPw').css('color', 'red');
-				return true;
 			}else{
 				$('#chkPw').text('비밀번호가 일치합니다');
 				$('#chkPw').css('color', 'blue');
-				return false;
 			}
 		});
 		
@@ -87,6 +99,7 @@
                     </div>  
                     <label for="password">비밀번호</label>
                     <input type="password" name="usersPassword" id="password">
+                    <b id="chkReg" style="color: red; margin-top:-10px; margin-bottom:10px; display:block;'"></b>
                     <label for="password">비밀번호 확인</label>
                     <input type="password" name="chk_password" id="chk_password" class="pw">
                   	<b id="chkPw" style="color: red; margin-top:-10px; margin-bottom:10px; display:block;'"></b>

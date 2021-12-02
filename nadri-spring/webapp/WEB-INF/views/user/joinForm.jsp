@@ -20,23 +20,22 @@
 		$("#checking").on("click", function(){
 			//json 형식으로 데이터 set
 			var params = {
-					a		: "idcheck"
-				  , email	: $("[name=email]").val()
+				  email	: $("[name=usersEmail]").val()
 			}
 		
 			$.ajax({
-				url	: "api/emailCheck.jsp",
+				url	: "emailChk",
 				type : "post",
 				data : params,
-				dataType : "json",
+				dataType : "text",
 				success : function(isExist){
 					console.log("check: "+isExist);
-					if(isExist == false){
+					if("true" == isExist){
 						$(".hide").text("사용할 수 있는 아이디 입니다.")
-						$(".hide").css("color", "blue");
 					}else {
 						$(".hide").text("아이디가 중복됐습니다.")	
 					}
+					return isExist
 				},
 				error : function(XHR, status, error){
 					console.error(status + " : " + error);
@@ -48,12 +47,25 @@
 			if($('#password').val() != $('#chk_password').val()){
 				$('#chkPw').text('입력한 비밀번호가 일치하지 않습니다');
 				$('#chkPw').css('color', 'red');
+				return true;
 			}else{
 				$('#chkPw').text('비밀번호가 일치합니다');
 				$('#chkPw').css('color', 'blue');
+				return false;
 			}
 		});
-	}); //ready
+		
+		function joinChk(){
+			var userEmail = $('#checking').val();
+			var userPassword = $('#chk_password').val();
+			
+			if(userEmail && userPassword == true){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}); 
 </script>
 <body>
     <div id="wrap">
@@ -63,7 +75,7 @@
                 <h2 class="joinHead">
                     SIGN IN
                 </h2>
-                <form action="/user/join" method="post">
+                <form action="/user/join" method="post" onsubmit="joinChk()">
                     <div class="email">
                         <label for="email">이메일</label>
                         <input type="email" name="usersEmail" id="email" value="">

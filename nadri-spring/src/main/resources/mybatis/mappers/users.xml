@@ -4,14 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="users">
-	
+
 	<!-- 유저 정보 불러오기 -->
 	<select id="usersList" resultType="usersVo">
 		select u_id usersId, u_name usersName
 		from users
 	</select>
-	
-	<!-- 회원가입-->
+
+	<!-- 회원가입 -->
 	<insert id="insert" parameterType="usersVo">
 		<![CDATA[
 			insert into users(u_id, u_email, u_name, u_password, u_reg_date, u_route, u_update_date, u_email_agreement)
@@ -26,4 +26,9 @@
 			)
 		]]>
 	</insert>
+
+	<!-- 이메일 중복체크 -->
+	<select id="emailCheck" resultType="Integer">
+		select count(*) from users where u_email = #{email}
+	</select>
 </mapper>

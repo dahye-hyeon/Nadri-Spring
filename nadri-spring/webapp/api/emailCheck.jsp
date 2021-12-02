@@ -72,7 +72,7 @@
 		jse.printStackTrace();
 	}
     
-     System.out.print("cnt값은===>" + cnt);
+     System.out.println("cnt값은===>" + cnt);
      
    if(cnt == 1){
 	   System.out.println("true: " + cnt);

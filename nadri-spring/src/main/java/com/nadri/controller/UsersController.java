@@ -1,8 +1,6 @@
 package com.nadri.controller;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nadri.dao.UsersDAO;
 import com.nadri.service.UsersService;
 import com.nadri.vo.UsersVo;
 
@@ -44,5 +42,12 @@ public class UsersController {
 		usersService.add(usersVo);
 		System.out.println("1");
 		return "/main/index";
+	}
+	
+	/* 이메일 중복체크 */
+	@ResponseBody
+	@RequestMapping(value="/emailChk", method=RequestMethod.POST)
+	public String emailChk(@RequestParam("email") String email) {
+		return usersService.emailChk(email);
 	}
 }

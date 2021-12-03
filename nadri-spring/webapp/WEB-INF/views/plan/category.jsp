@@ -135,7 +135,7 @@
 						for (var j = 0; j < splitedArr.length; j++) {
 
 							var property = splitedArr[j].split(":");
-							console.log(property)
+							console.log(property);
 							
 							if (property == "cityId") {
 								console.log("checksdjfsdklf");

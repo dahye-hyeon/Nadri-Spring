@@ -15,6 +15,10 @@ public class CityDAO {
 	private SqlSession sqlSession;
 	//도시 정보
 	public List<CityVo> getList(){
-		return sqlSession.selectList("city.cityList");
+		return sqlSession.selectList("city.allCityList");
+	}
+	
+	public List<CityVo> getList(int regionId){
+		return sqlSession.selectList("city.cityList", regionId);
 	}
 }

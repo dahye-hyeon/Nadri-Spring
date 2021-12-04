@@ -81,7 +81,7 @@
 			var params = {
 				regionId : cityId
 			}
- 
+  
 			$.ajax({
 						url : "city",
 						type : "post",

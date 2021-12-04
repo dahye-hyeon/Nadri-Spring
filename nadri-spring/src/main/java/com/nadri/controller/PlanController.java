@@ -60,7 +60,7 @@ public class PlanController  {
 	}
 	
 	/*도시 이름 출력*/
-	
+	 
 	@RequestMapping(value="/city", method=RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	
 	public @ResponseBody String emailChk(@RequestParam("regionId") String regionId, HttpServletResponse response) {

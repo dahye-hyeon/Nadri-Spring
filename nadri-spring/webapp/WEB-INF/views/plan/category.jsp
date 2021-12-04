@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" type="../../image/x-icon" href="favicon.png">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.png">
 <link rel="stylesheet" href="../../assets/css/reset.css">
 <link rel="stylesheet" href="../../assets/css/fonts.css">
 <link rel="stylesheet" href="../../assets/css/header.css">
@@ -44,7 +44,7 @@
 						<ul class="tabs">
 							<span class="pill"></span>
 							<li data-tab="tab-1" class="on" onclick="filterCity(1)"><a
-								href="#" class="filterCity">수도권</a></li>
+								href="#">수도권</a></li>
 							<li data-tab="tab-1" onclick="filterCity(2)"><a href="#">강원도</a></li>
 							<li data-tab="tab-1"><a href="#">충청도</a></li>
 							<li data-tab="tab-1"><a href="#">전라도</a></li>
@@ -60,37 +60,7 @@
 
 			<article class="container">
 				<div class="cards clear">
-					<ul>
-						<c:forEach items="${categoryList}" var="categorylist">
-							<div class="popUp ${categorylist.cityId}">
-								<figure>
-									<img src="${categorylist.cityImageURL}"
-										alt="${categorylist.cityName}">
-								</figure>
-								<div class="popupDesc">
-									<a class="exit" href="javascript:;"></a>
-									<h4 class="popupTitle">${categorylist.cityName}</h4>
-									<b>${categorylist.cityName}</b>
-									<p>${categorylist.cityContent}</p>
-									<a
-										href="/Nadri-frontEnd/plan?a=planning&id=${categorylist.cityId}">일정만들기</a>
-								</div>
-								<a href="javascript:;" class="exit"></a>
-							</div>
-							<li class="${categorylist.cityId }"><a href="javascript:;">
-									<ul>
-										<li class="contImg"><img
-											src="${categorylist.cityImageURL}"
-											alt="${categorylist.cityName}"></li>
-										<li class="desc">
-											<h3>${categorylist.cityName}</h3>
-											<p>${categorylist.cityEngName}</p>
-										</li>
-									</ul>
-							</a></li>
-
-						</c:forEach>
-					</ul>
+					<ul></ul>
 				</div>
 			</article>
 
@@ -113,66 +83,51 @@
 			}
 
 			$.ajax({
-				url : "city",
-				type : "post",
-				data : params,
-				datatype : "text",
-				success : function(data) {
-					var list = data.split("|");
-					/* for (var i = 0; i < 1; i++) {
-						var splitedStr = list[i].replace("{", "").replace("}",
-								"");
-						var splitedArr = splitedStr.split(",");
-
-						var cityId;
-						var cityName;
-						var cityLatitude;
-						var cityLongitude;
-						var cityRegionId;
-						var cityContent;
-						var cityEngName;
-						var cityImageURL;
-						for (var j = 0; j < splitedArr.length; j++) {
-
-							var property = splitedArr[j].split(":");
-							console.log(property);
-							
-							if (property == "cityId") {
-								console.log("checksdjfsdklf");
-								cityId = value
-							} else if (property == "cityName") {
-								cityName = value
-							} else if (property == "cityLatitude") {
-								cityLatitude = value
-							} else if (property == "cityLongitude") {
-								cityLongitude = value
-							} else if (property == "cityRegionId") {
-								cityRegionId = value
-							} else if (property == "cityContent") {
-								cityContent = value
-							} else if (property == "cityEngName") {
-								cityContent = value
-							} else if (property == "cityImageURL") {
-								cityImageURL = value
-							}
+						url : "city",
+						type : "post",
+						data : params,
+						datatype : "json",
+						success : function(data) {
+							var jsonData = JSON.parse(data);
+							var jsonText = ""
+							$(".container > .cards > ul").empty();
+							$.each(jsonData,function(index, item) {
+								var text = "<div class='popUp " + item.cityId +"'> "
+											+ "<figure> <img src='" + item.cityImageURL
+											+ "' alt='" + item.cityName + "'>"
+											+ "</figure>"
+											+ "<div class='popupDesc'>"
+											+ "<a class='exit' href='javascript:;'></a>"
+											+ "<h4 class='popupTitle'>"+ item.cityName + "</h4>"
+											+ "<b>"+ item.cityName+ "</b>"
+											+ "<p>"+ item.cityContent+ "</p>"
+											+ "<a href='#'>일정만들기</a>"
+											+ "</div>"
+											+ "<a class='exit' href='javascript:;'></a>"
+											+ "</div>"
+											+ "<li class='" + item.cityId + "'><a href='javascript:;'>"
+											+ "<ul>"
+											+ "<li class='contImg'><img src='" + item.cityImageURL + "' alt='" + item.cityName + "'></li>"
+											+ "<li class='desc'"+ ">"
+											+ "<h3>"+ item.cityName+ "</h3>"
+											+ "<p>"+ item.cityEngName+ "</p>"
+											+ "</li></ul></a></li>";
+							  
+							jsonText += text;
+							});
+							$("#category .cards > ul").prepend(jsonText);
+						},
+						error : function(XHR, status, error) {
+							console.error(status + " : " + error);
 						}
-
-						console.log(cityId, cityName, cityContent);
-
-					} */
-
-				},
-				error : function(XHR, status, error) {
-					console.error(status + " : " + error);
-				}
-			});
+					});
 		}
 
 		$(document).ready(function() {
 
 			var search = $("#category .leftNav ul li:last-of-type a");
 			var currentPosition = parseInt($(".leftNav").css("top"));
-
+			filterCity(1);
 			$(window).scroll(function() {
 				var position = $(window).scrollTop();
 
@@ -196,20 +151,21 @@
 				$(this).addClass("on");
 			})
 
-			var $card = $("#category .cards > ul > li")
+			var attr = "#category .cards > ul > li"
+			var $card = $(attr)
 
-			$($card).click(function() {
+			$("#category .cards > ul").on("click", "li", function() {
 				console.log("클릭 완료");
 				var $thisClass = $(this).attr('class');
 				var $thisPop = "." + $thisClass;
-				console.log($thisPop);
+				console.log("result: ", $thisPop);
 				$(".bg").addClass("on");
 				$($thisPop).addClass("on");
-				$(".bg").click(function() {
+				$('body').on("click", ".bg", function() {
 					$(".bg").removeClass("on");
 					$($thisPop).removeClass("on");
 				})
-				$(".exit").click(function() {
+				$('body').on("click", ".exit", function() {
 					$(".bg").removeClass("on");
 					$($thisPop).removeClass("on");
 				})

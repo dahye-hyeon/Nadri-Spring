@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.nadri.vo.*;
 
 import org.apache.ibatis.type.BigIntegerTypeHandler;
@@ -59,15 +63,18 @@ public class PlanController  {
 	
 	@RequestMapping(value="/city", method=RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	
-	public @ResponseBody String emailChk(@RequestParam("regionId") String regionId) {
+	public @ResponseBody String emailChk(@RequestParam("regionId") String regionId, HttpServletResponse response) {
 		List<CityVo> vos = categoryService.getList(Integer.valueOf(regionId));
 		Gson gson = new Gson();
 		String result = "";
-		for(CityVo vo:vos) {
-			result += gson.toJson(vo);
-			result += "|";
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			result = mapper.writeValueAsString(vos);
+			System.out.println(result);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 		}
-		System.out.println(result);
 		return result;
 	}
 

@@ -43,18 +43,13 @@
 					<div class="container">
 						<ul class="tabs">
 							<span class="pill"></span>
-							<li data-tab="tab-1" class="on"><a
-								href="/Nadri-frontEnd/plan?a=category&city=Metro">수도권</a></li>
-							<li data-tab="tab-1"><a
-								href="/Nadri-frontEnd/plan?a=category&city=Gang">강원도</a></li>
-							<li data-tab="tab-1"><a
-								href="/Nadri-frontEnd/plan?a=category&city=chung">충청도</a></li>
-							<li data-tab="tab-1"><a
-								href="/Nadri-frontEnd/plan?a=category&city=Jeon">전라도</a></li>
-							<li data-tab="tab-1"><a
-								href="/Nadri-frontEnd/plan?a=category&city=Gyeong">경상도</a></li>
-							<li data-tab="tab-1"><a
-								href="/Nadri-frontEnd/plan?a=category&city=Je">제주도</a></li>
+							<li data-tab="tab-1" class="on" onclick="filterCity(1)"><a
+								href="#" class="filterCity">수도권</a></li>
+							<li data-tab="tab-1" onclick="filterCity(2)"><a href="#">강원도</a></li>
+							<li data-tab="tab-1"><a href="#">충청도</a></li>
+							<li data-tab="tab-1"><a href="#">전라도</a></li>
+							<li data-tab="tab-1"><a href="#">경상도</a></li>
+							<li data-tab="tab-1"><a href="#">제주도</a></li>
 							<li class="searchIcon" data-tab="tab-1"><a href="#main"><img
 									src="../../assets/images/search-icon.png" alt="검색 아이콘"
 									style="width: 20px; height: 20px;"></a></li>
@@ -69,18 +64,20 @@
 						<c:forEach items="${categoryList}" var="categorylist">
 							<div class="popUp ${categorylist.cityId}">
 								<figure>
-									<img src="${categorylist.cityImageURL}" alt="${categorylist.cityName}">
+									<img src="${categorylist.cityImageURL}"
+										alt="${categorylist.cityName}">
 								</figure>
 								<div class="popupDesc">
 									<a class="exit" href="javascript:;"></a>
 									<h4 class="popupTitle">${categorylist.cityName}</h4>
 									<b>${categorylist.cityName}</b>
 									<p>${categorylist.cityContent}</p>
-									<a href="/Nadri-frontEnd/plan?a=planning&id=${categorylist.cityId}">일정만들기</a>
+									<a
+										href="/Nadri-frontEnd/plan?a=planning&id=${categorylist.cityId}">일정만들기</a>
 								</div>
 								<a href="javascript:;" class="exit"></a>
 							</div>
-							<li class="${categorylist.cityId }"><a href="javascript:;" >
+							<li class="${categorylist.cityId }"><a href="javascript:;">
 									<ul>
 										<li class="contImg"><img
 											src="${categorylist.cityImageURL}"
@@ -109,6 +106,68 @@
 	</div>
 
 	<script>
+		function filterCity(cityId) {
+
+			var params = {
+				regionId : cityId
+			}
+
+			$.ajax({
+				url : "city",
+				type : "post",
+				data : params,
+				datatype : "text",
+				success : function(data) {
+					var list = data.split("|");
+					/* for (var i = 0; i < 1; i++) {
+						var splitedStr = list[i].replace("{", "").replace("}",
+								"");
+						var splitedArr = splitedStr.split(",");
+
+						var cityId;
+						var cityName;
+						var cityLatitude;
+						var cityLongitude;
+						var cityRegionId;
+						var cityContent;
+						var cityEngName;
+						var cityImageURL;
+						for (var j = 0; j < splitedArr.length; j++) {
+
+							var property = splitedArr[j].split(":");
+							console.log(property);
+							
+							if (property == "cityId") {
+								console.log("checksdjfsdklf");
+								cityId = value
+							} else if (property == "cityName") {
+								cityName = value
+							} else if (property == "cityLatitude") {
+								cityLatitude = value
+							} else if (property == "cityLongitude") {
+								cityLongitude = value
+							} else if (property == "cityRegionId") {
+								cityRegionId = value
+							} else if (property == "cityContent") {
+								cityContent = value
+							} else if (property == "cityEngName") {
+								cityContent = value
+							} else if (property == "cityImageURL") {
+								cityImageURL = value
+							}
+						}
+
+						console.log(cityId, cityName, cityContent);
+
+					} */
+
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
+				}
+			});
+		}
+
 		$(document).ready(function() {
 
 			var search = $("#category .leftNav ul li:last-of-type a");
@@ -128,7 +187,6 @@
 						position : "absolute",
 						top : currentPosition
 					})
-					console.log("test");
 					$("header").removeClass("on");
 				}
 			})

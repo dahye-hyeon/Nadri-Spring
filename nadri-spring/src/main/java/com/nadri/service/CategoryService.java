@@ -14,9 +14,14 @@ public class CategoryService {
 	@Autowired
 	private CityDAO cityDao;
 	
-	/* 유저정보 가져오기 */
+	/* 모든 도시 정보 가져오기 */
 	public List<CityVo> getList(){
 		return cityDao.getList();
+	}
+
+	/* 특정 도시정보 가져오기 */
+	public List<CityVo> getList(int cityId) {
+		return cityDao.getList(cityId);
 	}
 
 }

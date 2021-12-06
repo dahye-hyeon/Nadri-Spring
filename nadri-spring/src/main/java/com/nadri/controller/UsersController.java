@@ -2,7 +2,8 @@ package com.nadri.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,5 +50,32 @@ public class UsersController {
 	@RequestMapping(value="/emailChk", method=RequestMethod.POST)
 	public String emailChk(@RequestParam("email") String email) {
 		return usersService.emailChk(email);
+	}
+	
+	/*로그인폼 출력*/
+	@RequestMapping(value="/loginForm", method=RequestMethod.GET)
+	public String loginForm() {
+		return "user/loginForm";
+	}
+	
+	/*로그인*/
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String login(@ModelAttribute UsersVo usersVo, HttpSession session) {
+		UsersVo authUser = usersService.login(usersVo);
+		
+		if(authUser != null) {
+			session.setAttribute("usersVo", authUser);
+			//로그인 성공
+			return "main/index";
+		}else {
+			//로그인 실패
+			return "user/loginForm";
+		}
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "main/index";
 	}
 }

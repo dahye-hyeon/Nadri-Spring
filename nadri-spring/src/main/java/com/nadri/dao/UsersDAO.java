@@ -1,8 +1,6 @@
 package com.nadri.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,7 @@ public class UsersDAO {
 	@Autowired
 	private SqlSession sqlSession;
 
-	// 유저 목록
+	/* 유저정보 가져오기 */
 	public List<UsersVo> getList() {
 		return sqlSession.selectList("users.usersList");
 	}
@@ -26,7 +24,7 @@ public class UsersDAO {
 		return null;
 	}
 
-	// 유저 등록
+	/* 회원가입 */
 	public int add(UsersVo vo) {
 		return sqlSession.insert("users.insert", vo);
 	}
@@ -46,9 +44,16 @@ public class UsersDAO {
 		return 0;
 	}
 
-	// 이메일 중복 체크
+	/* 이메일체크 : 이미 등록된 이메일주소인지 검사 */
 	public int emailChk(String email) {
 		System.out.println(email);
 		return sqlSession.selectOne("users.emailCheck", email);
 	}
+	
+	/* 로그인 */
+	
+	public UsersVo selectUsersVo(UsersVo usersVo) {
+		return sqlSession.selectOne("users.selectUserForLogin", usersVo);
+	}
+
 }

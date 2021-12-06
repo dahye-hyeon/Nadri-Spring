@@ -46,7 +46,7 @@ header.on {
     background: #fff;
     /* border-bottom: 1.5px solid #222; */
     box-shadow: 1px 1px 10px #555;
-    z-index: 1;
+    z-index: 100000;
 }
 
 header.on .logo {font-size: 4rem;}

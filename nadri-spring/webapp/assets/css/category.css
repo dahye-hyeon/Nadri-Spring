@@ -79,32 +79,36 @@ body {
 /* category */
 #category .container {
     position: relative;
+
 }
 
 /* category cards */
 #category .container:nth-child(2) {
     margin-left: 355.525px;
-    width: 1400px;
+    width: 72.9%;
 }
-#category .cards > ul > li {
+#category .cards > ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+#category .cards > ul > li{
     position: relative;
     margin-bottom: 100px;
-    margin-right: 66.666666666666px;
-    float: left;
-    width: 300px;
+    margin-right: 3%;
+    width: 21.41%;
     height: 400px;
     background: #000;
     overflow: hidden;
     box-shadow: 1px 1px 10px#aaa;
 }
-#category .cards > ul > li:nth-of-type(4n) {
+/* #category .cards > ul > li:nth-of-type(4n) {
     margin-right: 0;
-}
+} */
 #category .cards > ul > li a {
     display: inline-block;
 }
 #category .cards > ul > li .contImg {
-    width: 300px;
+    width: 100%;
     height: 300px;
     overflow: hidden;
 }
@@ -289,7 +293,7 @@ footer p {
     display: block;
     font-size: 2rem;
 }
-.popupDesc a:nth-of-type(2) {
+.popupDesc a:nth-of-type(2) #input{
     display: inline-block;
     padding: 1em 2em;
     font-size: 1.8rem;

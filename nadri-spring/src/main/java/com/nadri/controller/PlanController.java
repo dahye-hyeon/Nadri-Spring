@@ -49,7 +49,7 @@ public class PlanController  {
 	@Autowired
 	private CategoryService categoryService;
 	
-	/*도시 이름 출력*/
+	/*모든 도시 정보 출력*/
 	@RequestMapping(value="/category", method=RequestMethod.GET)
 	public ModelAndView showCategory(ModelAndView mav) {
 		List<CityVo> vos = categoryService.getList();
@@ -59,11 +59,24 @@ public class PlanController  {
 		return mav;
 	}
 	
-	/*도시 이름 출력*/
+	
+	/*모든 도시 정보 출력*/
+	@RequestMapping(value="/schedule", method=RequestMethod.POST)
+	public ModelAndView makingSchedule(ModelAndView mav, String latitude, String longitude, String cityId) {
+
+		mav.addObject("latitude", Double.valueOf(latitude));
+		mav.addObject("longitude", Double.valueOf(longitude));
+		mav.addObject("cityId", Integer.valueOf(cityId));
+		mav.setViewName("plan/schedule");
+		return mav;
+	}
+
+	
+	/*특정 도시 정보 출력*/
 	  
 	@RequestMapping(value="/city", method=RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	
-	public @ResponseBody String emailChk(@RequestParam("regionId") String regionId, HttpServletResponse response) {
+	public @ResponseBody String getCities(@RequestParam("regionId") String regionId, HttpServletResponse response) {
 		List<CityVo> vos = categoryService.getList(Integer.valueOf(regionId));
 		Gson gson = new Gson();
 		String result = "";
@@ -71,7 +84,6 @@ public class PlanController  {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			result = mapper.writeValueAsString(vos);
-			System.out.println(result);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="../../assets/css/reset.css">
-<link rel="stylesheet" href="../../assets/css/header.css">
-<link rel="stylesheet" href="../../assets/css/fonts.css">
-<link rel="stylesheet" href="../../assets/css/join.css">
-<link rel="shortcut icon" type="image/x-icon" href="../../favicon.png">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/join.css">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
 <title>나드리 - 회원가입</title>
 </head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -150,7 +150,7 @@
 		<div id="join">
 			<div class="container">
 				<h2 class="joinHead">SIGN IN</h2>
-				<form action="/user/join" method="post" onsubmit="return joinChk();">
+				<form action="${pageContext.request.contextPath}/user/join" method="post" onsubmit="return joinChk();">
 					<div class="email">
 						<label for="email">이메일</label> <input type="email"
 							name="usersEmail" id="email" value="" required>

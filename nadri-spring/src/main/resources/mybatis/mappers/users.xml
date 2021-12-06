@@ -7,15 +7,15 @@
 
 	<!-- 유저 정보 불러오기 -->
 	<select id="usersList" resultType="usersVo">
-		select u_id usersId, u_name usersName
-		from users
+		SELECT u_id usersId, u_name usersName
+		FROM users
 	</select>
 
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="usersVo">
 		<![CDATA[
-			insert into users(u_id, u_email, u_name, u_password, u_reg_date, u_route, u_update_date, u_email_agreement)
-			values(seq_users_id.nextval, 
+			INSERT INTO users(u_id, u_email, u_name, u_password, u_reg_date, u_route, u_update_date, u_email_agreement)
+			VALUES(seq_users_id.nextval, 
 			       #{usersEmail}, 
 			       #{usersName}, 
 			       #{usersPassword}, 
@@ -28,7 +28,15 @@
 	</insert>
 
 	<!-- 이메일 중복체크 -->
-	<select id="emailCheck" resultType="Integer">
-		select count(*) from users where u_email = #{email}
+	<select id="emailCheck" parameterType="string" resultType="Integer">
+		SELECT count(*) FROM users WHERE u_email = #{email}
+	</select>
+	
+	<!-- 로그인 회원정보 -->
+	<select id="selectUserForLogin" parameterType="usersVo" resultType="usersVo">
+		SELECT u_id usersId, u_email usersEmail, u_name usersName
+		FROM users
+		WHERE u_email = #{usersEmail}
+		AND u_password = #{usersPassword}
 	</select>
 </mapper>

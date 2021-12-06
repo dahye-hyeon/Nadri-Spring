@@ -21,12 +21,12 @@ public class UsersService {
 		return usersDao.getList();
 	}
 
-	// 유저 등록
+	/* 회원가입 */
 	public int add(UsersVo userVo) {
 		return usersDao.add(userVo);
 	}
 
-	// 이메일 중복검사
+	/* 이메일체크 : 이미 등록된 이메일주소인지 검사 */
 	public String emailChk(String email) {
 		System.out.println("email: " + email);
 		int cnt = usersDao.emailChk(email);
@@ -35,5 +35,11 @@ public class UsersService {
 			return "false";
 		else
 			return "true";
+	}
+	
+	/* 로그인 */
+	public UsersVo login(UsersVo usersVo) {
+		UsersVo authUser = usersDao.selectUsersVo(usersVo);
+		return authUser;
 	}
 }

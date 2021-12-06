@@ -1,13 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<link rel="stylesheet" href="../../assets/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}assets/css/header.css">
 <%@ page import="com.nadri.vo.*"%>
+<%@ page import="com.nadri.controller.*"%>
 
-<%
-UsersVo vo = (UsersVo) session.getAttribute("info");
-System.out.println("check: " + vo);
-%>
 <header>
 	<div class="container clear">
 		<div>
@@ -17,14 +14,14 @@ System.out.println("check: " + vo);
 		</div>
 		<nav>
 			<ul>
-				<c:set var="auth" value="<%=vo%>" />
+				<c:set var="auth" value="${usersVo}" />
 				<c:choose>
 					<c:when test="${auth == null }">
-						<li><a href="/Nadri-frontEnd/main?a=login">로그인</a></li>
-						<li><a href="/user/joinForm">회원가입</a></li>
+						<li><a href="${pageContext.request.contextPath}/user/loginForm">로그인</a></li>
+						<li><a href="${pageContext.request.contextPath}/user/joinForm">회원가입</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="/Nadri-frontEnd/main?a=logout">로그아웃</a></li>
+						<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
 					</c:otherwise>
 				</c:choose>
 			</ul>

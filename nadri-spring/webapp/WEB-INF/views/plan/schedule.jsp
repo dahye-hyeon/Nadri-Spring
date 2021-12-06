@@ -8,16 +8,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
-<link rel="stylesheet" href="../../assets/css/jquery-ui.css">
-<link rel="stylesheet" href="../../assets/css/all.min.css">
-<link rel="stylesheet" href="../../assets/css/reset.css">
-<link rel="stylesheet" href="../../assets/css/fonts.css">
-<link rel="stylesheet" href="../../assets/css/header.css">
-<link rel="stylesheet" href="../../assets/css/plan.css">
-<link rel="stylesheet" href="../../assets/css/caleander.css">
-<script src="../../assets/js/jquery-3.6.0.min.js"></script>
-<script src="../../assets/js/jquery-ui.min.js"></script>
-<script src="../../assets/js/calender.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/all.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/plan.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/caleander.css">
+<script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/calender.js"></script>
 
 <title>나드리 - 계획하기</title>
 </head>

@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-<<<<<<< Updated upstream
 import com.nadri.api.KakaoService;
-=======
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.nadri.bo.NaverLoginBO;
->>>>>>> Stashed changes
 import com.nadri.service.UsersService;
 import com.nadri.util.LoginUtil;
 import com.nadri.vo.UsersVo;

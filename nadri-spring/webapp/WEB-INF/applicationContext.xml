@@ -52,5 +52,8 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="oracleDatasource"></property>
 	</bean>
+	
+	<!-- BO class bean등록 -->
+	<bean id="naverLoginBO" class="com.nadri.bo.NaverLoginBO" />
 
 </beans>

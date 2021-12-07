@@ -32,7 +32,7 @@ public class KakaoService {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=205f5731512f02607419fe81babedfc8"); // 본인이 발급받은 key
-			sb.append("&redirect_uri=http://localhost:8088/Nadri-frontEnd/main"); // 본인이 설정해 놓은 경로
+			sb.append("&redirect_uri=http://localhost:8088/user/loginKakao"); // 본인이 설정해 놓은 경로
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
 			bw.flush();

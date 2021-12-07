@@ -115,12 +115,12 @@ body {
     border-radius: 10%;
     background: #000;
 }
-#login .snsIcon a:nth-child(1) {
+#login .snsIcon #naver a{
     background: url("../images/logo-naver.png") center/cover;
 }
-#login .snsIcon a:nth-child(2){
+#login .snsIcon #kakao a{
     background: url("../images/logo-kakao.png") center/cover;
 }
-#login .snsIcon a:nth-child(3){
+#login .snsIcon #facebook a{
     background: url("../images/logo-facebook.png") center/cover;
 }

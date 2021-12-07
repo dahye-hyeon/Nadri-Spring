@@ -14,12 +14,13 @@
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="usersVo">
 		<![CDATA[
-			INSERT INTO users(u_id, u_email, u_name, u_password, u_reg_date, u_route, u_update_date, u_email_agreement)
+			INSERT INTO users(u_id, u_email, u_name, u_password, u_reg_date, u_image_url, u_route, u_update_date, u_email_agreement)
 			VALUES(seq_users_id.nextval, 
 			       #{usersEmail}, 
 			       #{usersName}, 
 			       #{usersPassword}, 
 			       to_date(#{usersRegDate}, 'yyyy-mm-dd hh24:mi'),
+			       #{usersImageName},
 			       #{usersRoute},
 			       to_date(#{usersUpdateDate}, 'yyyy-mm-dd hh24:mi'),
 			       #{usersEmailAgreement}

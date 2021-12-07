@@ -42,4 +42,5 @@ public class UsersService {
 		UsersVo authUser = usersDao.selectUsersVo(usersVo);
 		return authUser;
 	}
+
 }

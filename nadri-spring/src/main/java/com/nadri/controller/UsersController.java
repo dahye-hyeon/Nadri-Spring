@@ -2,6 +2,7 @@ package com.nadri.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.nadri.api.KakaoService;
 import com.nadri.service.UsersService;
+import com.nadri.util.LoginUtil;
 import com.nadri.vo.UsersVo;
 
 @Controller
@@ -21,6 +24,7 @@ import com.nadri.vo.UsersVo;
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
+	
 	
 	/*회원가입 폼 출력*/
 	@RequestMapping(value="/joinForm", method=RequestMethod.GET)
@@ -76,6 +80,48 @@ public class UsersController {
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
+		return "main/index";
+	}
+	
+	/*카카오로그인*/
+	@RequestMapping(value="/loginKakao", method=RequestMethod.GET)
+	public String kakaoLogin(@RequestParam("code")String code, HttpSession session) {
+		
+		KakaoService kakaoService = new KakaoService();
+		UsersVo vo = new UsersVo();
+		String access_Token = kakaoService.getAccessToken(code);
+		HashMap<String, Object> userInfo = LoginUtil.getUserInfo(access_Token);
+		userInfo.forEach((key, value) -> {
+			if ("profile_image".equals(key)) {
+				vo.setUsersImageName((String) value);
+			} else if ("nickname".equals(key)) {
+				vo.setUsersName((String) value);
+			} else if ("email".equals(key)) {
+				vo.setUsersEmail((String) value);
+			}
+		});
+		
+		Date time = new Date();
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		String date = format1.format(time);
+		
+		if (vo.getUsersEmail().contains("Kakao")) {
+			vo.setUsersEmailAgreement("0");
+		} else {
+			vo.setUsersEmailAgreement("1");
+		}
+		vo.setUsersRegDate(date);
+		vo.setUsersRoute("Kakao");
+		vo.setUsersPassword(date+vo.getUsersEmail());
+		vo.setUsersUpdateDate(date);
+		
+		if("true".equals(usersService.emailChk(vo.getUsersEmail()))) {
+			usersService.add(vo);
+		}
+		
+		session.setAttribute("usersVo", vo);
+		
+		
 		return "main/index";
 	}
 }

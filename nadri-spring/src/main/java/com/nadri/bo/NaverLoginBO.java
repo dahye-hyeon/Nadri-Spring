@@ -22,7 +22,7 @@ public class NaverLoginBO {
 	private final static String CLIENT_ID = "SR3YR1kOQAMN7qDKjv8s"; //Client ID
     private final static String CLIENT_SECRET = "z67QvBqbov"; //Cliend Secret
     private final static String REDIRECT_URI = "http://localhost:8088/user/callback"; //로그인 성공시 url
-    private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
+    private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me"; //프로필 api
     
     public String generateState() {
     	SecureRandom random = new SecureRandom();
@@ -48,7 +48,7 @@ public class NaverLoginBO {
     /* 네아로 Callback 처리 및  AccessToken 획득 Method */
 	public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws IOException{
 		
-		/* Callback으로 전달받은 세선검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인 */
+		/* Callback으로 전달받은 세션 검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인 */
 		String sessionState =(String)session.getAttribute("state");
 		if(sessionState.equals(state)){
 		
@@ -79,7 +79,7 @@ public class NaverLoginBO {
     			.apiSecret(CLIENT_SECRET)
     			.callback(REDIRECT_URI).build(NaverService.instance());
     	
-    		OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
+    	OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
 		oauthService.signRequest(oauthToken, request);
 		Response response = request.send();
 		return response.getBody();

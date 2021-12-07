@@ -8,13 +8,19 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+<<<<<<< Updated upstream
 import com.nadri.api.KakaoService;
+=======
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.nadri.bo.NaverLoginBO;
+>>>>>>> Stashed changes
 import com.nadri.service.UsersService;
 import com.nadri.util.LoginUtil;
 import com.nadri.vo.UsersVo;
@@ -24,6 +30,8 @@ import com.nadri.vo.UsersVo;
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
+	@Autowired
+	private NaverLoginBO naverLoginBO;
 	
 	
 	/*회원가입 폼 출력*/
@@ -75,6 +83,24 @@ public class UsersController {
 			//로그인 실패
 			return "user/loginForm";
 		}
+	}
+	
+	/*로그인*/
+	@RequestMapping(value="/naverLogin", method= {RequestMethod.POST, RequestMethod.GET})
+	public String Naverlogin(Model model, HttpSession session) throws Exception {
+		
+		/* 네아로 인증 URL을 생성하기 위하여 getAuthorizationUrl을 호출 */
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+		/* 생성한 인증 URL을 View로 전달 */
+		model.addAttribute("naver_url", naverAuthUrl);
+		return "user/loginForm";
+	}
+	
+	/* 네이버 로그인 성공시 callback 호출 */
+	@RequestMapping(value="collback")
+	public String callback() {
+		System.out.println("naver login success");
+		return "/main/index";
 	}
 	
 	@RequestMapping(value="/logout", method=RequestMethod.GET)

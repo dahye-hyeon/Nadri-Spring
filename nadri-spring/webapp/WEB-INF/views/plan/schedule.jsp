@@ -42,18 +42,24 @@
 						placeholder="여기에 현재 날짜 넣을 수 있나요?"> <span>-</span> <input
 						id="edate" type="text" name="date" placeholder="2021.12.06">
 				</div>
+				<div id="schedule">
+					<a href="#">일정 생성</a>
+				</div>
 			</article>
 
 			<article class="rightBox"></article>
 		</section>
-
+		
 	</div>
+	
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
 	<script>
+	var data = [];
+	var markers = [];
 	// 마커를 생성하고 지도위에 표시하는 함수입니다
 	function addMarker(position) {
-
+		var data = {};
 		// 마커를 생성합니다
 		var marker = new kakao.maps.Marker({
 			position : position
@@ -99,8 +105,21 @@
 		// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		map.panTo(moveLatLon);
 	}
-	// 지도에 표시된 마커 객체를 가지고 있을 배열입니다
-	var markers = [];
+	
+	function getDistanceFromLatLonInKm(lat1,lng1,lat2,lng2) { 
+		function deg2rad(deg) { return deg * (Math.PI/180) } 
+		var R = 6371; // Radius of the earth in km 
+		var dLat = deg2rad(lat2-lat1); // deg2rad below 
+		var dLon = deg2rad(lng2-lng1); 
+		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+		var d = R * c; // Distance in km 
+		
+		console.log("두 지점간의 거리는" + d.toFixed(3)*1000 + "m 입니다.");
+		
+		return d.toFixed(3)*1000; 
+	}
+	
 	var centerLat = ${latitude}
 	var centerLng = ${longitude}
 	var cityId = ${cityId}
@@ -144,7 +163,7 @@
 
 				var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
 				message += '경도는 ' + latlng.getLng() + ' 입니다';
-
+				dist = getDistanceFromLatLonInKm(centerLat, centerLng, latlng.getLat(), latlng.getLng());
 				var resultDiv = document.getElementById('clickLatlng');
 				resultDiv.innerHTML = message;
 				// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
@@ -155,8 +174,30 @@
 		});
 
 	});
+	
 	$(function(){
 		$("header").addClass("on");
+		
+		$("#schedule").on("click", function(){
+			var params = {
+		            '0' : [37.56667, 126.978393],
+		            '16001' : [37.548868, 126.990335],
+		            '24001' : [37.554329, 126.936012],
+		            '-1' : [37.538468, 127.070355]
+		        }
+			$.ajax({
+				url : "schedule",
+				type : "post",
+				data : params,
+				datatype : "json",
+				success : function(data) {
+					
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
+				}
+			});
+		});
 	});
 	</script>
 </body>

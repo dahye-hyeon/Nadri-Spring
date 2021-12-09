@@ -1,12 +1,16 @@
 package com.nadri.controller;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +45,7 @@ import com.nadri.api.KakaoService;
 import com.nadri.dao.CityDAO;
 import com.nadri.service.CategoryService;
 import com.nadri.service.UsersService;
+import com.nadri.util.GetDistanceFromLatLon;
 
 @Controller
 @RequestMapping(value="/plan")
@@ -61,14 +67,57 @@ public class PlanController  {
 	
 	
 	/*모든 도시 정보 출력*/
-	@RequestMapping(value="/schedule", method=RequestMethod.POST)
-	public ModelAndView makingSchedule(ModelAndView mav, String latitude, String longitude, String cityId) {
+	@RequestMapping(value="/center", method=RequestMethod.POST)
+	public ModelAndView getCenter(ModelAndView mav, String latitude, String longitude, String cityId) {
 
 		mav.addObject("latitude", Double.valueOf(latitude));
 		mav.addObject("longitude", Double.valueOf(longitude));
 		mav.addObject("cityId", Integer.valueOf(cityId));
 		mav.setViewName("plan/schedule");
 		return mav;
+	}
+	
+	//making map
+	@RequestMapping(value="/schedule", method=RequestMethod.POST)
+	public String makingSchedule(@RequestParam Map<String, ArrayList<String>> data) {
+		Map<String, ArrayList<Double>> map = new HashMap<>();
+		Map<String, Double> distances = new HashMap<>();
+		Comparator<Entry<String, Double>> comparator = new Comparator<Entry<String, Double>>() {
+			@Override
+			public int compare(Entry<String, Double> e1, Entry<String, Double> e2) {
+				return e1.getValue().compareTo(e2.getValue());
+			}
+		};
+		
+		data.forEach((key, value)->{
+			ArrayList<Double> doubleArr = new ArrayList<Double>();
+			doubleArr.add(Double.valueOf(value.get(0)));
+			doubleArr.add(Double.valueOf(value.get(1)));
+			
+			map.put(key, doubleArr);
+		});
+		
+		
+		double centerLat = map.get("0").get(0);
+		double centerLng = map.get("0").get(1);
+		
+		//to calculate distance 
+		for(String key: map.keySet()) {
+			if ("0".equals(key))
+				continue;
+			
+			double distance = GetDistanceFromLatLon.distance(centerLat, centerLng, map.get(key).get(0), map.get(key).get(1), "meter");
+			System.out.println("distance: " + distance);
+		}
+		
+		ArrayList<String> result = new ArrayList<>();
+//		while(map.size() > 0) {
+//			Entry<String, Integer> minEntry = Collections.min(map.entrySet(), comparator);
+//			result.add(minEntry.getKey());
+//			map.remove(minEntry.getKey());
+//		}
+//		System.out.println(result.toString());
+		return "aaa";
 	}
 
 	

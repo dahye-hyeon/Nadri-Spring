@@ -46,10 +46,10 @@
 							<li data-tab="tab-1" class="on" onclick="filterCity(1)"><a
 								href="#">수도권</a></li>
 							<li data-tab="tab-1" onclick="filterCity(2)"><a href="#">강원도</a></li>
-							<li data-tab="tab-1"><a href="#">충청도</a></li>
-							<li data-tab="tab-1"><a href="#">전라도</a></li>
-							<li data-tab="tab-1"><a href="#">경상도</a></li>
-							<li data-tab="tab-1"><a href="#">제주도</a></li>
+							<li data-tab="tab-1" onclick="filterCity(3)"><a href="#">충청도</a></li>
+							<li data-tab="tab-1" onclick="filterCity(4)"><a href="#">전라도</a></li>
+							<li data-tab="tab-1" onclick="filterCity(5)"><a href="#">경상도</a></li>
+							<li data-tab="tab-1" onclick="filterCity(6)"><a href="#">제주도</a></li>
 							<li class="searchIcon" data-tab="tab-1"><a href="#main"><img
 									src="../../assets/images/search-icon.png" alt="검색 아이콘"
 									style="width: 20px; height: 20px;"></a></li>
@@ -102,7 +102,7 @@
 											+ "<b>"+ item.cityName+ "</b>"
 											+ "<p>"+ item.cityContent+ "</p>"
 											+ "<a href='#'>"
-											+ "<form action='schedule' method='post'>"
+											+ "<form action='center' method='post'>"
 											+ "<input type='hidden' name='latitude' value=" + item.cityLatitude + ">"
 											+ "<input type='hidden' name='longitude' value=" + item.cityLongitude + ">"
 											+ "<input type='hidden' name='cityId' value=" + item.cityId + ">"

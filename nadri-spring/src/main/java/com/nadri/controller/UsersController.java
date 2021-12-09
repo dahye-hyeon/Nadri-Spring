@@ -101,24 +101,25 @@ public class UsersController {
 		return rv;
 	}
 	
-	/* 네이버 로그인 성공시 callback 호출 */
+	/* 네이버 로그인 성공시 callback 호출(NaverLoginBO에서 설정) */
 	@RequestMapping("/callback")
 	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
+		System.out.println("apiResult:" + apiResult);
+		
 		UsersVo vo = new UsersVo();
-		
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(apiResult);
-		JSONObject jsonObj = (JSONObject) obj;
-		
+				
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map = new ObjectMapper().readValue(jsonObj.toJSONString(), HashMap.class);
+		
+		map = new ObjectMapper().readValue(apiResult, HashMap.class);
 		map = (HashMap<String, Object>) map.get("response");
 		vo.setUsersEmail((String)map.get("email"));
 		vo.setUsersName((String)map.get("name"));
 		vo.setUsersImageName((String)map.get("profile_image"));
+		
+		System.out.println("vo출력:"+vo.toString());
 		
 		Date time = new Date();
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,13 +12,11 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +88,7 @@ public class UsersController {
 		}
 	}
 	
-	/*로그인*/
+	/*네이버 로그인*/
 	@RequestMapping(value="/naverLogin", method= {RequestMethod.POST, RequestMethod.GET})
 	public RedirectView Naverlogin(HttpSession session) throws Exception {
 		
@@ -99,29 +96,30 @@ public class UsersController {
 		
 		/* 네아로 인증 URL을 생성하기 위하여 getAuthorizationUrl을 호출 */
 		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-		System.out.println(naverAuthUrl);
+		
 		rv.setUrl(naverAuthUrl);
 		return rv;
 	}
 	
-	/* 네이버 로그인 성공시 callback 호출 */
+	/* 네이버 로그인 성공시 callback 호출(NaverLoginBO에서 설정) */
 	@RequestMapping("/callback")
 	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
+		System.out.println("apiResult:" + apiResult);
+		
 		UsersVo vo = new UsersVo();
-		
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(apiResult);
-		JSONObject jsonObj = (JSONObject) obj;
-		
+				
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map = new ObjectMapper().readValue(jsonObj.toJSONString(), HashMap.class);
+		
+		map = new ObjectMapper().readValue(apiResult, HashMap.class);
 		map = (HashMap<String, Object>) map.get("response");
 		vo.setUsersEmail((String)map.get("email"));
 		vo.setUsersName((String)map.get("name"));
 		vo.setUsersImageName((String)map.get("profile_image"));
+		
+		System.out.println("vo출력:"+vo.toString());
 		
 		Date time = new Date();
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");

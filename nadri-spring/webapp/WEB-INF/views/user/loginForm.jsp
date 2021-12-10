@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
     <script src="/assets/js/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/login.js"></script>
+    <!-- google Login -->
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta name="google-signin-client_id" content="1037082742337-98t0m10nsngjukf1fnj3ahrtg39ikb1t.apps.googleusercontent.com">
     <title>나드리 - 로그인</title>
 </head>
 <body>
@@ -36,12 +39,20 @@
                 <div class="snsIcon">
                     <div id="naver"><a href="naverLogin" title="네이버"></a></div>
                     <div id="kakao"><a href="https://kauth.kakao.com/oauth/authorize?client_id=205f5731512f02607419fe81babedfc8&redirect_uri=http://localhost:8088/user/loginKakao&response_type=code" title="카카오톡"></a></div>
-                    <div id="facebook"><a href="#" title="페이스북"></a></div>
-                    
+                    <!-- <div id="googlebtn"><a href="googleLogin" title="구글"></a></div>-->
+					<div class="g-signin2" data-onsuccess="onSignIn"></div>
                 </div>
             </div>
         </div>
-
     </div>
 </body>
+
+<script>
+function onSignIn(googleUser) {
+	  var profile = googleUser.getBasicProfile();
+	  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+	  console.log('Name: ' + profile.getName());
+	  console.log('Image URL: ' + profile.getImageUrl());
+	  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+	}</script>
 </html>

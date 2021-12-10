@@ -1,12 +1,9 @@
 package com.nadri.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nadri.dao.UsersDAO;
 import com.nadri.vo.UsersVo;

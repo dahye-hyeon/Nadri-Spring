@@ -52,8 +52,23 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="oracleDatasource"></property>
 	</bean>
-	
+
 	<!-- BO class bean등록 -->
 	<bean id="naverLoginBO" class="com.nadri.bo.NaverLoginBO" />
+
+	<!-- google Class Bean설정 추가 -->
+	<!-- 클라이언트ID와 보안비밀 세팅 -->
+	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<constructor-arg value="1037082742337-98t0m10nsngjukf1fnj3ahrtg39ikb1t.apps.googleusercontent.com" />
+		<constructor-arg value="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"/>
+	</bean>
+
+	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+	<bean id="googleOAuth2Parameters"
+		class="org.springframework.social.oauth2.OAuth2Parameters">
+		<property name="scope"
+			value="https://www.googleapis.com/auth/plus.login" />
+		<property name="redirectUri" value="http://localhost:8088/user/googleCallback" />
+	</bean>
 
 </beans>

@@ -8,10 +8,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나드리 - 국내여행</title>
-    <link rel="stylesheet" href="../../assets/css/reset.css">
-    <link rel="stylesheet" href="../../assets/css/header.css">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/fonts.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <style>
     	header {position: static !important}
@@ -24,7 +24,7 @@
         <div id="main">
                 <div class="leftBox">
                      <figure>
-                        <video src="../../assets/images/main.mp4" autoplay="true" loop="true" muted="true"></video>
+                        <video src="${pageContext.request.contextPath}/assets/images/main.mp4" autoplay="true" loop="true" muted="true"></video>
                     </figure>
                 </div>
                 <div class="rightBox">

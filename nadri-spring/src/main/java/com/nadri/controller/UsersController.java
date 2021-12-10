@@ -2,25 +2,45 @@ package com.nadri.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.api.impl.GoogleTemplate;
+import org.springframework.social.google.api.plus.Person;
+import org.springframework.social.google.api.plus.PlusOperations;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.nadri.api.GoogleOAuthRequestService;
 import com.nadri.api.KakaoService;
 import com.nadri.bo.NaverLoginBO;
 import com.nadri.service.UsersService;
@@ -34,6 +54,10 @@ public class UsersController {
 	private UsersService usersService;
 	@Autowired
 	private NaverLoginBO naverLoginBO;
+	@Autowired
+	private GoogleConnectionFactory googleConnectionFactory;
+	@Autowired
+	private OAuth2Parameters googleOAuth2Parameter;
 	
 	
 	/*회원가입 폼 출력*/
@@ -89,7 +113,7 @@ public class UsersController {
 	}
 	
 	/*네이버 로그인*/
-	@RequestMapping(value="/naverLogin", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/naverLogin", method={RequestMethod.POST, RequestMethod.GET})
 	public RedirectView Naverlogin(HttpSession session) throws Exception {
 		
 		RedirectView rv = new RedirectView();
@@ -139,6 +163,7 @@ public class UsersController {
     	return "main/index";
 	}
 	
+	/*로그아웃*/
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -183,6 +208,54 @@ public class UsersController {
 		
 		session.setAttribute("usersVo", vo);
 		
+		
+		return "main/index";
+	}
+
+	/*구글 로그인*/
+	@RequestMapping(value="/googleLogin", method= {RequestMethod.POST, RequestMethod.GET})
+	public RedirectView googleLogin(Model model, HttpSession session) {
+		RedirectView rv = new RedirectView();
+
+		/*구글 code 발행*/
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		
+		/*로그인페이지 이동 url생성*/
+		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameter);
+		System.out.println("url:" + url);
+		
+		rv.setUrl(url);
+		return rv;
+	}
+	/* 구글회원 정보 */
+	@RequestMapping(value="/googleCallback")
+	public String googleCallback(@RequestParam("code")String code, HttpServletRequest request) {
+		System.out.println("googleCallback");	
+		System.out.println("code:"+code);
+		
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		AccessGrant accessGrant = oauthOperations.exchangeForAccess(code, googleOAuth2Parameter.getRedirectUri(), null);
+		
+		String accessToken = accessGrant.getAccessToken();
+		Long expireTime = accessGrant.getExpireTime();
+		if(expireTime != null && expireTime < System.currentTimeMillis()) {
+			accessToken = accessGrant.getRefreshToken();
+			System.out.printf("accessToken is expired. refresh tokent = {}", accessToken);
+		}
+		
+		Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+		Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
+		
+		PlusOperations plusOperations = google.plusOperations();
+		Person person = plusOperations.getGoogleProfile();
+		System.out.println("이메일:"+person.getAccountEmail());
+		
+		UsersVo vo = new UsersVo();
+		
+		//vo.setUsersEmail(person.getAccountEmail());
+		
+		
+		HttpSession session = request.getSession();
 		
 		return "main/index";
 	}

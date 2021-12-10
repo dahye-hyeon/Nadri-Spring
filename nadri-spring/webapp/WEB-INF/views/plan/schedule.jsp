@@ -39,7 +39,7 @@
 				<small>BUSAN</small>
 				<div class="calendar">
 					<input id="sdate" type="text" name="date"
-						placeholder="여기에 현재 날짜 넣을 수 있나요?"> <span>-</span> <input
+						placeholder="${today}"> <span>-</span> <input
 						id="edate" type="text" name="date" placeholder="2021.12.06">
 				</div>
 			</article>

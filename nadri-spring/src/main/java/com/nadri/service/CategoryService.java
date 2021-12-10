@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.nadri.dao.CityDAO;
 import com.nadri.vo.CityVo;
@@ -21,6 +20,7 @@ public class CategoryService {
 
 	/* 특정 도시정보 가져오기 */
 	public List<CityVo> getList(int cityId) {
+		System.out.println("시티 서비스진입");
 		return cityDao.getList(cityId);
 	}
 

@@ -1,32 +1,11 @@
 package com.nadri.controller;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.nadri.vo.*;
-
-import org.apache.ibatis.type.BigIntegerTypeHandler;
-import org.apache.tomcat.dbcp.dbcp2.Utils;
-import org.json.simple.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.nadri.api.KakaoService;
-import com.nadri.dao.CityDAO;
 import com.nadri.service.CategoryService;
-import com.nadri.service.UsersService;
+import com.nadri.service.HotelService;
+import com.nadri.vo.CityVo;
+import com.nadri.vo.HotelVo;
 
 @Controller
 @RequestMapping(value="/plan")
@@ -48,6 +29,7 @@ public class PlanController  {
 
 	@Autowired
 	private CategoryService categoryService;
+	private HotelService hotelService;
 	
 	/*모든 도시 정보 출력*/
 	@RequestMapping(value="/category", method=RequestMethod.GET)
@@ -60,13 +42,25 @@ public class PlanController  {
 	}
 	
 	
-	/*모든 도시 정보 출력*/
+	/*스케줄 진입*/
 	@RequestMapping(value="/schedule", method=RequestMethod.POST)
 	public ModelAndView makingSchedule(ModelAndView mav, String latitude, String longitude, String cityId) {
-
+		
+		// 오늘 날짜 받아오기
+		SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd");
+		Date time = new Date();
+		
+		// cityid에 맞는 호텔 정보 가져오기
+		System.out.println(cityId);
+		List<HotelVo> hotelList = hotelService.getList(Integer.parseInt(cityId));
+//		System.out.println("1");
+		System.out.println(hotelList.toString());
+		
+		System.out.println("스케쥴 진입");
 		mav.addObject("latitude", Double.valueOf(latitude));
 		mav.addObject("longitude", Double.valueOf(longitude));
 		mav.addObject("cityId", Integer.valueOf(cityId));
+		mav.addObject("today", format.format(time));
 		mav.setViewName("plan/schedule");
 		return mav;
 	}
@@ -80,7 +74,6 @@ public class PlanController  {
 		List<CityVo> vos = categoryService.getList(Integer.valueOf(regionId));
 		Gson gson = new Gson();
 		String result = "";
-		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			result = mapper.writeValueAsString(vos);

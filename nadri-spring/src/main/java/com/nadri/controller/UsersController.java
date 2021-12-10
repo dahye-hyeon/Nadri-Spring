@@ -234,16 +234,21 @@ public class UsersController {
 		System.out.println("code:"+code);
 		
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+
 		AccessGrant accessGrant = oauthOperations.exchangeForAccess(code, googleOAuth2Parameter.getRedirectUri(), null);
-		
+
 		String accessToken = accessGrant.getAccessToken();
 		Long expireTime = accessGrant.getExpireTime();
+
 		if(expireTime != null && expireTime < System.currentTimeMillis()) {
 			accessToken = accessGrant.getRefreshToken();
 			System.out.printf("accessToken is expired. refresh tokent = {}", accessToken);
 		}
 		
+		System.out.println("1");
 		Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
+		System.out.println("2");
+
 		Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
 		
 		PlusOperations plusOperations = google.plusOperations();

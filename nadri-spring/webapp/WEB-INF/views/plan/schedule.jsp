@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,7 +20,17 @@
 <script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script>
+<%
+	Calendar cal = Calendar.getInstance();
 
+	Date time = new Date();
+	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd");
+	String today = format1.format(time);
+	cal.setTime(time);
+	cal.add(Calendar.DATE, +2);
+	String defaultDate = format1.format(cal.getTime());
+
+%>
 <title>나드리 - 계획하기</title>
 </head>
 <body>
@@ -35,12 +47,12 @@
 
 		<section id="fl">
 			<article class="leftBox">
-				<h2>부산</h2>
-				<small>BUSAN</small>
+				<h2>${cityName}</h2>
+				<small>${cityEngName}</small>
 				<div class="calendar">
 					<input id="sdate" type="text" name="date"
-						placeholder="여기에 현재 날짜 넣을 수 있나요?"> <span>-</span> <input
-						id="edate" type="text" name="date" placeholder="2021.12.06">
+						placeholder=<%=today%>> <span>-</span> <input
+						id="edate" type="text" name="date" placeholder=<%=defaultDate%>>
 				</div>
 				<div id="schedule">
 					<a href="#">일정 생성</a>
@@ -177,21 +189,49 @@
 	
 	$(function(){
 		$("header").addClass("on");
-		
+		//[37.56667, 126.978393]
 		$("#schedule").on("click", function(){
+			/* var params = [
+			    { id: 0, latitude: 37.545886456428626, longitude: 126.97350197587478 },
+			    { id: 15123, latitude: 37.533926629930185, longitude: 126.9727305765772 },
+			    { id: 21211, latitude: 37.52752413409103, longitude: 127.04059837787925 },
+			    { id: 11111, latitude: 37.53692761066133, longitude: 127.0002309124208 },
+			    { id: -1, latitude: 37.49610392685795, longitude: 127.04741038767537},
+			  ];
+			 */
 			var params = {
-		            '0' : [37.56667, 126.978393],
-		            '16001' : [37.548868, 126.990335],
-		            '24001' : [37.554329, 126.936012],
-		            '-1' : [37.538468, 127.070355]
-		        }
+					 '0': {
+						 latitude: 37.545886456428626, 
+						 longitude: 126.97350197587478 
+					 },
+					 '15123': {
+						 latitude: 37.533926629930185, 
+						 longitude: 126.9727305765772 
+					 },
+					 '21211': {
+						 latitude: 37.52752413409103, 
+						 longitude: 127.04059837787925 
+					 },
+					 '11111': {
+						 latitude: 37.53692761066133, 
+						 longitude: 127.0002309124208 
+					 },
+					 '-1': {
+						 latitude: 37.49610392685795, 
+						 longitude: 127.04741038767537 
+					 }
+			 }
 			$.ajax({
 				url : "schedule",
 				type : "post",
-				data : params,
-				datatype : "json",
+				data : {
+				       data: JSON.stringify(params)
+			     },
+				datatype : "text",
 				success : function(data) {
-					
+					if(data == "success"){
+						location.href = "modify"
+					}
 				},
 				error : function(XHR, status, error) {
 					console.error(status + " : " + error);

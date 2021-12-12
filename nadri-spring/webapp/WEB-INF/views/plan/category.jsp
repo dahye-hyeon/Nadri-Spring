@@ -106,6 +106,8 @@
 											+ "<input type='hidden' name='latitude' value=" + item.cityLatitude + ">"
 											+ "<input type='hidden' name='longitude' value=" + item.cityLongitude + ">"
 											+ "<input type='hidden' name='cityId' value=" + item.cityId + ">"
+											+ "<input type='hidden' name='cityName' value=" + item.cityName + ">"
+											+ "<input type='hidden' name='cityEngName' value=" + item.cityEngName + ">"
 											+ "<input id='input' type='submit' value='일정 만들기'>"
 											+ "</form></a>"
 											+ "</div>"

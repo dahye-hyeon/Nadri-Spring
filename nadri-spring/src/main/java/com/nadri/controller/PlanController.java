@@ -49,6 +49,7 @@ import com.nadri.api.KakaoService;
 import com.nadri.dao.CityDAO;
 import com.nadri.service.CategoryService;
 import com.nadri.service.HotelService;
+import com.nadri.service.PlaceService;
 import com.nadri.service.RestaurantService;
 import com.nadri.service.UsersService;
 import com.nadri.util.GetDistanceFromLatLon;
@@ -64,6 +65,8 @@ public class PlanController {
 	private HotelService hotelService;
 	@Autowired
 	private RestaurantService restaurantService;
+	@Autowired
+	private PlaceService placeService;
 
 	/* 모든 도시 정보 출력 */
 	@RequestMapping(value = "/category", method = RequestMethod.GET)
@@ -89,6 +92,9 @@ public class PlanController {
 		List<RestaurantVo> restaurantvo = restaurantService.getRestaurantList(Integer.parseInt(cityId));
 		System.out.println("음식점리스트:" + restaurantvo.toString());
 		
+		List<PlaceVo> placevo = placeService.getPlaceList(Integer.parseInt(cityId));
+		System.out.println("관광지리스트:" + placevo.toString());
+		
 		mav.addObject("latitude", Double.valueOf(latitude));
 		mav.addObject("longitude", Double.valueOf(longitude));
 		mav.addObject("cityName", cityName);
@@ -97,6 +103,8 @@ public class PlanController {
 		
 		mav.addObject("hotelList", hotelvo);
 		mav.addObject("restaurantList", restaurantvo);
+		mav.addObject("placeList", placevo);
+		
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;
 		globalCityEngName = cityEngName;

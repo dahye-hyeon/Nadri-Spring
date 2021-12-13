@@ -71,8 +71,8 @@
 				
 				<hr>
 				<p>관광지 리스트
-				<c:forEach items="${restaurantList}" var="restaurantvo">
-				${restaurantvo.restaurantName}
+				<c:forEach items="${placeList}" var="placevo">
+				${placevo.placeName}
 				</c:forEach>
 				
 				<c:if test="${empty hotelList}">

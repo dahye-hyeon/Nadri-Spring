@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="restaurant">
+	
+	<!-- 모든 음식점 정보 불러오기 -->
+	<select id="allRestaurantList" resultType="restaurantVo">
+		select R_ID restaurantId,
+				R_NAME restaurantName,
+				R_CONTENT restaurantContent,
+				R_LATITUDE restaurantLatitude,
+				R_LONGITUDE restaurantLongitude,
+				R_CITY_ID restaurantCityId,
+				R_ADDRESS restaurantAddress,
+				R_ADD restaurantAdd,
+				R_IMAGE_URL restaurantImageURL,
+				R_IMAGE_DATA restaurantImageData
+			from restaurant
+	</select>
+	
+	<!-- 특정 도시의 음식점 정보 가져오기 -->	
+	<select id="RestaurantList" parameterType="Integer" resultType="restaurantVo">
+		select R_ID restaurantId,
+				R_NAME restaurantName,
+				R_CONTENT restaurantContent,
+				R_LATITUDE restaurantLatitude,
+				R_LONGITUDE restaurantLongitude,
+				R_CITY_ID restaurantCityId,
+				R_ADDRESS restaurantAddress,
+				R_ADD restaurantAdd,
+				R_IMAGE_URL restaurantImageURL,
+				R_IMAGE_DATA restaurantImageData
+		from restaurant
+		where R_CITY_ID = #{cityId}
+	</select>
+
+</mapper>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 <!DOCTYPE html>
@@ -26,10 +27,10 @@
 	Date time = new Date();
 	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd");
 	String today = format1.format(time);
-	cal.setTime(time);
+	cal.setTime(time); 
 	cal.add(Calendar.DATE, +2);
 	String defaultDate = format1.format(cal.getTime());
-
+	
 %>
 <title>나드리 - 계획하기</title>
 </head>
@@ -52,10 +53,30 @@
 					<input id="sdate" type="text" name="date"
 						placeholder=<%=today%>> <span>-</span> <input
 						id="edate" type="text" name="date" placeholder=<%=defaultDate%>>
-				</div>
+				</div>				
 				<div id="schedule">
 					<a href="#">일정 생성</a>
 				</div>
+				<p>호텔 리스트
+				<c:forEach items="${hotelList}" var="hotelvo">
+				${hotelvo.hotelName}
+				</c:forEach>
+				
+				<hr>
+				<p>음식점 리스트
+				<c:forEach items="${restaurantList}" var="restaurantvo">
+				${restaurantvo.restaurantName}
+				</c:forEach>
+				
+				<hr>
+				<p>관광지 리스트
+				<c:forEach items="${placeList}" var="placevo">
+				${placevo.placeName}
+				</c:forEach>
+				
+				<c:if test="${empty hotelList}">
+					<h4>등록된 호텔이 없습니다.</h4>
+				</c:if>
 			</article>
 
 			<article class="rightBox"></article>

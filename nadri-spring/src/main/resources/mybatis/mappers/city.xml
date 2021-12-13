@@ -19,6 +19,7 @@
 		from city
 	</select>
 	
+	<!-- 특정 도시정보 가져오기 -->
 	<select id="cityList" resultType="cityVo">
 		select CITY_ID cityId,
 				CITY_NAME cityName,

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="place">
+	
+	<!-- 모든 관광지 정보 불러오기 -->
+	<select id="allPlaceList" resultType="placeVo">
+		select PL_ID placeId,
+				PL_NAME placeName,
+				PL_CONTENT placeContent,
+				PL_LATITUDE placeLatitude,
+				PL_LONGITUDE placeLongitude,
+				PL_CITY_ID placeCityId,
+				PL_ADDRESS placeAddress,
+				PL_ADD placeAdd,
+				PL_IMAGE_URL placeImageURL,
+				PL_IMAGE_DATA placeImageData
+			from place
+	</select>
+	
+	<!-- 특정 도시의 관광지 정보 가져오기 -->	
+	<select id="PlaceList" parameterType="Integer" resultType="placeVo">
+		select PL_ID placeId,
+				PL_NAME placeName,
+				PL_CONTENT placeContent,
+				PL_LATITUDE placeLatitude,
+				PL_LONGITUDE placeLongitude,
+				PL_CITY_ID placeCityId,
+				PL_ADDRESS placeAddress,
+				PL_ADD placeAdd,
+				PL_IMAGE_URL placeImageURL,
+				PL_IMAGE_DATA placeImageData
+		from place
+		where PL_CITY_ID = #{cityId}
+	</select>
+
+</mapper>

@@ -34,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +48,9 @@ import com.google.gson.reflect.TypeToken;
 import com.nadri.api.KakaoService;
 import com.nadri.dao.CityDAO;
 import com.nadri.service.CategoryService;
+import com.nadri.service.HotelService;
+import com.nadri.service.PlaceService;
+import com.nadri.service.RestaurantService;
 import com.nadri.service.UsersService;
 import com.nadri.util.GetDistanceFromLatLon;
 
@@ -56,6 +61,12 @@ public class PlanController {
 
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private HotelService hotelService;
+	@Autowired
+	private RestaurantService restaurantService;
+	@Autowired
+	private PlaceService placeService;
 
 	/* 모든 도시 정보 출력 */
 	@RequestMapping(value = "/category", method = RequestMethod.GET)
@@ -67,19 +78,33 @@ public class PlanController {
 		return mav;
 	}
 
-	/* 모든 도시 정보 출력 */
+	/* 플랜만들기 */
 	Double globalLatitude;
 	Double globalLongitude;
 	String globalCityName;
 	String globalCityEngName;
-	
 	@RequestMapping(value = "/center", method = RequestMethod.POST)
 	public ModelAndView getCenter(ModelAndView mav, String latitude, String longitude, String cityId, String cityName, String cityEngName) {
+		
+		List<HotelVo> hotelvo = hotelService.getHotelList(Integer.parseInt(cityId));		
+		System.out.println("호텔리스트:" + hotelvo.toString());
+		
+		List<RestaurantVo> restaurantvo = restaurantService.getRestaurantList(Integer.parseInt(cityId));
+		System.out.println("음식점리스트:" + restaurantvo.toString());
+		
+		List<PlaceVo> placevo = placeService.getPlaceList(Integer.parseInt(cityId));
+		System.out.println("관광지리스트:" + placevo.toString());
+		
 		mav.addObject("latitude", Double.valueOf(latitude));
 		mav.addObject("longitude", Double.valueOf(longitude));
 		mav.addObject("cityName", cityName);
 		mav.addObject("cityEngName", cityEngName);
 		mav.addObject("cityId", Integer.valueOf(cityId));
+		
+		mav.addObject("hotelList", hotelvo);
+		mav.addObject("restaurantList", restaurantvo);
+		mav.addObject("placeList", placevo);
+		
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;
 		globalCityEngName = cityEngName;
@@ -169,7 +194,6 @@ public class PlanController {
 	}
 
 	/* 특정 도시 정보 출력 */
-
 	@RequestMapping(value = "/city", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 
 	public @ResponseBody String getCities(@RequestParam("regionId") String regionId, HttpServletResponse response) {

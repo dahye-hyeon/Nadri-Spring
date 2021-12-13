@@ -18,32 +18,288 @@ body {
     width: 90%;
 }
 
+/* card */
+
+
 
 /* map */
 
-/* float left */
-#fl {
+/* left & right Box */
+
+
+
+#leftBox {}
+#rightBox {
+    left: 300px;
+    border-left: 1px solid #ddd;
+}
+
+/* article */
+article {
+    /* position: relative; */
     position: absolute;
     top: 65px; left: 0;
-    float: left;
     width: 300px; height: calc(100vh - 65px);
+    justify-content: center;
+    float: left;
+    flex-flow: column;
+    text-align: center;
     background: #fff;
     z-index: 1;
 }
-
-/* leftBox */
-.leftBox {
- display: flex;
- justify-content: center;
- flex-flow: column;
-text-align: center;
-}
-.leftBox h2 {
-    margin: 60px 0 0.5em 0;
+article h2 {
+    margin: 40px 0 0.5em 0;
     font-size: 2.8rem;
     font-weight: 500;
+    cursor: pointer;
 }
-.leftBox small {
+article h2:hover {
+    color: #999;
+}
+article small {
     margin-bottom: 30px;
     color: #555;
+}
+
+/* regionTab */
+#regionArea {
+    display: none;
+    /* display: block; */
+    position: absolute;
+    left: 100px; top: 100px;
+    z-index: 100;
+    
+}
+#regionArea .tabnav.region {
+    display: flex;
+    /* justify-content: ; */
+    align-items: center;
+    width: 749.936px;
+    height: 40px;
+    background: #2e3c7e;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0px 1px 5px #555;
+}
+#regionArea .tabnav.region li {
+    display: block;
+    width: 116.656px;
+    height: 40px;
+    
+}
+#regionArea .tabnav.region li:last-child {
+    width: 50px;
+}
+#regionArea .tabnav.region li a{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 40px;
+    transition: 0.2s;
+
+}
+#regionArea .tabnav.region li a:hover,
+#regionArea .tabnav.region li.on a{
+    background: #1e2650;
+}
+
+#regionArea .tabcontent.region {
+    width: 700px;
+    background: #fff;
+    box-shadow: 0px 1px 5px #555;
+}
+#regionArea .tabcontent.region ul {
+    display: flex;
+    /* justify-content: ; */
+    flex-wrap: wrap;
+}
+#regionArea .tabcontent.region li{
+    display: block;
+    width: 16.66666666%;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+#regionArea .tabcontent.region li a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    line-height: 40px;
+    transition: 0.2s;
+
+}
+#regionArea .tabcontent.region li a:hover {
+    background: #ddd;
+}
+#regionArea .regionTabs:not(#regionTab01) {
+    /* display: none; */
+}
+
+/* selectArea */
+#selectArea {
+    /* background: #000; */
+}
+#selectArea h3 {
+    margin-bottom: 1.2em;
+    margin-top: 2em;
+    font-size: 2rem;
+    font-weight: 500;
+}
+#selectArea .tabnav.select {
+    position: relative;
+    display:flex;
+    justify-content: space-around;
+}
+#selectArea .tabnav.select li {
+    width: 50%;
+    height: 40px;
+    line-height: 40px;
+}
+#selectArea .tabnav.select .indicator {
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 50%;
+    height: 2px;
+    background:#2e3c7e;
+    transition: .5s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+#rightBox #selectArea .tabnav.select .indicator {
+    width: 100px;
+}
+#selectArea .tabnav.select li a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    font-size: 1.6rem;
+    letter-spacing: 5px;
+}
+#selectArea .selectTab {
+    padding: 0 5px;
+}
+#selectArea .selectTab strong {
+    display: block;
+    margin: 1em auto;
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
+    color: #2e3c7e;
+}
+#selectArea .selectTab button:not(.del, .plus) {
+    margin: 1.5em 0;
+    display: block;
+    width: 100%;
+    padding: 0.7em;
+    background: #DE3B45;
+    color: #fff;
+    border: 0;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+}
+#selectArea .selectTab button.btnrm:hover {box-shadow: 0 3px 5px #999;}
+#selectArea .selectTab small {
+    display: block;
+    margin: 1em 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #999;
+}
+#selectArea .selectTab button.btnDay {
+    display: block;
+    margin: 1.5em 0;
+    background: #ddd;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+}
+#selectArea .selectTab a.btnDay.on {background: #2e3c7e;}
+#selectArea .selectTab a.btnDay span {font-size: 1rem;}
+#selectArea .selectTab .card {
+    position: relative;
+    display: block;
+    height: 70px;
+    background: #fff;
+    margin: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px #aaa;
+}
+#selectArea .selectTab .card figure {
+    display: block;
+    float: left;
+    width: 70px;
+    height: 100%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+#selectArea .selectTab .card figure img {
+    height: 100%;
+    transform: translateX(-20%);
+}
+#selectArea .selectTab .card b {
+    overflow: hidden;
+    display: inline-block;
+    width: 168px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+#selectArea .selectTab .card .del {
+    position: absolute;
+    bottom: 5px; right: 8px;
+    color: #DE3B45;
+    padding: 3px 5px;
+    box-sizing: border-box;
+}
+#selectArea .selectTab .card .del:hover {background: #ddd;}
+#selectArea .selectTab .dayArea a.plus {
+    background: transparent; color: #999;
+}
+#selectArea .selectTab strong span {
+    font-size: 1.4rem;
+    font-family: "Noto Sans KR", sans-serif;
+}
+#selectArea .selectTab .selectedCard .timeInput{
+    margin-top: 10px;
+    font-size: 1.8rem;
+    text-align: left;
+}
+#selectArea .selectTab .selectedCard i.fa-stopwatch {color: #333; margin-right: 15px;}
+#selectArea .selectTab .selectedCard input {
+    margin-right: -10px;
+    border: 0;
+    font-size: 1.8rem;
+    width: 1.4em;
+    text-align: center;
+    color: #2e3c7e;
+}
+#selectArea .selectTab .selectedCard span {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 1.4rem;
+}
+
+/* rightBox */
+#rightBox {}
+#rightBox .search {
+    margin-top: 2em;
+    font-size: 1.6rem;
+    border: 0;
+    outline: 0;
+    text-align: center;
+}
+#rightBox .search i {color: #2e3c7e;}
+#rightBox .recommendCard a {
+    position: absolute;
+    bottom: 10px; right: 10px;
+    color: #999;
+    font-weight: 300;
+}
+#rightBox .recommendCard a.info {
+    right: 35px;
+    font-size: 1.4rem;
 }

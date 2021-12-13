@@ -38,7 +38,7 @@
 
 	<div id="wrap">
 		<div id="mapArea">
-			<div id="map"
+				<div id="map"
 				style="width: 100%; height: 100vh;"></div>
 			<div id="clickLatlng"></div>
 		</div>
@@ -57,29 +57,37 @@
 				<div id="schedule">
 					<a href="#">일정 생성</a>
 				</div>
-				<p>호텔 리스트
-				<c:forEach items="${hotelList}" var="hotelvo">
-				${hotelvo.hotelName}
-				</c:forEach>
-				
-				<hr>
-				<p>음식점 리스트
-				<c:forEach items="${restaurantList}" var="restaurantvo">
-				${restaurantvo.restaurantName}
-				</c:forEach>
-				
-				<hr>
-				<p>관광지 리스트
-				<c:forEach items="${placeList}" var="placevo">
-				${placevo.placeName}
-				</c:forEach>
-				
-				<c:if test="${empty hotelList}">
-					<h4>등록된 호텔이 없습니다.</h4>
-				</c:if>
+				<div id="selectArea">
+                    <h3>선택목록</h3>
+                    <ul class="select tabnav">
+                        <li onclick="selectHotel()"><a href="#">호텔</a></li>
+                        <li onclick="selectPlaceAndRest()"><a href="#">장소ㆍ음식</a></li>
+                        <li class="indicator"></li>
+                    </ul>
+                    <div class="select tabcontent">
+                        <div id="selectTabHotel" class="selectTab">
+                        </div>
+                        <!-- //selectTab01 -->
+                        <div id="selectTabPlace" class="selectTab">
+                        </div>
+                        <!-- //selectTab02 -->
+                  </div>
+                </div>
 			</article>
 
-			<article class="rightBox"></article>
+			<article id="rightBox">
+                <div id="selectArea">
+                    <input class="search" type="text" placeholder="검색어를 입력하세요."><i class="fas fa-search"></i>
+                    <h3>추천목록</h3>
+                    <ul class="select tabnav">
+                        <li onclick="showHotel()"><a href="#">호텔</a></li>
+                        <li onclick="showPlace()"><a href="#">장소</a></li>
+                        <li onclick="showRestaurant()"><a href="#">음식</a></li>
+                        <li class="indicator"></li>
+                    </ul>
+                    	<div id="showList"></div>
+                </div>
+            </article>
 		</section>
 		
 	</div>
@@ -129,7 +137,7 @@
 		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 	}
 
-	function panTo() {
+	function panTo(centerLat, centerLng) {
 		// 이동할 위도 경도 위치를 생성합니다 
 		var moveLatLon = new kakao.maps.LatLng(centerLat, centerLng);
 
@@ -207,9 +215,173 @@
 
 	});
 	
+	function showHotel(){
+		var params = {
+				listId : 1,
+				cityId : ${cityId}
+			}
+			$.ajax({
+						url : "showList",
+						type : "post",
+						data : params,
+						datatype : "text",
+						success : function(data) {
+							var jsonData = JSON.parse(data);
+							var jsonText = "";
+							$("#showList").empty();
+							$.each(jsonData,function(index, item) {
+								 var text = "<div class='select tabcontent'>"
+									+  "<div class='selectTab'>"
+									+  "<div class='recommendCard card'>"
+									+  "<figure>"
+									+  "<img src="+ item.hotelImageURL+" alt="+ item.hotelName +">"
+									+  "</figure>"
+									+  "<b>" + item.hotelName + "</b>"
+									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
+									+  "<div onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude +")'><a class='plus' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+									+  "</div>"
+									+  "</div>"
+									+  "</div>"
+							  
+								jsonText += text;
+							});
+							$("#showList").prepend(jsonText);
+							
+						},
+						error : function(XHR, status, error) {
+							console.error(status + " : " + error);
+						}
+					});
+	}
+	
+	function showPlace(){
+		var params = {
+				listId : 2,
+				cityId : ${cityId}
+			}
+		var jsonText = "";
+		$.ajax({
+			url : "showList",
+			type : "post",
+			data : params,
+			datatype : "text",
+			success : function(data) {
+				var jsonData = JSON.parse(data);
+				$("#showList").empty();
+				$.each(jsonData,function(index, item) {
+					 var text = "<div class='select tabcontent'>"
+						+  "<div class='selectTab'>"
+						+  "<div class='recommendCard card'>"
+						+  "<figure>"
+						+  "<img src="+ item.placeImageURL+" alt="+ item.placeName +">"
+						+  "</figure>"
+						+  "<b>" + item.placeName + "</b>"
+						+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
+						+  "<div onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude +")'><a class='plus' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+						+  "</div>"
+						+  "</div>"
+						+  "</div>"
+				  
+					jsonText += text;
+					 $("#showList").prepend(jsonText);
+				});
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+
+	}
+	
+	function showRestaurant(){
+		var params = {
+				listId : 3,
+				cityId : ${cityId}
+			}
+			$.ajax({
+						url : "showList",
+						type : "post",
+						data : params,
+						datatype : "text",
+						success : function(data) {
+							var jsonData = JSON.parse(data);
+							var jsonText = ""
+							$("#showList").empty();
+							$.each(jsonData,function(index, item) {
+								
+								 var text = "<div class='select tabcontent'>"
+									+  "<div id='recommendHotel' class='selectTab'>"
+									+  "<div class='recommendCard card'>"
+									+  "<figure>"
+									+  "<img src="+ item.restaurantImageURL+" alt="+ item.restaurantName +">"
+									+  "</figure>"
+									+  "<b>" + item.restaurantName + "</b>"
+									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
+									+  "<div onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +")'><a class='plus' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+									+  "</div>"
+									+  "</div>"
+									+  "</div>"
+							  
+								jsonText += text;
+							});
+							$("#showList").prepend(jsonText);
+							
+						},
+						error : function(XHR, status, error) {
+							console.error(status + " : " + error);
+						}
+					});
+	}
+	
+	function selectHotel(){
+		var text = "<strong class='countHotel'>0</strong>"
+		+ 	"<button href='javascript:;' class='btnrm'>호텔전체삭제</button>"
+		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
+		+ 	"<div class='dayArea'>"
+		+	"<button href='javascript:;' class='btnDay'>DAY 1 <span>12.09 - 12.10</span></button>"
+		+	"<div class='hotelSelectCard card'>"
+		+	"<figure>"
+		+	"<img src='${pageContext.request.contextPath}/assets/images/category-ex01.jpg' alt='힐튼 하와이안 비릴지 와이키키 어쩌고'>"
+		+	"</figure>"
+		+	"<b>힐튼 하와이안 빌리지 와이키키 비치 리조트</b>"
+		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
+		+	"</div></div>"
+		+	"<div class='dayArea'>"
+		+	"<button href='javascript:;' class='btnDay'>DAY 2 <span>12.10 - 12.11</span></button>"
+		+	"<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+		+	"<a class='plus' href='javascript:;''><i class='fas fa-plus'></i></a>"	
+		+	"</div>"
+		$("#selectTabHotel").empty();
+		$("#selectTabPlace").empty();
+		$("#selectTabHotel").prepend(text);
+	}
+	
+	function selectPlaceAndRest(){
+		var text = "<strong>0 <span>(총 00시간 0분)</span></strong>"
+		+ 	"<button href='javascript:;' class='btnrm'>장소전체삭제</button>"
+		+	"<div class='selectedCard card'>"
+		+ 	"<figure>"
+		+	" <img src='${pageContext.request.contextPath}/assets/images/category-ex01.jpg' alt='램파이어'>"
+		+	"</figure>"
+		+	"<b>럼파이어(RumFire)</b>"
+		+	"<i class='fas fa-stopwatch'></i>"
+		+	"<input type='number' name='hour' id='hour' value='2' min='0' max='23'>"
+		+	"<span>시간</span>"
+		+	"<input type='number' name='minute' id='minute' value='0' min='0' max='59'>"
+		+	" <span>분</span>"
+		+	"</div>"
+		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
+		+	"</div>"
+		$("#selectTabHotel").empty();
+		$("#selectTabPlace").empty();
+		$("#selectTabPlace").prepend(text);
+	}
+	
 	$(function(){
 		$("header").addClass("on");
-		//[37.56667, 126.978393]
+		showHotel();
+		selectHotel();
 		$("#schedule").on("click", function(){
 			/* var params = [
 			    { id: 0, latitude: 37.545886456428626, longitude: 126.97350197587478 },

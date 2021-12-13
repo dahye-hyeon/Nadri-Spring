@@ -86,30 +86,40 @@ public class PlanController {
 	@RequestMapping(value = "/center", method = RequestMethod.POST)
 	public ModelAndView getCenter(ModelAndView mav, String latitude, String longitude, String cityId, String cityName, String cityEngName) {
 		
-		List<HotelVo> hotelvo = hotelService.getHotelList(Integer.parseInt(cityId));		
-		System.out.println("호텔리스트:" + hotelvo.toString());
-		
-		List<RestaurantVo> restaurantvo = restaurantService.getRestaurantList(Integer.parseInt(cityId));
-		System.out.println("음식점리스트:" + restaurantvo.toString());
-		
-		List<PlaceVo> placevo = placeService.getPlaceList(Integer.parseInt(cityId));
-		System.out.println("관광지리스트:" + placevo.toString());
-		
 		mav.addObject("latitude", Double.valueOf(latitude));
 		mav.addObject("longitude", Double.valueOf(longitude));
 		mav.addObject("cityName", cityName);
 		mav.addObject("cityEngName", cityEngName);
 		mav.addObject("cityId", Integer.valueOf(cityId));
-		
-		mav.addObject("hotelList", hotelvo);
-		mav.addObject("restaurantList", restaurantvo);
-		mav.addObject("placeList", placevo);
-		
+
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;
 		globalCityEngName = cityEngName;
 		return mav;
 	}
+	
+	
+	@RequestMapping(value = "/showList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+
+	public @ResponseBody String showList(@RequestParam("listId") String listId, @RequestParam("cityId") String cityId, HttpServletResponse response) throws JsonProcessingException {
+		Gson gson = new Gson();
+		ObjectMapper mapper = new ObjectMapper();
+		String result = "";
+		if("1".equals(listId)) {
+			List<HotelVo> hotelvo = hotelService.getHotelList(Integer.parseInt(cityId));	
+			result = mapper.writeValueAsString(hotelvo);
+			return result;
+		} else if("2".equals(listId)) {
+			List<PlaceVo> placevo = placeService.getPlaceList(Integer.parseInt(cityId));
+			result = mapper.writeValueAsString(placevo);
+			return result;
+		} else{
+			List<RestaurantVo> restaurantvo = restaurantService.getRestaurantList(Integer.parseInt(cityId));
+			result = mapper.writeValueAsString(restaurantvo);
+			return result;
+		}
+	}
+	
 
 	// making map
 	String id = "";

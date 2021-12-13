@@ -58,11 +58,25 @@
 				<div id="schedule">
 					<a href="#">일정 생성</a>
 				</div>
-				<c:forEach items="${hotelList}" var="vo">
-				${vo.hotelName}
+				<p>호텔 리스트
+				<c:forEach items="${hotelList}" var="hotelvo">
+				${hotelvo.hotelName}
 				</c:forEach>
+				
+				<hr>
+				<p>음식점 리스트
+				<c:forEach items="${restaurantList}" var="restaurantvo">
+				${restaurantvo.restaurantName}
+				</c:forEach>
+				
+				<hr>
+				<p>관광지 리스트
+				<c:forEach items="${restaurantList}" var="restaurantvo">
+				${restaurantvo.restaurantName}
+				</c:forEach>
+				
 				<c:if test="${empty hotelList}">
-					<h4>등록된 글이 없습니다.</h4>
+					<h4>등록된 호텔이 없습니다.</h4>
 				</c:if>
 			</article>
 

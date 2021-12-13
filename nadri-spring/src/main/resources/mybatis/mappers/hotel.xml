@@ -16,7 +16,8 @@
 				H_CITY_ID hotelCityId,
 				H_ADDRESS hotelAddress,
 				H_ADD hotelAdd,
-				H_IMAGE_URL hotelImageURL
+				H_IMAGE_URL hotelImageURL,
+				H_IMAGE_DATA hotelImageData
 			from hotel
 	</select>
 	
@@ -30,7 +31,8 @@
 				H_CITY_ID hotelCityId,
 				H_ADDRESS hotelAddress,
 				H_ADD hotelAdd,
-				H_IMAGE_URL hotelImageURL
+				H_IMAGE_URL hotelImageURL,
+				H_IMAGE_DATA hotelImageData
 		from hotel
 		where H_CITY_ID = #{cityId}
 	</select>

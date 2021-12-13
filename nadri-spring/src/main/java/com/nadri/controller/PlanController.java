@@ -49,6 +49,7 @@ import com.nadri.api.KakaoService;
 import com.nadri.dao.CityDAO;
 import com.nadri.service.CategoryService;
 import com.nadri.service.HotelService;
+import com.nadri.service.RestaurantService;
 import com.nadri.service.UsersService;
 import com.nadri.util.GetDistanceFromLatLon;
 
@@ -61,6 +62,8 @@ public class PlanController {
 	private CategoryService categoryService;
 	@Autowired
 	private HotelService hotelService;
+	@Autowired
+	private RestaurantService restaurantService;
 
 	/* 모든 도시 정보 출력 */
 	@RequestMapping(value = "/category", method = RequestMethod.GET)
@@ -80,15 +83,20 @@ public class PlanController {
 	@RequestMapping(value = "/center", method = RequestMethod.POST)
 	public ModelAndView getCenter(ModelAndView mav, String latitude, String longitude, String cityId, String cityName, String cityEngName) {
 		
-		List<HotelVo> vo = hotelService.getHotelList(Integer.parseInt(cityId));		
-		System.out.println("호텔리스트:" + vo.toString());
+		List<HotelVo> hotelvo = hotelService.getHotelList(Integer.parseInt(cityId));		
+		System.out.println("호텔리스트:" + hotelvo.toString());
+		
+		List<RestaurantVo> restaurantvo = restaurantService.getRestaurantList(Integer.parseInt(cityId));
+		System.out.println("음식점리스트:" + restaurantvo.toString());
+		
 		mav.addObject("latitude", Double.valueOf(latitude));
 		mav.addObject("longitude", Double.valueOf(longitude));
 		mav.addObject("cityName", cityName);
 		mav.addObject("cityEngName", cityEngName);
 		mav.addObject("cityId", Integer.valueOf(cityId));
-		mav.addObject("hotelList", vo);
 		
+		mav.addObject("hotelList", hotelvo);
+		mav.addObject("restaurantList", restaurantvo);
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;
 		globalCityEngName = cityEngName;

@@ -26,7 +26,7 @@ public class HotelDAO {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// hotel 정보
+	//전체 hotel 정보
 	public List<HotelVo> getList(){
 		return sqlSession.selectList("hotel.allHotelList");
 	}

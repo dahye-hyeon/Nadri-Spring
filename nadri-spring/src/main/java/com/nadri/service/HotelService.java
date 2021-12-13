@@ -14,12 +14,12 @@ public class HotelService {
 	@Autowired
 	private HotelDAO hotelDao;
 	
-	/* 모든 도시 정보 가져오기 */
+	/* 모든 호텔 정보 가져오기 */
 	public List<HotelVo> getList(){
 		return hotelDao.getList();
 	}
 
-	/* 특정 도시정보 가져오기 */
+	/* 특정 도시의 호텔 정보 가져오기 */
 	public List<HotelVo> getHotelList(int cityId){
 		System.out.println("service cityID:" + cityId);
 		return hotelDao.getHotelList(cityId);

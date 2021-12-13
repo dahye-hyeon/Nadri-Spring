@@ -96,6 +96,7 @@ public class PlanController {
 	double endLng = 0;
 	ArrayList<String> path = null;
 	Map<String, Map<String, Double>> oriMapInfo = new HashMap<>();
+	
 	@RequestMapping(value = "/schedule", method = RequestMethod.POST)
 	public @ResponseBody String makingSchedule(@RequestParam String data) {
 		Map<String, Map<String, Double>> mapInfo = new HashMap<>();
@@ -115,22 +116,28 @@ public class PlanController {
 			if ("0".equals(key)) {
 				globalLatitude =  mapInfo.get(key).get("latitude");
 				globalLongitude = mapInfo.get(key).get("longitude");
-				centerLat = mapInfo.get(key).get("latitude");
-				centerLng = mapInfo.get(key).get("longitude");
+				centerLat = mapInfo.get(key).get("latitude"); //37.545886456428626
+				centerLng = mapInfo.get(key).get("longitude"); //126.97350197587478
 			}
 			if ("-1".equals(key)) {
 				endLat = mapInfo.get(key).get("latitude");
 				endLng = mapInfo.get(key).get("longitude");
 			}
 		});
+		
+		/*
+		 * { 
+		 * '15123': { latitude: 37.533926629930185, longitude: 126.9727305765772 },
+		 * '21211': { latitude: 37.52752413409103, longitude: 127.04059837787925 },
+		 * '11111': { latitude: 37.53692761066133, longitude: 127.0002309124208 }, }
+		 */
 		path.add("0");
 
 		mapInfo.remove("0"); // 출발점 제거
 		mapInfo.remove("-1"); // 도착점 제거
-		int i = 0;
 		
 		while(!mapInfo.isEmpty()) {
-			String minPath = calculatePath(mapInfo);
+			String minPath = calculatePath(mapInfo); // 최솟값 리턴
 			centerLat = mapInfo.get(minPath).get("latitude");
 			centerLng = mapInfo.get(minPath).get("longitude");
 			path.add(minPath);
@@ -180,7 +187,6 @@ public class PlanController {
 	}
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.GET, produces = "application/text; charset=UTF-8")
-
 	public ModelAndView showPath(ModelAndView mav) {
 		JSONObject json =  new JSONObject(oriMapInfo);
 		mav.addObject("path", path);

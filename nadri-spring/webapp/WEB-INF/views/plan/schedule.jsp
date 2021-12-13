@@ -44,7 +44,6 @@
 
 		 <c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		<!-- //header -->
-
 		<section id="fl">
 			<article class="leftBox">
 				<h2>${cityName}</h2>
@@ -199,6 +198,9 @@
 			    { id: -1, latitude: 37.49610392685795, longitude: 127.04741038767537},
 			  ];
 			 */
+			 
+			//0: 출발점
+			//-1: 도착점
 			var params = {
 					 '0': {
 						 latitude: 37.545886456428626, 
@@ -225,7 +227,7 @@
 				url : "schedule",
 				type : "post",
 				data : {
-				       data: JSON.stringify(params)
+				       data: JSON.stringify(params) //params --> string
 			     },
 				datatype : "text",
 				success : function(data) {

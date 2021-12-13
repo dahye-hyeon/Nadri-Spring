@@ -18,6 +18,7 @@ public class CityDAO {
 		return sqlSession.selectList("city.allCityList");
 	}
 	
+	//특정 도시 정보
 	public List<CityVo> getList(int regionId){
 		return sqlSession.selectList("city.cityList", regionId);
 	}

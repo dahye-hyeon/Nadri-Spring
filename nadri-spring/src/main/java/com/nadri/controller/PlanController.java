@@ -51,6 +51,7 @@ import com.nadri.service.CategoryService;
 import com.nadri.service.HotelService;
 import com.nadri.service.PlaceService;
 import com.nadri.service.RestaurantService;
+import com.nadri.service.StartingService;
 import com.nadri.service.UsersService;
 import com.nadri.util.GetDistanceFromLatLon;
 
@@ -67,6 +68,8 @@ public class PlanController {
 	private RestaurantService restaurantService;
 	@Autowired
 	private PlaceService placeService;
+	@Autowired
+	private StartingService startingService;
 
 	/* 모든 도시 정보 출력 */
 	@RequestMapping(value = "/category", method = RequestMethod.GET)
@@ -91,7 +94,10 @@ public class PlanController {
 		mav.addObject("cityName", cityName);
 		mav.addObject("cityEngName", cityEngName);
 		mav.addObject("cityId", Integer.valueOf(cityId));
-
+		List<StartingVo> startingvo = startingService.getStartingList(Integer.valueOf(cityId));
+		for(StartingVo vo: startingvo) {
+			System.out.println(vo);
+		}
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;
 		globalCityEngName = cityEngName;

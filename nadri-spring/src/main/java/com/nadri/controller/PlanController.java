@@ -178,7 +178,7 @@ public class PlanController {
 		mapInfo.remove("-1"); // 도착점 제거
 		
 		while(!mapInfo.isEmpty()) {
-			String minPath = calculatePath(mapInfo); // 최솟값 리턴
+			String minPath = calculatePath(mapInfo); // 최솟값 id 리턴
 			centerLat = mapInfo.get(minPath).get("latitude");
 			centerLng = mapInfo.get(minPath).get("longitude");
 			path.add(minPath);
@@ -186,7 +186,7 @@ public class PlanController {
 		}
 
 		path.add("-1");
-
+		System.out.println(path);
 		return "success";
 	}
 	
@@ -239,5 +239,6 @@ public class PlanController {
 		
 		return mav;
 	}
+	
 
 }

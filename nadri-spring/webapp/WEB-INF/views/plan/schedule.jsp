@@ -95,6 +95,13 @@
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
 	<script>
+	
+	$(function() {
+		$(".plus").on('click', function() {
+			alert("clcik");
+		})
+	})
+
 	var data = [];
 	var markers = [];
 	// 마커를 생성하고 지도위에 표시하는 함수입니다
@@ -215,6 +222,25 @@
 
 	});
 	
+	var allList = {}
+		data1 = {}
+		data1['latitude'] = 37.541
+		data1['longitude'] = 126.986
+		allList[0] = data1
+
+	function addList(id, latitude, longtitude){
+		data = {}
+		data['latitude'] = latitude
+		data['longitude'] = longtitude
+		if(id>0 && id<100001){
+			id = -1
+		}
+		allList[id] = data
+		
+		console.log(allList);
+
+	}
+		
 	function showHotel(){
 		var params = {
 				listId : 1,
@@ -237,8 +263,8 @@
 									+  "<img src="+ item.hotelImageURL+" alt="+ item.hotelName +">"
 									+  "</figure>"
 									+  "<b>" + item.hotelName + "</b>"
-									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude +")'><a class='plus' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+									+  "<a href='javascript:;' class='info'><i class='fas fa-info'></i></a>"
+									+  "<div onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude +")'><a class='plus' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude+")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"
 									+  "</div>"
 									+  "</div>"
@@ -259,7 +285,7 @@
 				listId : 2,
 				cityId : ${cityId}
 			}
-		var jsonText = "";
+		
 		$.ajax({
 			url : "showList",
 			type : "post",
@@ -267,6 +293,7 @@
 			datatype : "text",
 			success : function(data) {
 				var jsonData = JSON.parse(data);
+				var jsonText = "";
 				$("#showList").empty();
 				$.each(jsonData,function(index, item) {
 					 var text = "<div class='select tabcontent'>"
@@ -277,15 +304,14 @@
 						+  "</figure>"
 						+  "<b>" + item.placeName + "</b>"
 						+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-						+  "<div onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude +")'><a class='plus' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+						+  "<div onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude +")'><a class='plus' onclick='addList("+item.placeId+"," + item.placeLatitude + "," + item.placeLongitude+")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 						+  "</div>"
 						+  "</div>"
 						+  "</div>"
 				  
 					jsonText += text;
-					 $("#showList").prepend(jsonText);
 				});
-				
+				$("#showList").prepend(jsonText);
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
@@ -318,7 +344,7 @@
 									+  "</figure>"
 									+  "<b>" + item.restaurantName + "</b>"
 									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +")'><a class='plus' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+									+  "<div onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +")'><a class='plus' onclick='addList("+item.restaurantId+"," + item.restaurantLatitude + "," + item.restaurantLongitude+")' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"
 									+  "</div>"
 									+  "</div>"
@@ -383,44 +409,11 @@
 		showHotel();
 		selectHotel();
 		$("#schedule").on("click", function(){
-			/* var params = [
-			    { id: 0, latitude: 37.545886456428626, longitude: 126.97350197587478 },
-			    { id: 15123, latitude: 37.533926629930185, longitude: 126.9727305765772 },
-			    { id: 21211, latitude: 37.52752413409103, longitude: 127.04059837787925 },
-			    { id: 11111, latitude: 37.53692761066133, longitude: 127.0002309124208 },
-			    { id: -1, latitude: 37.49610392685795, longitude: 127.04741038767537},
-			  ];
-			 */
-			 
-			//0: 출발점
-			//-1: 도착점
-			var params = {
-					 '0': {
-						 latitude: 37.545886456428626, 
-						 longitude: 126.97350197587478 
-					 },
-					 '15123': {
-						 latitude: 37.533926629930185, 
-						 longitude: 126.9727305765772 
-					 },
-					 '21211': {
-						 latitude: 37.52752413409103, 
-						 longitude: 127.04059837787925 
-					 },
-					 '11111': {
-						 latitude: 37.53692761066133, 
-						 longitude: 127.0002309124208 
-					 },
-					 '-1': {
-						 latitude: 37.49610392685795, 
-						 longitude: 127.04741038767537 
-					 }
-			 }
 			$.ajax({
 				url : "schedule",
 				type : "post",
 				data : {
-				       data: JSON.stringify(params) //params --> string
+				       data: JSON.stringify(allList) //params --> string
 			     },
 				datatype : "text",
 				success : function(data) {

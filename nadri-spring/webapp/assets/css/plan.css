@@ -242,7 +242,7 @@ article small {
 #selectArea .selectTab .card b {
     overflow: hidden;
     display: inline-block;
-    width: 168px;
+    width: 150px;
     font-weight: 400;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -303,3 +303,21 @@ article small {
     right: 35px;
     font-size: 1.4rem;
 }
+
+/* #map {
+    position: absolute;
+    right: 0;
+    width: calc(100vw - 600px); 
+    height: 100vh; 
+    background: linear-gradient(to right, pink, skyblue);
+}
+
+#selectArea .selectTab {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 400px;
+}
+
+#rightBox #selectArea .selectTab {
+    height: 500px;
+} */

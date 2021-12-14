@@ -33,7 +33,6 @@ public class HotelDAO {
 	
 	//특정 city의 hotel 정보
 	public List<HotelVo> getHotelList(int cityId){
-		System.out.println("DAO cityID:" + cityId);
 		return sqlSession.selectList("hotel.HotelList", cityId);
 	}
 }

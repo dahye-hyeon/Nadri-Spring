@@ -21,7 +21,6 @@ public class HotelService {
 
 	/* 특정 도시의 호텔 정보 가져오기 */
 	public List<HotelVo> getHotelList(int cityId){
-		System.out.println("service cityID:" + cityId);
 		return hotelDao.getHotelList(cityId);
 	}
 }

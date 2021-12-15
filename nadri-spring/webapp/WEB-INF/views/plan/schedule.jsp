@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/all.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/caleander.css">
 <script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/calender.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script> --%>
 <%
 	Calendar cal = Calendar.getInstance();
 
@@ -38,8 +38,7 @@
 
 	<div id="wrap">
 		<div id="mapArea">
-				<div id="map"
-				style="width: 100%; height: 100vh;"></div>
+				<div id="map"></div>
 			<div id="clickLatlng"></div>
 		</div>
 
@@ -60,8 +59,8 @@
 				<div id="selectArea">
                     <h3>선택목록</h3>
                     <ul class="select tabnav">
-                        <li onclick="selectHotel()"><a href="#">호텔</a></li>
-                        <li onclick="selectPlaceAndRest()"><a href="#">장소ㆍ음식</a></li>
+                        <li onclick="selectHotelFrame()"><a href="#">호텔</a></li>
+                        <li onclick="selectPlaceAndRestFrame()"><a href="#">장소ㆍ음식</a></li>
                         <li class="indicator"></li>
                     </ul>
                     <div class="select tabcontent">
@@ -85,7 +84,7 @@
                         <li onclick="showRestaurant()"><a href="#">음식</a></li>
                         <li class="indicator"></li>
                     </ul>
-                    	<div id="showList"></div>
+                    	<div id="showList" ></div>
                 </div>
             </article>
 		</section>
@@ -228,17 +227,34 @@
 		data1['longitude'] = 126.986
 		allList[0] = data1
 
-	function addList(id, latitude, longtitude){
+	var hotelList = {}
+	var placeAndRest = {}
+	var placeAndRestHTML = ""
+
+	function addList(id, latitude, longtitude, url, name){
 		data = {}
+		
+		var itemId = "#" + id;
+		$(itemId).empty();
+		
 		data['latitude'] = latitude
 		data['longitude'] = longtitude
+		
 		if(id>0 && id<100001){
+			hotelList[id] = id
+			data['latitude'] = latitude
+			data['longitude'] = longtitude
 			id = -1
+
+			selectHotel(url, name);
+			selectHotelFrame();
+		} else {
+			placeAndRest[id] = id
+			selectPlaceAndRest(url, name)
+			selectPlaceAndRestFrame();
 		}
 		allList[id] = data
 		
-		console.log(allList);
-
 	}
 		
 	function showHotel(){
@@ -256,7 +272,10 @@
 							var jsonText = "";
 							$("#showList").empty();
 							$.each(jsonData,function(index, item) {
-								 var text = "<div class='select tabcontent'>"
+								if (item.hotelId in hotelList){
+									return true;
+								}
+								 var text = "<div id="+ item.hotelId + ">" + "<div class='select tabcontent'>"
 									+  "<div class='selectTab'>"
 									+  "<div class='recommendCard card'>"
 									+  "<figure>"
@@ -264,10 +283,11 @@
 									+  "</figure>"
 									+  "<b>" + item.hotelName + "</b>"
 									+  "<a href='javascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude +")'><a class='plus' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude+")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
+									+  "<div onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude +")'>"
+									+  "<a class='plus' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude + ",\"" + item.hotelImageURL + "\",\"" + item.hotelName + "\")'" +" href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"
 									+  "</div>"
-									+  "</div>"
+									+  "</div></div>"
 							  
 								jsonText += text;
 							});
@@ -296,7 +316,7 @@
 				var jsonText = "";
 				$("#showList").empty();
 				$.each(jsonData,function(index, item) {
-					 var text = "<div class='select tabcontent'>"
+					 var text = "<div id="+ item.placeId + ">" +  " <div class='select tabcontent'>"
 						+  "<div class='selectTab'>"
 						+  "<div class='recommendCard card'>"
 						+  "<figure>"
@@ -304,10 +324,11 @@
 						+  "</figure>"
 						+  "<b>" + item.placeName + "</b>"
 						+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-						+  "<div onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude +")'><a class='plus' onclick='addList("+item.placeId+"," + item.placeLatitude + "," + item.placeLongitude+")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
+						+  "<div onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude +")'>"
+						+  "<a class='plus' onclick='addList("+item.placeId+"," + item.placeLatitude + "," + item.placeLongitude+ ",\"" + item.placeImageURL + "\",\"" + item.placeName + "\")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 						+  "</div>"
 						+  "</div>"
-						+  "</div>"
+						+  "</div></div>"
 				  
 					jsonText += text;
 				});
@@ -336,7 +357,7 @@
 							$("#showList").empty();
 							$.each(jsonData,function(index, item) {
 								
-								 var text = "<div class='select tabcontent'>"
+								 var text = "<div id="+ item.restaurantId + ">" + " <div class='select tabcontent'>"
 									+  "<div id='recommendHotel' class='selectTab'>"
 									+  "<div class='recommendCard card'>"
 									+  "<figure>"
@@ -344,10 +365,11 @@
 									+  "</figure>"
 									+  "<b>" + item.restaurantName + "</b>"
 									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +")'><a class='plus' onclick='addList("+item.restaurantId+"," + item.restaurantLatitude + "," + item.restaurantLongitude+")' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
+									+  "<div onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +")'>"
+									+  "<a class='plus' onclick='addList("+item.restaurantId+"," + item.restaurantLatitude + "," + item.restaurantLongitude+ ",\"" + item.restaurantImageURL + "\",\"" + item.restaurantName + "\")' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"
 									+  "</div>"
-									+  "</div>"
+									+  "</div></div>"
 							  
 								jsonText += text;
 							});
@@ -360,37 +382,49 @@
 					});
 	}
 	
-	function selectHotel(){
-		var text = "<strong class='countHotel'>0</strong>"
-		+ 	"<button href='javascript:;' class='btnrm'>호텔전체삭제</button>"
-		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
-		+ 	"<div class='dayArea'>"
-		+	"<button href='javascript:;' class='btnDay'>DAY 1 <span>12.09 - 12.10</span></button>"
-		+	"<div class='hotelSelectCard card'>"
-		+	"<figure>"
-		+	"<img src='${pageContext.request.contextPath}/assets/images/category-ex01.jpg' alt='힐튼 하와이안 비릴지 와이키키 어쩌고'>"
-		+	"</figure>"
-		+	"<b>힐튼 하와이안 빌리지 와이키키 비치 리조트</b>"
-		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
-		+	"</div></div>"
-		+	"<div class='dayArea'>"
-		+	"<button href='javascript:;' class='btnDay'>DAY 2 <span>12.10 - 12.11</span></button>"
-		+	"<small>날짜를 선택하고 호텔을 추가하세요.</small>"
-		+	"<a class='plus' href='javascript:;''><i class='fas fa-plus'></i></a>"	
-		+	"</div>"
+	function selectHotelFrame(){
 		$("#selectTabHotel").empty();
 		$("#selectTabPlace").empty();
+		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
+		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
+		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
+		+	"<div id='scroll'><div id='seletedHotel'></div></div>"
 		$("#selectTabHotel").prepend(text);
 	}
 	
-	function selectPlaceAndRest(){
+	function selectPlaceAndRestFrame(){
+		$("#selectTabHotel").empty();
+		$("#selectTabPlace").empty();
 		var text = "<strong>0 <span>(총 00시간 0분)</span></strong>"
-		+ 	"<button href='javascript:;' class='btnrm'>장소전체삭제</button>"
-		+	"<div class='selectedCard card'>"
-		+ 	"<figure>"
-		+	" <img src='${pageContext.request.contextPath}/assets/images/category-ex01.jpg' alt='램파이어'>"
+			+ 	"<button onclick='deletePlaceAndRestList()' href='javascript:;' class='btnrm'>장소전체삭제</button>"
+			+   "<div id='scroll'><div id='seletedPlaceAndRest'></div></div>"
+		$("#selectTabPlace").append(text)
+		$("#seletedPlaceAndRest").append(placeAndRestHTML);
+	}
+	
+	function selectHotel(url, name){
+		var text = "<div class='dayArea'>"
+		+	"<button href='javascript:;' class='btnDay'>DAY 1 <span>12.09 - 12.10</span></button>"
+		+	"<div class='hotelSelectCard card'>"
+		+	"<figure>"
+		+	"<img src=" + url + " alt= " + name + ">"
 		+	"</figure>"
-		+	"<b>럼파이어(RumFire)</b>"
+		+	"<b>" + name + "</b>"
+		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
+		+	"</div></div>"
+		
+		$("#seletedHotel").empty();
+		$("#seletedHotel").prepend(text);
+
+		
+	}
+	
+	function selectPlaceAndRest(url, name){
+		var text = "<div class='selectedCard card'>"
+		+ 	"<figure>"
+		+	" <img src=" + url + " alt=" + name + ">"
+		+	"</figure>"
+		+	"<b>" + name +"</b>"
 		+	"<i class='fas fa-stopwatch'></i>"
 		+	"<input type='number' name='hour' id='hour' value='2' min='0' max='23'>"
 		+	"<span>시간</span>"
@@ -398,16 +432,31 @@
 		+	" <span>분</span>"
 		+	"</div>"
 		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
-		+	"</div>"
-		$("#selectTabHotel").empty();
-		$("#selectTabPlace").empty();
-		$("#selectTabPlace").prepend(text);
+		+	"</div></div>"
+
+		placeAndRestHTML += text;
+
+	}
+	
+	function deleteHotelList(){
+		hotelList = {};
+		selectHotelFrame();
+		$("#selectedbHotel").empty();
+		showHotel();
+	}
+	
+	function deletePlaceAndRestList(){
+		placeAndRest = {};
+		selectPlaceAndRestFrame();
+		placeAndRestHTML = "";
+		$("#seletedPlaceAndRest").empty();
+		showPlace();
 	}
 	
 	$(function(){
 		$("header").addClass("on");
 		showHotel();
-		selectHotel();
+		selectHotelFrame();
 		$("#schedule").on("click", function(){
 			$.ajax({
 				url : "schedule",
@@ -426,6 +475,49 @@
 				}
 			});
 		});
+		
+		
+		$.datepicker.regional['ko'] = {
+		        closeText: '닫기',
+		        prevText: '이전달',
+		        nextText: '다음달',
+		        currentText: '오늘',
+		        monthNames: ['1월','2월','3월','4월','5월','6월',
+		        '7월','8월','9월','10월','11월','12월'],
+		        monthNamesShort: ['1월','2월','3월','4월','5월','6월',
+		        '7월','8월','9월','10월','11월','12월'],
+		        dayNames: ['일','월','화','수','목','금','토'],
+		        dayNamesShort: ['일','월','화','수','목','금','토'],
+		        dayNamesMin: ['일','월','화','수','목','금','토'],
+		        weekHeader: 'Wk',
+		        dateFormat: 'yy.mm.dd',
+		        firstDay: 0,
+		        isRTL: false,
+		        showMonthAfterYear: false,
+		        yearSuffix: '',
+		        showOn: 'both',
+		        buttonText: "달력",
+		        changeMonth: false,
+		        changeYear: false,
+		        showButtonPanel: false,
+		        yearRange: 'c-99:c+99',
+		        showAnim: "fade"
+		    };
+		    $.datepicker.setDefaults($.datepicker.regional['ko']);
+
+		    $('#sdate').datepicker();
+		    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
+		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
+		        $("#sdate").datepicker("option", "minDate", "today");
+		        $("#edate").datepicker( "option", "minDate", selectedDate );
+		    });
+
+		    $('#edate').datepicker();
+		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
+		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
+		        $("#sdate").datepicker( "option", "maxDate", selectedDate );
+		        console.log(selectedDate);
+		    });
 	});
 	</script>
 </body>

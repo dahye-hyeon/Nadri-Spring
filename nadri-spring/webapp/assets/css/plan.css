@@ -304,7 +304,7 @@ article small {
     font-size: 1.4rem;
 }
 
-/* #map {
+#map {
     position: absolute;
     right: 0;
     width: calc(100vw - 600px); 
@@ -312,12 +312,18 @@ article small {
     background: linear-gradient(to right, pink, skyblue);
 }
 
-#selectArea .selectTab {
+ #selectArea #showList {
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 400px;
+    height: 706px;
 }
 
-#rightBox #selectArea .selectTab {
+ #selectArea #scroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
+     height: 470px;
+}
+
+/* #rightBox #selectArea .selectTab {
     height: 500px;
-} */
+}  */

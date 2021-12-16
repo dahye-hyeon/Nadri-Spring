@@ -21,6 +21,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script> --%>
+
 <%
 	Calendar cal = Calendar.getInstance();
 
@@ -230,7 +231,8 @@
 	var hotelList = {}
 	var placeAndRest = {}
 	var placeAndRestHTML = ""
-
+	var hotelHTML = ""
+	
 	function addList(id, latitude, longtitude, url, name){
 		data = {}
 		
@@ -275,6 +277,7 @@
 								if (item.hotelId in hotelList){
 									return true;
 								}
+								
 								 var text = "<div id="+ item.hotelId + ">" + "<div class='select tabcontent'>"
 									+  "<div class='selectTab'>"
 									+  "<div class='recommendCard card'>"
@@ -291,7 +294,7 @@
 							  
 								jsonText += text;
 							});
-							$("#showList").prepend(jsonText);
+							$("#showList").append(jsonText);
 							
 						},
 						error : function(XHR, status, error) {
@@ -316,6 +319,10 @@
 				var jsonText = "";
 				$("#showList").empty();
 				$.each(jsonData,function(index, item) {
+					if(item.placeId in placeAndRest){
+						return true;
+					}
+					
 					 var text = "<div id="+ item.placeId + ">" +  " <div class='select tabcontent'>"
 						+  "<div class='selectTab'>"
 						+  "<div class='recommendCard card'>"
@@ -332,7 +339,7 @@
 				  
 					jsonText += text;
 				});
-				$("#showList").prepend(jsonText);
+				$("#showList").append(jsonText);
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
@@ -356,7 +363,9 @@
 							var jsonText = ""
 							$("#showList").empty();
 							$.each(jsonData,function(index, item) {
-								
+								if(item.restaurantId in placeAndRest){
+									return true;
+								}
 								 var text = "<div id="+ item.restaurantId + ">" + " <div class='select tabcontent'>"
 									+  "<div id='recommendHotel' class='selectTab'>"
 									+  "<div class='recommendCard card'>"
@@ -373,7 +382,7 @@
 							  
 								jsonText += text;
 							});
-							$("#showList").prepend(jsonText);
+							$("#showList").append(jsonText);
 							
 						},
 						error : function(XHR, status, error) {
@@ -388,8 +397,11 @@
 		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
 		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
-		+	"<div id='scroll'><div id='seletedHotel'></div></div>"
-		$("#selectTabHotel").prepend(text);
+		+	"<div id='scroll'><div id='seletedHotel'>"
+
+		
+		$("#selectTabHotel").append(text);
+		$("#seletedHotel").append(hotelHTML);
 	}
 	
 	function selectPlaceAndRestFrame(){
@@ -412,11 +424,7 @@
 		+	"<b>" + name + "</b>"
 		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
 		+	"</div></div>"
-		
-		$("#seletedHotel").empty();
-		$("#seletedHotel").prepend(text);
-
-		
+	
 	}
 	
 	function selectPlaceAndRest(url, name){
@@ -510,13 +518,14 @@
 		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
 		        $("#sdate").datepicker("option", "minDate", "today");
 		        $("#edate").datepicker( "option", "minDate", selectedDate );
+		      
 		    });
 
 		    $('#edate').datepicker();
 		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
 		        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-		        console.log(selectedDate);
+		        
 		    });
 	});
 	</script>

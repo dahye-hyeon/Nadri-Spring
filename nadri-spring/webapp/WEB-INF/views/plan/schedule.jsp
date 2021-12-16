@@ -399,7 +399,7 @@
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
 		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
 		$("#selectTabHotel").append(text);
-		$("#seletedHotel").append(hotelHTML);
+		$("#seletedHotel").append(hotelHTML);		
 	}
 	
 	function selectPlaceAndRestFrame(){
@@ -461,6 +461,10 @@
 		showPlace();
 	}
 	
+	var sDate = $("#sdate").val();
+	console.log(sDate);
+	var eDate = $("#edate").val()
+	
 	$(function(){
 		$("header").addClass("on");
 		showHotel();
@@ -484,7 +488,9 @@
 			});
 		});
 		
-		
+		var sDate = ""; //시작 날짜
+		var eDate = "";	//마지막 날짜
+		var diffDays = ""; //마지막 날짜 - 시작 날짜
 		$.datepicker.regional['ko'] = {
 		        closeText: '닫기',
 		        prevText: '이전달',
@@ -511,23 +517,36 @@
 		        yearRange: 'c-99:c+99',
 		        showAnim: "fade"
 		    };
-		    $.datepicker.setDefaults($.datepicker.regional['ko']);
+	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 
-		    $('#sdate').datepicker();
-		    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
-		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
-		        $("#sdate").datepicker("option", "minDate", "today");
-		        $("#edate").datepicker( "option", "minDate", selectedDate );
-		      
-		    });
+	    $('#sdate').datepicker();
+	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
+	    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#sdate").datepicker("option", "minDate", "today");
+	        $("#edate").datepicker( "option", "minDate", selectedDate );
+	        sDate = selectedDate;
+	    });
 
-		    $('#edate').datepicker();
-		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
-		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
-		        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-		        
-		    });
+	    $('#edate').datepicker();
+	    $('#edate').datepicker("option", "minDate", $("#sdate").val());
+	    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#sdate").datepicker( "option", "maxDate", selectedDate );
+	        eDate = selectedDate;
+			
+	        diffDays = getDiff(eDate, sDate);
+	        console.log(diffDays);
+	    });
 	});
+	
+	//마지막 날짜-처음 날짜
+	function getDiff(eDate, sDate){
+		var edate = new Date(eDate);
+		var sdate = new Date(sDate);
+		
+		var msDiff = edate.getTime()-sdate.getTime();
+		var diffDays = Math.floor(msDiff/(1000*60*60*24));
+		return ++diffDays
+	}
 	</script>
 </body>
 </html>

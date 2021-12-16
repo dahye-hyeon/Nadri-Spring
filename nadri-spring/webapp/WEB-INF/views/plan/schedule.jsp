@@ -397,9 +397,7 @@
 		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
 		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
-		+	"<div id='scroll'><div id='seletedHotel'>"
-
-		
+		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
 		$("#selectTabHotel").append(text);
 		$("#seletedHotel").append(hotelHTML);
 	}
@@ -424,7 +422,8 @@
 		+	"<b>" + name + "</b>"
 		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
 		+	"</div></div>"
-	
+		
+		hotelHTML += text;
 	}
 	
 	function selectPlaceAndRest(url, name){
@@ -448,15 +447,16 @@
 	
 	function deleteHotelList(){
 		hotelList = {};
+		hotelHTML = "";
 		selectHotelFrame();
-		$("#selectedbHotel").empty();
+		$("#selectHotel").empty();
 		showHotel();
 	}
 	
 	function deletePlaceAndRestList(){
 		placeAndRest = {};
-		selectPlaceAndRestFrame();
 		placeAndRestHTML = "";
+		selectPlaceAndRestFrame();
 		$("#seletedPlaceAndRest").empty();
 		showPlace();
 	}

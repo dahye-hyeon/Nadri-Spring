@@ -412,9 +412,12 @@
 		$("#seletedPlaceAndRest").append(placeAndRestHTML);
 	}
 	
-	function selectHotel(url, name){
-		var text = "<div class='dayArea'>"
-		+	"<button href='javascript:;' class='btnDay'>DAY 1 <span>12.09 - 12.10</span></button>"
+ 	function selectHotel(url, name){
+		var text ="";
+		for(var i=1; i<diffDays; i++){
+		text = "<div class='dayArea'>"
+		+	"<button href='javascript:;' class='btnDay'>DAY "+
+				i+"<span>12.09 - 12.10</span></button>" }
 		+	"<div class='hotelSelectCard card'>"
 		+	"<figure>"
 		+	"<img src=" + url + " alt= " + name + ">"
@@ -461,10 +464,6 @@
 		showPlace();
 	}
 	
-	var sDate = $("#sdate").val();
-	console.log(sDate);
-	var eDate = $("#edate").val()
-	
 	$(function(){
 		$("header").addClass("on");
 		showHotel();
@@ -488,9 +487,7 @@
 			});
 		});
 		
-		var sDate = ""; //시작 날짜
-		var eDate = "";	//마지막 날짜
-		var diffDays = ""; //마지막 날짜 - 시작 날짜
+	
 		$.datepicker.regional['ko'] = {
 		        closeText: '닫기',
 		        prevText: '이전달',
@@ -519,6 +516,11 @@
 		    };
 	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 
+	    
+	    var sDate = "";
+	    var eDate = "";
+	    var diffDays = "";
+	    
 	    $('#sdate').datepicker();
 	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 	    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
@@ -547,6 +549,7 @@
 		var diffDays = Math.floor(msDiff/(1000*60*60*24));
 		return ++diffDays
 	}
-	</script>
+	
+</script>
 </body>
 </html>

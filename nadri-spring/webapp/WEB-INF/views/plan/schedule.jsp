@@ -77,7 +77,7 @@
 
 			<article id="rightBox">
                 <div id="selectArea">
-                    <input class="search" type="text" placeholder="검색어를 입력하세요."><i class="fas fa-search"></i>
+                    <input class="search" type="text" placeholder="검색어를 입력하세요."><i class="fas fa-search" onclick=""></i>
                     <h3>추천목록</h3>
                     <ul class="select tabnav">
                         <li onclick="showHotel()"><a href="#">호텔</a></li>
@@ -232,6 +232,9 @@
 	var placeAndRest = {}
 	var placeAndRestHTML = ""
 	var hotelHTML = ""
+	
+	var startDate;
+	var endDate;
 	
 	function addList(id, latitude, longtitude, url, name){
 		data = {}
@@ -398,7 +401,6 @@
 		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
 		+	"<div id='scroll'><div id='seletedHotel'>"
-
 		
 		$("#selectTabHotel").append(text);
 		$("#seletedHotel").append(hotelHTML);
@@ -424,7 +426,9 @@
 		+	"<b>" + name + "</b>"
 		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
 		+	"</div></div>"
-	
+		
+		hotelHTML += text;
+		
 	}
 	
 	function selectPlaceAndRest(url, name){
@@ -448,6 +452,7 @@
 	
 	function deleteHotelList(){
 		hotelList = {};
+		hotelHTML = "";
 		selectHotelFrame();
 		$("#selectedbHotel").empty();
 		showHotel();
@@ -455,8 +460,8 @@
 	
 	function deletePlaceAndRestList(){
 		placeAndRest = {};
-		selectPlaceAndRestFrame();
 		placeAndRestHTML = "";
+		selectPlaceAndRestFrame();
 		$("#seletedPlaceAndRest").empty();
 		showPlace();
 	}
@@ -518,15 +523,18 @@
 		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
 		        $("#sdate").datepicker("option", "minDate", "today");
 		        $("#edate").datepicker( "option", "minDate", selectedDate );
-		      
+		        startDate = selectedDate;
 		    });
 
 		    $('#edate').datepicker();
 		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
 		        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-		        
+		        endDate = selectedDate;
+
 		    });
+		    
+		    
 	});
 	</script>
 </body>

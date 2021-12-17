@@ -523,7 +523,8 @@
 	    $('#sdate').datepicker();
 	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 	    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
-	        $("#sdate").datepicker("option", "minDate", "today");
+	      	$('#sdate').init();
+	    	$("#sdate").datepicker("option", "minDate", "today");
 	        $("#edate").datepicker( "option", "minDate", selectedDate );
 	        sDate = selectedDate;
 	        
@@ -537,17 +538,18 @@
 	    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 	    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
 	    	$("#sdate").datepicker( "option", "maxDate", selectedDate );
-	        eDate = selectedDate;
-			
+	    	$("#seletedHotel").empty();
+
+	    	eDate = selectedDate;
+	        	    	
 	        diffDays = getDiff(eDate, sDate);
 	        console.log(diffDays);
 	        
         	console.log(month, day);
-
 	        
-	        for(var i=1; i<=diffDays; i++){
+        	for(var i=1; i<=diffDays; i++){	        	
 	        	dayList[i] = i;
-             
+	        
 	    	text = "<div class='dayArea'>"
 	    		+	"<button href='javascript:;' class='btnDay'>DAY" + i + " <span>"+month+"."+day+"-"+month+"."+(day+Number(1))+"</span></button>" 
 	    		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
@@ -556,16 +558,19 @@
 	    		
 	    	$("#seletedHotel").append(text);	
 	        day=day+Number(1);
-
-	        }	    	
-
+        	}
 	    });
 	});
 	
 	//마지막 날짜-처음 날짜
 	function getDiff(eDate, sDate){
+    	if($("#div").hasClass("dayArea") === true) { // class가 존재함. } else { // class가 존재하지 않음 
+    		$("#dayArea").empty();
+    	}
+		
 		var edate = new Date(eDate);
 		var sdate = new Date(sDate);
+		
 		
 		var msDiff = edate.getTime()-sdate.getTime();
 		var diffDays = Math.floor(msDiff/(1000*60*60*24));

@@ -28,10 +28,9 @@
 	Date time = new Date();
 	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd");
 	String today = format1.format(time);
-	cal.setTime(time); 
+	cal.setTime(time);
 	cal.add(Calendar.DATE, +2);
 	String defaultDate = format1.format(cal.getTime());
-	
 %>
 <title>나드리 - 계획하기</title>
 </head>
@@ -393,13 +392,39 @@
 	
 	function selectHotelFrame(){
 		$("#selectTabHotel").empty();
-		$("#selectTabPlace").empty();
-		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
-		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
-		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
-		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
-		$("#selectTabHotel").append(text);
+		$("#selectTabPlace").empty();    	
+		$("#selectedHotel").empty();
+		var text1;
+		var text2;
+	    var month;
+	    var day;
+		
+		text1 = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
+			+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
+			+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"			
+			+	"<div id='scroll'><div id='selectedHotel'>"
+			+	"</div></div>"	
+			$("#selectTabHotel").append(text1);
+		
+		
+		var diffDays = getDiff("<%=defaultDate%>", "<%=today%>"); // 2(기본설정은 2박3일의 일정이므로)
 			
+		for(var i=1; i<=diffDays; i++){	
+		text2 = "<div class='dayArea'>"
+	   		+	"<button href='javascript:;' class='btnDay'>DAY" + i + " <span></span></button>" 
+	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+	   		+   "</div>"
+			+	"</div></div>"		
+		$("#selectedHotel").append(text2);	
+		}
+			
+/* 		text = "<div class='dayArea'>"
+    		+	"<button href='javascript:;' class='btnDay'>DAY" + i + " <span>"+month+"."+day+"-"+month+"."+(day+Number(1))+"</span></button>" 
+    		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+    		+   "</div>"
+    		 */
 	}
 	
 	function selectPlaceAndRestFrame(){
@@ -465,6 +490,7 @@
 		$("header").addClass("on");
 		showHotel();
 		selectHotelFrame();
+		
 		$("#schedule").on("click", function(){
 			$.ajax({
 				url : "schedule",
@@ -510,8 +536,8 @@
 		        yearRange: 'c-99:c+99',
 		        showAnim: "fade"
 		    };
+		
 	    $.datepicker.setDefaults($.datepicker.regional['ko']);
-
 	    
 	    var sDate = "";
 	    var eDate = "";
@@ -523,29 +549,25 @@
 	    $('#sdate').datepicker();
 	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 	    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
-	      	$('#sdate').init();
+
 	    	$("#sdate").datepicker("option", "minDate", "today");
 	        $("#edate").datepicker( "option", "minDate", selectedDate );
 	        sDate = selectedDate;
 	        
 	        var date = $(this).datepicker('getDate')
-	        	month = date.getMonth() + 1
-	        	day = date.getDate()
-	        	
+	        	month = date.getMonth() + 1;
+	        	day = date.getDate();
 	    });
 
 	    $('#edate').datepicker();
 	    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 	    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
 	    	$("#sdate").datepicker( "option", "maxDate", selectedDate );
-	    	$("#seletedHotel").empty();
+	    	$("#selectedHotel").empty();
 
 	    	eDate = selectedDate;
 	        	    	
 	        diffDays = getDiff(eDate, sDate);
-	        console.log(diffDays);
-	        
-        	console.log(month, day);
 	        
         	for(var i=1; i<=diffDays; i++){	        	
 	        	dayList[i] = i;
@@ -556,7 +578,7 @@
 	    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
 	    		+   "</div>"
 	    		
-	    	$("#seletedHotel").append(text);	
+	    	$("#selectedHotel").append(text);	
 	        day=day+Number(1);
         	}
 	    });
@@ -564,13 +586,8 @@
 	
 	//마지막 날짜-처음 날짜
 	function getDiff(eDate, sDate){
-    	if($("#div").hasClass("dayArea") === true) { // class가 존재함. } else { // class가 존재하지 않음 
-    		$("#dayArea").empty();
-    	}
-		
 		var edate = new Date(eDate);
 		var sdate = new Date(sDate);
-		
 		
 		var msDiff = edate.getTime()-sdate.getTime();
 		var diffDays = Math.floor(msDiff/(1000*60*60*24));

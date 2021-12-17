@@ -399,7 +399,7 @@
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
 		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
 		$("#selectTabHotel").append(text);
-		$("#seletedHotel").append(hotelHTML);		
+			
 	}
 	
 	function selectPlaceAndRestFrame(){
@@ -413,22 +413,19 @@
 	}
 	
  	function selectHotel(url, name){
-		var text ="";
-		for(var i=1; i<diffDays; i++){
-		text = "<div class='dayArea'>"
-		+	"<button href='javascript:;' class='btnDay'>DAY "+
-				i+"<span>12.09 - 12.10</span></button>" }
-		+	"<div class='hotelSelectCard card'>"
-		+	"<figure>"
-		+	"<img src=" + url + " alt= " + name + ">"
-		+	"</figure>"
-		+	"<b>" + name + "</b>"
-		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
-		+	"</div></div>"
+		var text = "<div class='dayArea'>"
+			+	"<button href='javascript:;' class='btnDay'>DAY 1<span>12.09 - 12.10</span></button>" 
+			+	"<div class='hotelSelectCard card'>"
+			+	"<figure>"
+			+	"<img src=" + url + " alt= " + name + ">"
+			+	"</figure>"
+			+	"<b>" + name + "</b>"
+			+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
+			+	"</div></div>"
 		
 		hotelHTML += text;
 	}
-	
+	 
 	function selectPlaceAndRest(url, name){
 		var text = "<div class='selectedCard card'>"
 		+ 	"<figure>"
@@ -486,8 +483,7 @@
 				}
 			});
 		});
-		
-	
+			
 		$.datepicker.regional['ko'] = {
 		        closeText: '닫기',
 		        prevText: '이전달',
@@ -520,6 +516,7 @@
 	    var sDate = "";
 	    var eDate = "";
 	    var diffDays = "";
+	    var dayList = [];
 	    
 	    $('#sdate').datepicker();
 	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
@@ -537,6 +534,18 @@
 			
 	        diffDays = getDiff(eDate, sDate);
 	        console.log(diffDays);
+	        
+	        for(var i=1; i<=diffDays; i++){
+	        	dayList[i] = i;
+             
+	    	text = "<div class='dayArea'>"
+	    		+	"<button href='javascript:;' class='btnDay'>DAY" + i + " <span>12.09 - 12.10</span></button>" 
+	    		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+	    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+	    		+   "</div>"
+	    		
+	    	$("#seletedHotel").append(text);	
+	        }
 	    });
 	});
 	
@@ -547,7 +556,7 @@
 		
 		var msDiff = edate.getTime()-sdate.getTime();
 		var diffDays = Math.floor(msDiff/(1000*60*60*24));
-		return ++diffDays
+		return diffDays
 	}
 	
 </script>

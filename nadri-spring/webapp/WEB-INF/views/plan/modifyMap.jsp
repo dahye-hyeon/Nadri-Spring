@@ -55,12 +55,24 @@
 						placeholder=<%=today%>> <span>-</span> <input
 						id="edate" type="text" name="date" placeholder=<%=defaultDate%>>
 				</div>
-	
+				<div id="selectArea">
+                    <h3>선택목록</h3>
+                    <ul class="select tabnav">
+                        <li onclick="selectHotelFrame()"><a href="#">호텔</a></li>
+                        <li onclick="selectPlaceAndRestFrame()"><a href="#">장소ㆍ음식</a></li>
+                        <li class="indicator"></li>
+                    </ul>
+                    <div class="select tabcontent">
+                        <div id="selectTabHotel" class="selectTab">
+                        </div>
+                        <!-- //selectTab01 -->
+                        <div id="selectTabPlace" class="selectTab">
+                        </div>
+                        <!-- //selectTab02 -->
+                  </div>
+                </div>
 			</article>
-
-			<article class="rightBox"></article>
 		</section>
-		
 	</div>
 	
 	<script type="text/javascript"
@@ -76,12 +88,11 @@
 	var centerLat = ${latitude};
 	var centerLng = ${longitude};
 	var mapInfo = ${mapInfo};
-	console.log(${path});
-
+	var path = ${path};
 	var linePath = [];
 	
-	for(var key in mapInfo){
-		linePath.push(new kakao.maps.LatLng(mapInfo[key]['latitude'], mapInfo[key]['longitude']));
+	for(var i in path){
+		linePath.push(new kakao.maps.LatLng(mapInfo[path[i]]['latitude'], mapInfo[path[i]]['longitude']));
 	}  
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  

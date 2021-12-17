@@ -167,8 +167,8 @@
 		return d.toFixed(3)*1000; 
 	}
 	
-	var centerLat = ${latitude}
-	var centerLng = ${longitude}
+	var centerLat = ${startLatitude}
+	var centerLng = ${startLongitude}
 	var cityId = ${cityId}
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
@@ -224,14 +224,15 @@
 	
 	var allList = {}
 		data1 = {}
-		data1['latitude'] = 37.541
-		data1['longitude'] = 126.986
+		data1['latitude'] = centerLat
+		data1['longitude'] = centerLng
 		allList[0] = data1
 
 	var hotelList = {}
 	var placeAndRest = {}
 	var placeAndRestHTML = ""
 	var hotelHTML = ""
+	var diffDays;
 	
 	var startDate;
 	var endDate;
@@ -250,7 +251,7 @@
 			data['latitude'] = latitude
 			data['longitude'] = longtitude
 			id = -1
-
+			
 			selectHotel(url, name);
 			selectHotelFrame();
 		} else {
@@ -400,10 +401,14 @@
 		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
 		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
+<<<<<<< HEAD
 		+	"<div id='scroll'><div id='seletedHotel'>"
 		
+=======
+		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
+>>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 		$("#selectTabHotel").append(text);
-		$("#seletedHotel").append(hotelHTML);
+		$("#seletedHotel").append(hotelHTML);		
 	}
 	
 	function selectPlaceAndRestFrame(){
@@ -416,9 +421,12 @@
 		$("#seletedPlaceAndRest").append(placeAndRestHTML);
 	}
 	
-	function selectHotel(url, name){
-		var text = "<div class='dayArea'>"
-		+	"<button href='javascript:;' class='btnDay'>DAY 1 <span>12.09 - 12.10</span></button>"
+ 	function selectHotel(url, name){
+		var text ="";
+		for(var i=1; i<diffDays; i++){
+		text = "<div class='dayArea'>"
+		+	"<button href='javascript:;' class='btnDay'>DAY "+
+				i+"<span>12.09 - 12.10</span></button>" }
 		+	"<div class='hotelSelectCard card'>"
 		+	"<figure>"
 		+	"<img src=" + url + " alt= " + name + ">"
@@ -428,7 +436,10 @@
 		+	"</div></div>"
 		
 		hotelHTML += text;
+<<<<<<< HEAD
 		
+=======
+>>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 	}
 	
 	function selectPlaceAndRest(url, name){
@@ -454,7 +465,7 @@
 		hotelList = {};
 		hotelHTML = "";
 		selectHotelFrame();
-		$("#selectedbHotel").empty();
+		$("#selectHotel").empty();
 		showHotel();
 	}
 	
@@ -489,7 +500,7 @@
 			});
 		});
 		
-		
+	
 		$.datepicker.regional['ko'] = {
 		        closeText: '닫기',
 		        prevText: '이전달',
@@ -516,8 +527,9 @@
 		        yearRange: 'c-99:c+99',
 		        showAnim: "fade"
 		    };
-		    $.datepicker.setDefaults($.datepicker.regional['ko']);
+	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 
+<<<<<<< HEAD
 		    $('#sdate').datepicker();
 		    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
@@ -525,7 +537,21 @@
 		        $("#edate").datepicker( "option", "minDate", selectedDate );
 		        startDate = selectedDate;
 		    });
+=======
+	    var sDate = "";
+	    var eDate = "";
+	    var diffDays = "";
+	    
+	    $('#sdate').datepicker();
+	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
+	    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#sdate").datepicker("option", "minDate", "today");
+	        $("#edate").datepicker( "option", "minDate", selectedDate );
+	        sDate = selectedDate;
+	    });
+>>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 
+<<<<<<< HEAD
 		    $('#edate').datepicker();
 		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
@@ -535,7 +561,30 @@
 		    });
 		    
 		    
+=======
+	    $('#edate').datepicker();
+	    $('#edate').datepicker("option", "minDate", $("#sdate").val());
+	    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
+	        $("#sdate").datepicker( "option", "maxDate", selectedDate );
+	        eDate = selectedDate;
+			
+	        diffDays = getDiff(eDate, sDate);
+	        console.log(diffDays);
+	    });
+>>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 	});
-	</script>
+	
+	//마지막 날짜-처음 날짜
+	function getDiff(eDate, sDate){
+		var edate = new Date(eDate);
+		var sdate = new Date(sDate);
+		
+		var msDiff = edate.getTime()-sdate.getTime();
+		var diffDay = Math.floor(msDiff/(1000*60*60*24));
+		diffDays = ++diffDay;
+		return ++diffDay
+	}
+	
+</script>
 </body>
 </html>

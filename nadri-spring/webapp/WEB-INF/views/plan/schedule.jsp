@@ -167,8 +167,8 @@
 		return d.toFixed(3)*1000; 
 	}
 	
-	var centerLat = ${latitude}
-	var centerLng = ${longitude}
+	var centerLat = ${startLatitude}
+	var centerLng = ${startLongitude}
 	var cityId = ${cityId}
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
@@ -224,14 +224,15 @@
 	
 	var allList = {}
 		data1 = {}
-		data1['latitude'] = 37.541
-		data1['longitude'] = 126.986
+		data1['latitude'] = centerLat
+		data1['longitude'] = centerLng
 		allList[0] = data1
 
 	var hotelList = {}
 	var placeAndRest = {}
 	var placeAndRestHTML = ""
 	var hotelHTML = ""
+	var diffDays;
 	
 	function addList(id, latitude, longtitude, url, name){
 		data = {}
@@ -247,7 +248,7 @@
 			data['latitude'] = latitude
 			data['longitude'] = longtitude
 			id = -1
-
+			
 			selectHotel(url, name);
 			selectHotelFrame();
 		} else {
@@ -516,7 +517,6 @@
 		    };
 	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 
-	    
 	    var sDate = "";
 	    var eDate = "";
 	    var diffDays = "";
@@ -546,8 +546,9 @@
 		var sdate = new Date(sDate);
 		
 		var msDiff = edate.getTime()-sdate.getTime();
-		var diffDays = Math.floor(msDiff/(1000*60*60*24));
-		return ++diffDays
+		var diffDay = Math.floor(msDiff/(1000*60*60*24));
+		diffDays = ++diffDay;
+		return ++diffDay
 	}
 	
 </script>

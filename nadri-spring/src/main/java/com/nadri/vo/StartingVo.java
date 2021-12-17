@@ -6,8 +6,8 @@ public class StartingVo {
 	private int startId;
 	private String startName;
 	private String startContent;
-	private int startLatitude;
-	private int startLongitude;
+	private Double startLatitude;
+	private Double startLongitude;
 	private int startCityId;
 	private String startAddress;
 	private String startImageURL;
@@ -43,16 +43,16 @@ public class StartingVo {
 	public void setStartContent(String startContent) {
 		this.startContent = startContent;
 	}
-	public int getStartLatitude() {
+	public Double getStartLatitude() {
 		return startLatitude;
 	}
-	public void setStartLatitude(int startLatitude) {
+	public void setStartLatitude(Double startLatitude) {
 		this.startLatitude = startLatitude;
 	}
-	public int getStartLongitude() {
+	public Double getStartLongitude() {
 		return startLongitude;
 	}
-	public void setStartLongitude(int startLongitude) {
+	public void setStartLongitude(Double startLongitude) {
 		this.startLongitude = startLongitude;
 	}
 	public int getStartCityId() {

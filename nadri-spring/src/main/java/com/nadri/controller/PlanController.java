@@ -96,7 +96,8 @@ public class PlanController {
 		mav.addObject("cityId", Integer.valueOf(cityId));
 		List<StartingVo> startingvo = startingService.getStartingList(Integer.valueOf(cityId));
 		for(StartingVo vo: startingvo) {
-			System.out.println(vo);
+			mav.addObject("startLatitude", vo.getStartLatitude());
+			mav.addObject("startLongitude", vo.getStartLongitude());
 		}
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;
@@ -157,8 +158,8 @@ public class PlanController {
 			if ("0".equals(key)) {
 				globalLatitude =  mapInfo.get(key).get("latitude");
 				globalLongitude = mapInfo.get(key).get("longitude");
-				centerLat = mapInfo.get(key).get("latitude"); //37.545886456428626
-				centerLng = mapInfo.get(key).get("longitude"); //126.97350197587478
+				centerLat = mapInfo.get(key).get("latitude"); 
+				centerLng = mapInfo.get(key).get("longitude"); 
 			}
 			if ("-1".equals(key)) {
 				endLat = mapInfo.get(key).get("latitude");
@@ -166,25 +167,20 @@ public class PlanController {
 			}
 		});
 		
-		/*
-		 * { 
-		 * '15123': { latitude: 37.533926629930185, longitude: 126.9727305765772 },
-		 * '21211': { latitude: 37.52752413409103, longitude: 127.04059837787925 },
-		 * '11111': { latitude: 37.53692761066133, longitude: 127.0002309124208 }, }
-		 */
 		path.add("0");
-
-		mapInfo.remove("0"); // 출발점 제거
-		mapInfo.remove("-1"); // 도착점 제거
+		
+		mapInfo.remove("0");
+		mapInfo.remove("-1");
 		
 		while(!mapInfo.isEmpty()) {
-			String minPath = calculatePath(mapInfo); // 최솟값 id 리턴
+			String minPath = calculatePath(mapInfo);
 			centerLat = mapInfo.get(minPath).get("latitude");
 			centerLng = mapInfo.get(minPath).get("longitude");
 			path.add(minPath);
 			mapInfo.remove(minPath);
+			
 		}
-
+		
 		path.add("-1");
 		System.out.println(path);
 		return "success";
@@ -199,13 +195,14 @@ public class PlanController {
 		mapInfo.forEach((key, value) -> {
 			double distance = GetDistanceFromLatLon.distance(centerLat, centerLng, mapInfo.get(key).get("latitude"),
 					mapInfo.get(key).get("longitude"), "meter");
+			
 			distance = Double.parseDouble(String.format("%.2f", distance));
 			if(minDist >= distance) {
 				minKey = key;
 				minDist = distance;
-			}
+			 }
 		});
-		
+
 		return minKey; 
 	}
 

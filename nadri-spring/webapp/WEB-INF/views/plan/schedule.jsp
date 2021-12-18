@@ -21,7 +21,12 @@
 <script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script> --%>
-
+<style>
+.label * {display: inline-block;vertical-align: top;}
+.label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
+.label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
+.label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+</style>
 <%
 	Calendar cal = Calendar.getInstance();
 
@@ -60,8 +65,8 @@
 				<div id="selectArea">
                     <h3>선택목록</h3>
                     <ul class="select tabnav">
-                        <li onclick="selectHotelFrame()"><a href="#">호텔</a></li>
-                        <li onclick="selectPlaceAndRestFrame()"><a href="#">장소ㆍ음식</a></li>
+                        <li onclick="selectHotelFrame()" class="item"><a href="#">호텔</a></li>
+                        <li onclick="selectPlaceAndRestFrame()" class="item"><a href="#">장소ㆍ음식</a></li>
                         <li class="indicator"></li>
                     </ul>
                     <div class="select tabcontent">
@@ -89,19 +94,11 @@
                 </div>
             </article>
 		</section>
-		
 	</div>
 	
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
 	<script>
-	
-	$(function() {
-		$(".plus").on('click', function() {
-			alert("clcik");
-		})
-	})
-
 	var data = [];
 	var markers = [];
 	// 마커를 생성하고 지도위에 표시하는 함수입니다
@@ -144,13 +141,22 @@
 		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 	}
 
-	function panTo(centerLat, centerLng) {
+	function panTo(centerLat, centerLng, name) {
 		// 이동할 위도 경도 위치를 생성합니다 
 		var moveLatLon = new kakao.maps.LatLng(centerLat, centerLng);
-
+		var content = '<div class ="label"><span class="left"></span><span class="center">' + name +'</span><span class="right"></span></div>';
+		customOverlay = new kakao.maps.CustomOverlay({
+		    position: moveLatLon,
+		    content: content   
+		});
 		// 지도 중심을 부드럽게 이동시킵니다
 		// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+		customOverlay.setMap(map);
 		map.panTo(moveLatLon);
+	}
+	
+	function closeOverlay(){
+		customOverlay.setMap(null);
 	}
 	
 	function getDistanceFromLatLonInKm(lat1,lng1,lat2,lng2) { 
@@ -185,14 +191,14 @@
 	});
 	centerMarker.setMap(map);
 	markers.push(centerMarker);
-
+	var customOverlay;
 	var geocoder = new kakao.maps.services.Geocoder();
 	infowindow = new kakao.maps.InfoWindow({
 		zindex : 1
 	});
 
 	// 지도를 클릭했을때 클릭한 위치에 마커를 추가하도록 지도에 클릭이벤트를 등록합니다
-	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+/* 	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 		var latlng = mouseEvent.latLng;
 		searchDetailAddrFromCoords(latlng, function(result, status) {
 			if (status === kakao.maps.services.Status.OK) {
@@ -220,13 +226,15 @@
 			}
 		});
 
-	});
+	}); */
 	
 	var allList = {}
-		data1 = {}
-		data1['latitude'] = centerLat
-		data1['longitude'] = centerLng
-		allList[0] = data1
+	var startPoint = {}
+	startPoint['latitude'] = centerLat
+	startPoint['longitude'] = centerLng
+	startPoint['name'] = "${startName}"
+	startPoint['url'] = "${startURL}"
+	allList[0] = startPoint
 
 	var hotelList = {}
 	var placeAndRest = {}
@@ -236,7 +244,7 @@
 	
 	var startDate;
 	var endDate;
-	
+
 	function addList(id, latitude, longtitude, url, name){
 		data = {}
 		
@@ -245,13 +253,12 @@
 		
 		data['latitude'] = latitude
 		data['longitude'] = longtitude
+		data['name'] = name
+		data['url'] = url
 		
 		if(id>0 && id<100001){
 			hotelList[id] = id
-			data['latitude'] = latitude
-			data['longitude'] = longtitude
-			id = -1
-			
+			id = -1	
 			selectHotel(url, name);
 			selectHotelFrame();
 		} else {
@@ -262,6 +269,7 @@
 		allList[id] = data
 		
 	}
+
 		
 	function showHotel(){
 		var params = {
@@ -290,7 +298,7 @@
 									+  "</figure>"
 									+  "<b>" + item.hotelName + "</b>"
 									+  "<a href='javascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude +")'>"
+									+  "<div onmouseout='closeOverlay();' onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude + ",\"" + item.hotelName +"\")'>"
 									+  "<a class='plus' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude + ",\"" + item.hotelImageURL + "\",\"" + item.hotelName + "\")'" +" href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"
 									+  "</div>"
@@ -335,7 +343,7 @@
 						+  "</figure>"
 						+  "<b>" + item.placeName + "</b>"
 						+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-						+  "<div onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude +")'>"
+						+  "<div onmouseout='closeOverlay();' onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude + ",\"" + item.placeName +"\")'>"
 						+  "<a class='plus' onclick='addList("+item.placeId+"," + item.placeLatitude + "," + item.placeLongitude+ ",\"" + item.placeImageURL + "\",\"" + item.placeName + "\")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 						+  "</div>"
 						+  "</div>"
@@ -378,7 +386,7 @@
 									+  "</figure>"
 									+  "<b>" + item.restaurantName + "</b>"
 									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +")'>"
+									+  "<div onmouseout='closeOverlay();' onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +  ",\"" + item.restaurantName +"\")'>"
 									+  "<a class='plus' onclick='addList("+item.restaurantId+"," + item.restaurantLatitude + "," + item.restaurantLongitude+ ",\"" + item.restaurantImageURL + "\",\"" + item.restaurantName + "\")' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"
 									+  "</div>"
@@ -395,18 +403,14 @@
 					});
 	}
 	
+	
 	function selectHotelFrame(){
 		$("#selectTabHotel").empty();
 		$("#selectTabPlace").empty();
 		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
 		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
-<<<<<<< HEAD
-		+	"<div id='scroll'><div id='seletedHotel'>"
-		
-=======
 		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
->>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 		$("#selectTabHotel").append(text);
 		$("#seletedHotel").append(hotelHTML);		
 	}
@@ -436,10 +440,6 @@
 		+	"</div></div>"
 		
 		hotelHTML += text;
-<<<<<<< HEAD
-		
-=======
->>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 	}
 	
 	function selectPlaceAndRest(url, name){
@@ -529,7 +529,7 @@
 		    };
 	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 
-<<<<<<< HEAD
+
 		    $('#sdate').datepicker();
 		    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
@@ -537,7 +537,7 @@
 		        $("#edate").datepicker( "option", "minDate", selectedDate );
 		        startDate = selectedDate;
 		    });
-=======
+
 	    var sDate = "";
 	    var eDate = "";
 	    var diffDays = "";
@@ -549,9 +549,7 @@
 	        $("#edate").datepicker( "option", "minDate", selectedDate );
 	        sDate = selectedDate;
 	    });
->>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 
-<<<<<<< HEAD
 		    $('#edate').datepicker();
 		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
@@ -559,10 +557,7 @@
 		        endDate = selectedDate;
 
 		    });
-		    
-		    
-=======
-	    $('#edate').datepicker();
+		$('#edate').datepicker();
 	    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 	    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
 	        $("#sdate").datepicker( "option", "maxDate", selectedDate );
@@ -571,7 +566,6 @@
 	        diffDays = getDiff(eDate, sDate);
 	        console.log(diffDays);
 	    });
->>>>>>> branch 'master' of https://github.com/dahye-hyeon/Nadri-Spring.git
 	});
 	
 	//마지막 날짜-처음 날짜

@@ -321,7 +321,7 @@ article small {
  #selectArea #scroll {
     overflow-x: hidden;
     overflow-y: scroll;
-     height: 470px;
+     height: 425px;
 }
 
 /* #rightBox #selectArea .selectTab {

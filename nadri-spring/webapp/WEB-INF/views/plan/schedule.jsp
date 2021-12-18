@@ -234,6 +234,8 @@
 	startPoint['longitude'] = centerLng
 	startPoint['name'] = "${startName}"
 	startPoint['url'] = "${startURL}"
+	startPoint['type'] = 'starting'
+	startPoint['id'] = ${startId}
 	allList[0] = startPoint
 
 	var hotelList = {}
@@ -255,6 +257,7 @@
 		data['longitude'] = longtitude
 		data['name'] = name
 		data['url'] = url
+		data['id'] = id
 		
 		if(id>0 && id<100001){
 			hotelList[id] = id

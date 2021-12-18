@@ -100,6 +100,7 @@ public class PlanController {
 			mav.addObject("startLongitude", vo.getStartLongitude());
 			mav.addObject("startName", vo.getStartName());
 			mav.addObject("startURL", vo.getStartImageURL());   
+			mav.addObject("startId", vo.getStartId()); 
 		}
 		mav.setViewName("plan/schedule");
 		globalCityName = cityName;

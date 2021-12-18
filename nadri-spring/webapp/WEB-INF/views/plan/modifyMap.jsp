@@ -88,7 +88,8 @@
 	var mapInfo = ${mapInfo};
 	var path = ${path};
 	var linePath = [];
-	
+	var savedOverlayList = [];
+	var polyline;
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 	mapOption = {
@@ -100,36 +101,18 @@
 
 	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	// 지도에 표시할 선을 생성합니다
+	
 	for(var i in path){
-		var localLat = mapInfo[path[i]]['latitude'];
-		var localLng = mapInfo[path[i]]['longitude'];
-		var position =  new kakao.maps.LatLng(localLat, localLng); 
-		linePath.push(new kakao.maps.LatLng(localLat, localLng));
-		var content = '<div class ="label"><span class="left"></span><span class="center">' + mapInfo[path[i]]['name'] +'</span><span class="right"></span></div>';
-		var customOverlay = new kakao.maps.CustomOverlay({
-		    position: position,
-		    content: content   
-		});
-		
-		customOverlay.setMap(map);
-	}  
+		showOverlay(path[i]);
+	}
 	
-	var polyline = new kakao.maps.Polyline({
-	    path: linePath, // 선을 구성하는 좌표배열 입니다
-	    strokeWeight: 5, // 선의 두께 입니다
-	    strokeColor: '#800000', // 선의 색깔입니다
-	    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-	    strokeStyle: 'solid' // 선의 스타일입니다
-	});
-	
-	// 지도에 선을 표시합니다 
-	polyline.setMap(map);
+	showPath(linePath);
 	
 	function initPath(){
 		var text="";
 		for(var i in path){
 			
-			text += "<li class='selectedCard card' value='" + i + "'>"
+			text += "<li class='selectedCard card' value='" + path[i] + "'>"
 				+ 	"<figure>"
 				+	" <img src=" + mapInfo[path[i]]['url'] + " alt='" +  mapInfo[path[i]]['name'] + "'>"
 				+	"</figure>"
@@ -141,32 +124,58 @@
 		$(".path").append(text);
 	}
 	
+	function showPath(line){
+			polyline = new kakao.maps.Polyline({
+		    path: line, // 선을 구성하는 좌표배열 입니다
+		    strokeWeight: 5, // 선의 두께 입니다
+		    strokeColor: '#800000', // 선의 색깔입니다
+		    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+		    strokeStyle: 'solid' // 선의 스타일입니다
+		});
+		
+		// 지도에 선을 표시합니다 
+		polyline.setMap(map);
+	}
+	
+	function showOverlay(i){
+
+			var localLat = mapInfo[i]['latitude'];
+			var localLng = mapInfo[i]['longitude'];
+			var position =  new kakao.maps.LatLng(localLat, localLng); 
+			linePath.push(new kakao.maps.LatLng(localLat, localLng));
+			var content = '<div class ="label"><span class="left"></span><span class="center">' + mapInfo[i]['name'] +'</span><span class="right"></span></div>';
+			var customOverlay = new kakao.maps.CustomOverlay({
+			    position: position,
+			    content: content   
+			});
+			savedOverlayList.push(customOverlay);
+			customOverlay.setMap(map);
+	}
+	
+	function closeOverlay(){
+		for(const overlay of savedOverlayList){
+			overlay.setMap(null);
+		}
+	}
+	
 	$(function(){
 		$("header").addClass("on");
 		initPath();
 		$("#sortable").sortable();
 	    $("#sortable").disableSelection();
-	    $('#sortable').sortable({
-	    	start: function(event, ui) {
-	    		reorder();
-	        },
-	        stop: function(event, ui) {
-	        	reorder();
-	        }
+	    $("#sortable").sortable({
+	    	  stop: function(event, ui) {
+	    		 linePath = []
+	  	    	polyline.setMap(null);
+	  	    	closeOverlay();
+	  	    	$("#sortable").children().each(function(){ 
+	  	    		var value = $(this).attr("value");
+	  	    		showOverlay(value)
+	  	    	});
+	  	    	showPath(linePath);
+	    	  }
 	    });
-	    
-	    $("#complete").on("click", function(){
-	    	$("#sortable").children().each(function(){ 
-	    		console.log("1. $(this).text() : "+$(this).text()+", $(this).attr() : "+$(this).attr("value")); 
-	    		});
-		});
 	});
-	
-	function reorder() { 
-		$("#sortable li").each(function(i, box) {
-			$(box).val(i); 
-		}); 
-	}
 	</script>
 </body>
 </html>

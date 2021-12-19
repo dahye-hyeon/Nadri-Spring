@@ -42,7 +42,7 @@
 	
 	cal.setTime(time2);
 	cal.add(Calendar.DATE, +2);
-	String defaultDay3 = format2.format(cal.getTime());
+	String defaultDay3 = format2.format(cal.getTime()); 
 %>
 <title>나드리 - 계획하기</title>
 </head>

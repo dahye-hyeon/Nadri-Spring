@@ -31,6 +31,18 @@
 	cal.setTime(time);
 	cal.add(Calendar.DATE, +2);
 	String defaultDate = format1.format(cal.getTime());
+
+	Date time2 = new Date();
+	SimpleDateFormat format2 =  new SimpleDateFormat("MM.dd");
+	String defaultDay1 = format2.format(time);
+	
+	cal.setTime(time2);
+	cal.add(Calendar.DATE, +1);
+	String defaultDay2 = format2.format(cal.getTime());
+	
+	cal.setTime(time2);
+	cal.add(Calendar.DATE, +2);
+	String defaultDay3 = format2.format(cal.getTime());
 %>
 <title>나드리 - 계획하기</title>
 </head>
@@ -394,10 +406,6 @@
 		$("#selectTabHotel").empty();
 		$("#selectTabPlace").empty();    	
 		$("#selectedHotel").empty();
-		var text1;
-		var text2;
-	    var month;
-	    var day;
 		
 		text1 = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
 			+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
@@ -405,26 +413,22 @@
 			+	"<div id='scroll'><div id='selectedHotel'>"
 			+	"</div></div>"	
 			$("#selectTabHotel").append(text1);
-		
-		
-		var diffDays = getDiff("<%=defaultDate%>", "<%=today%>"); // 2(기본설정은 2박3일의 일정이므로)
-			
-		for(var i=1; i<=diffDays; i++){	
+
 		text2 = "<div class='dayArea'>"
-	   		+	"<button href='javascript:;' class='btnDay'>DAY" + i + " <span></span></button>" 
+	   		+	"<button href='javascript:;' class='btnDay'>DAY" + 1 +" <span>"+'<%=defaultDay1 %>'+"-"+'<%=defaultDay2 %>'+ "</span></button>" 
 	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
 	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
 	   		+   "</div>"
 			+	"</div></div>"		
-		$("#selectedHotel").append(text2);	
-		}
+		$("#selectedHotel").append(text2);
 			
-/* 		text = "<div class='dayArea'>"
-    		+	"<button href='javascript:;' class='btnDay'>DAY" + i + " <span>"+month+"."+day+"-"+month+"."+(day+Number(1))+"</span></button>" 
-    		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
-    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
-    		+   "</div>"
-    		 */
+		text3 = "<div class='dayArea'>"
+	   		+	"<button href='javascript:;' class='btnDay'>DAY" + 2 +" <span>"+'<%=defaultDay2 %>'+"-"+'<%=defaultDay3 %>'+ "</span></button>" 
+	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+	   		+   "</div>"
+			+	"</div></div>"		
+		$("#selectedHotel").append(text3);
 	}
 	
 	function selectPlaceAndRestFrame(){

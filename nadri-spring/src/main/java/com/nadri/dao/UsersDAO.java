@@ -15,11 +15,16 @@ public class UsersDAO {
 	private SqlSession sqlSession;
 
 	/* 유저정보 가져오기 */
-	public List<UsersVo> getList() {
+	public List<UsersVo> getList(UsersVo usersVo) {
 		return sqlSession.selectList("users.usersList");
 	}
+	
+	/* 특정 유저 정보 가져오기*/
+	public UsersVo getOne(int userId) {
+		return sqlSession.selectOne("users.usersOne", userId);
+	}
 
-	// 유저 한명 using email
+	/* 유저 한명 using email */
 	public UsersVo getOne(String email) {
 		return null;
 	}

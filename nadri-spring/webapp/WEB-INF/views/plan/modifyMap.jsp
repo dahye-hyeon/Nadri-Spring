@@ -65,7 +65,7 @@
 				<div id="selectArea">
                     <h3>여행일정</h3>
                     <div id="complete">
-                    	<a href="#">일정 완료</a>
+                    	<a href="javascript:;">일정 완료</a>
                     </div>
                     <div id="sortable" class="selectTab path"></div>
                   </div>

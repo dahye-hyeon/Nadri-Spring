@@ -1,0 +1,230 @@
+@charset "UTF-8";
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+body {
+    min-height: 100vh;
+    width: 100%;
+    background: #fff;
+    color: #000;
+    margin: 0;
+}
+div {
+    display: block;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    min-height: 100vh;
+    padding: 100px 30px;
+}
+
+.top-background-div {
+    height: 140px;
+    background-color: #fff;
+}
+
+.profilePhotoContainer {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #000;
+    margin: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profilePhoto-text {
+    font-size: 1.4rem;
+    color: #fff;
+    font-family: 'Montserrat';
+}
+
+.container {
+    width: 100vw;
+    display: block;
+    background: #fff;
+    max-width: 1400px;
+    /* padding: 40px 0; */
+    /* box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); */
+}
+.top-container {
+    margin-top: -80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .text {
+    font-family: 'Montserrat';
+    font-size: 35px;
+    font-weight: 600;
+    text-align: center;
+    color: #000000;
+}
+
+.btn-normal {
+    display: block;
+    width: 140px;
+    padding: 16px 24px;
+    margin: 8px;
+    border-radius: 4;
+    border: 2px solid #2E3C7E;
+    font-size: 0.9rem;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+}
+.index-section {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+    /* flex-direction: column; */
+    /* height: 120px; */
+}
+.index-section button {
+    box-shadow: none !important;
+}
+
+.index-circle {
+    height: 140px;
+    width: 140px;
+    /* border-radius: 50%; */
+    border: 2px solid #2E3C7E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 8px;
+    cursor: pointer;
+}
+.content {
+    margin: 16px;
+    padding: 16px;
+}
+.planContent-1 {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+}
+.cardContent {
+    position: relative;
+	height: 200px;
+	width: 100%;
+	display: inline-block;
+	margin-top: 30px;
+	margin-left: 10px;
+	margin-bottom: 30px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	overflow: hidden;
+}
+img{
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+.content-1 {
+    display: inline-block;
+    text-align: center;
+    padding-top: 60px;
+    padding-left: 20px;
+    width: 140px;
+    height: 100px;
+    float: left;
+}
+.travel-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000;
+}
+.uk-text-meta {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #999;
+}
+.content-2 {
+    display: inline-block;
+    width: 900px;
+    height: 100px; 
+    text-align: left;
+    padding-bottom: 100px;
+    vertical-align: top;
+    float: left;
+}
+.second-content-1{
+    margin: 10px;
+    margin-top: 0%;
+    padding-top: 50px;
+    padding-left: 20px;
+    width: 60%;
+    height: 10%;
+}
+.second-content-2{
+    margin: 10px;
+    margin-top: 0%;
+    padding-top: 0px;
+    padding-left: 300px;
+    width: 60%;
+    height: 10%;
+}
+.text-content-1{
+    display: flex;
+    margin: 10px;
+}
+.text-content-2{
+    display: flex;
+    margin: 10px;
+}
+
+.small-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2E3C7E;
+    margin-right: 10px;
+}
+.small-text{
+    font-size: 0.9rem;
+    color: gray;
+}
+.botton-content {
+    display: inline-block;
+    width: 1000px;
+    height: 100px;
+    vertical-align: bottom;
+    padding-left: 180px;
+    padding-top: 30px;
+}
+
+button{
+    background:#fff;
+    color:#2E3C7E;
+    border: 2px solid #2E3C7E;
+    position:relative;
+    height:50px;
+    width: 100px;
+    font-size: 15px;
+    font-weight: 900;
+    padding: 10px;
+    cursor:pointer;
+    transition:800ms ease all;
+    outline: 10px;
+    float: left; 
+    margin-right: 100px;
+}

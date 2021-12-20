@@ -71,7 +71,7 @@
 						id="edate" type="text" name="date" placeholder=<%=defaultDate%>>
 				</div>				
 				<div id="schedule">
-					<a href="#">일정 생성</a>
+					<a href="javascript:;">일정 생성</a>
 				</div>
 				<div id="selectArea">
                     <h3>선택목록</h3>

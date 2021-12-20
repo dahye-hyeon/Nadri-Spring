@@ -71,7 +71,7 @@
 						id="edate" type="text" name="date" placeholder=<%=defaultDate%>>
 				</div>				
 				<div id="schedule">
-					<a href="#">일정 생성</a>
+					<a class="addPlan" href="#">일정 생성</a>
 				</div>
 				<div id="selectArea">
                     <h3>선택목록</h3>
@@ -208,7 +208,8 @@
 		zindex : 1
 	});
 
-	var allList = {}
+	var placeAndRestList = {}
+	var hotelList = {}
 	var startPoint = {}
 	startPoint['latitude'] = centerLat
 	startPoint['longitude'] = centerLng
@@ -216,7 +217,6 @@
 	startPoint['url'] = "${startURL}"
 	startPoint['type'] = 'starting'
 	startPoint['id'] = ${startId}
-	allList[0] = startPoint
 
 	var numOfHotel = 0;
 	var placeAndRest = {}
@@ -229,10 +229,8 @@
 	var startDate;
 	var endDate;
 	
-	var sDate = "";
-    var eDate = "";
-    var month;
-    var day;
+	var sDate;
+    var eDate;
     var currentDayId="";
 	
 	function addList(id, latitude, longtitude, url, name){
@@ -248,17 +246,15 @@
 		
 		//hotel
 		if(id>0 && id<100001){
-			id = -1	
-			selectHotel(url, name);
+			selectHotel(url, name, data);
 			selectHotelFrame();
 		} else { //place and restaurant
 			$(itemId).empty();
 			placeAndRest[id] = id
 			selectPlaceAndRest(url, name)
 			selectPlaceAndRestFrame();
+			placeAndRestList[id] = data
 		}
-		allList[id] = data
-		
 	}
 
 		
@@ -392,14 +388,7 @@
 	
 	
 	function selectHotelFrame(){
-		/* $("#selectTabHotel").empty();
-		$("#selectTabPlace").empty();
-		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
-		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
-		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
-		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
-		$("#selectTabHotel").append(text);
-		$("#seletedHotel").append(hotelHTML);	 */	
+
 		$("#selectTabHotel").empty();
 		$("#selectTabPlace").empty(); 
 		
@@ -438,10 +427,12 @@
 		
 		if(currentDayId != ""){
 			selectedHotelInfo[currentDayId] = text
+			hotelList[currentDayId] = data
 			numOfHotel += 1
 		} else if(selectedHotelIdList.length > 0){
 			var id = selectedHotelIdList.shift()
 			selectedHotelInfo["#"+id] = text
+			hotelList["#"+id] = data
 			numOfHotel += 1
 		}
 	}
@@ -475,11 +466,17 @@
 		$("#selectedHotel").empty();
         var localDay = day;	    	
         diffDays = getDiff(eDate, sDate);
-        
+        var sdate = new Date(sDate);
+        var edate = new Date(eDate);
     	for(var i=1; i<=diffDays; i++){	
 	        var id = 'dayID' + i;
+	       
+	        var prevDay = sdate.getDate();
+	        var prevMonth = sdate.getMonth()+1;
+	        var nextDay = sdate.setDate(prevDay+1);
+	        var nextMonth = sdate.getMonth()+1;
 	    	text = "<div id=" + id + " class='dayArea'>"
-	    		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + id + "\")'>DAY" + i + " <span>"+month+"."+localDay+"-"+month+"."+(localDay+Number(1))+"</span></button>"
+	    		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + id + "\")'>DAY" + i + " <span>"+prevMonth+"."+prevDay+"-"+nextMonth+"."+sdate.getDate()+"</span></button>"
 	    		+   "<div class='showSeletedHotel'>" 
 	    		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
 	    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
@@ -508,11 +505,19 @@
 		showHotel();
 		selectHotelFrame();
 		$("#schedule").on("click", function(){
+			var params = {}
+			params['placeAndRest'] = placeAndRestList;
+			params['hotel'] = hotelList;
+			params['start'] = startPoint;
+			params['date'] = {
+					'sDate' : sDate,
+					'eDate' : eDate
+			}
 			$.ajax({
 				url : "schedule",
 				type : "post",
 				data : {
-				       data: JSON.stringify(allList) //params --> string
+				       data: JSON.stringify(params) //params --> string
 			     },
 				datatype : "text",
 				success : function(data) {
@@ -616,7 +621,7 @@
 	}
 	
 	//마지막 날짜-처음 날짜
-	function getDiff(eDate, sDate){
+	function getDiff(){
 		var edate = new Date(eDate);
 		var sdate = new Date(sDate);
 		

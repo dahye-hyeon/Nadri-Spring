@@ -31,17 +31,7 @@
 </style>
 <title>나드리 - 계획하기</title>
 </head>
-<%
-	Calendar cal = Calendar.getInstance();
 
-	Date time = new Date();
-	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd");
-	String today = format1.format(time);
-	cal.setTime(time);
-	cal.add(Calendar.DATE, +2);
-	String defaultDate = format1.format(cal.getTime());
-
-%>
 <body>
 	<div id="wrap">
 		<div id="mapArea">
@@ -59,15 +49,15 @@
 				<small>${cityEngName}</small>
 				<div class="calendar">
 					<input id="sdate" type="text" name="date"
-						placeholder=<%=today%>> <span>-</span> <input
-						id="edate" type="text" name="date" placeholder=<%=defaultDate%>>
+						placeholder="${sDate}"> <span>-</span> <input
+						id="edate" type="text" name="date" placeholder="${eDate}">
 				</div>
 				<div id="selectArea">
                     <h3>여행일정</h3>
                     <div id="complete">
-                    	<a href="#">일정 완료</a>
+                    	<a class="addPlan" href="#">일정 완료</a>
                     </div>
-                    <div id="sortable" class="selectTab path"></div>
+                    <div class="selectTab path"></div>
                   </div>
 			</article>
 		</section>
@@ -77,19 +67,26 @@
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
 	<script>
 	var data = [];
+	var sdate = new Date("${sDate}");
+	var edate = new Date("${eDate}");
+	var centerLat = ${centerLat}
+	var centerLng = ${centerLng}
+	var hotelInfo = ${hotelInfo};
+	var placeAndRestInfo = ${placeAndRestInfo};
+	var startInfo = ${startInfo};
+	var path = ${path};
+	var linePath = [];
+	var savedOverlayList = [];
+	var polyline;
+	var diffDays = getDiff();
 
+	
 	function searchDetailAddrFromCoords(coords, callback) {
 		// 좌표로 법정동 상세 주소 정보를 요청합니다
 		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 	}
 
-	var centerLat = ${latitude};
-	var centerLng = ${longitude};
-	var mapInfo = ${mapInfo};
-	var path = ${path};
-	var linePath = [];
-	var savedOverlayList = [];
-	var polyline;
+	
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 	mapOption = {
@@ -109,7 +106,7 @@
 	showPath(linePath);
 	
 	function initPath(){
-		var text="";
+		/* var text="";
 		for(var i in path){
 			
 			text += "<li class='selectedCard card' value='" + path[i] + "'>"
@@ -121,7 +118,7 @@
 		}
 		 
 			
-		$(".path").append(text);
+		$(".path").append(text); */
 	}
 	
 	function showPath(line){
@@ -139,7 +136,7 @@
 	
 	function showOverlay(i){
 
-			var localLat = mapInfo[i]['latitude'];
+		/* 	var localLat = mapInfo[i]['latitude'];
 			var localLng = mapInfo[i]['longitude'];
 			var position =  new kakao.maps.LatLng(localLat, localLng); 
 			linePath.push(new kakao.maps.LatLng(localLat, localLng));
@@ -155,20 +152,27 @@
 	function closeOverlay(){
 		for(const overlay of savedOverlayList){
 			overlay.setMap(null);
-		}
+		} */
 	}
 	
 	$(function(){
 		$("header").addClass("on");
-		initPath();
-		$("#sortable").sortable();
-	    $("#sortable").disableSelection();
-	    $("#sortable").sortable({
+		initPath();	
+		
+		$.each(path, function(key, item){
+			console.log(key, item)
+		})
+		
+		showPlanFrame()
+		showList();
+		$(".sortable").sortable();
+	    $(".sortable").disableSelection();
+	    $(".sortable").sortable({
 	    	  stop: function(event, ui) {
 	    		 linePath = []
 	  	    	polyline.setMap(null);
 	  	    	closeOverlay();
-	  	    	$("#sortable").children().each(function(){ 
+	  	    	$(".sortable").children().each(function(){ 
 	  	    		var value = $(this).attr("value");
 	  	    		showOverlay(value)
 	  	    	});
@@ -176,6 +180,33 @@
 	    	  }
 	    });
 	});
+	
+	function getDiff(){
+	
+		var msDiff = edate.getTime()-sdate.getTime();
+		var diffDay = Math.floor(msDiff/(1000*60*60*24));
+		return diffDay
+	}
+	
+	function showPlanFrame(){
+		  for(var i=1; i<=diffDays; i++){	
+		        var id = 'dayID' + i;
+		        var prevDay = sdate.getDate();
+		        var prevMonth = sdate.getMonth()+1;
+		        var nextDay = sdate.setDate(prevDay+1);
+		        var nextMonth = sdate.getMonth()+1;
+		    	text = "<div id=" + id + " class='dayArea'>"
+		    		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + id + "\")'>DAY" + i + " <span>"+prevMonth+"."+prevDay+"-"+nextMonth+"."+sdate.getDate()+"</span></button>"
+		    		+   "<div class='sortable'></div>" 
+		    		+   "</div>"	
+		    	$(".path").append(text);
+		   }
+	}
+
+	
+	function showList(){
+		
+	}
 	</script>
 </body>
 </html>

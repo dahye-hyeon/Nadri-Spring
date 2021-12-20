@@ -61,6 +61,17 @@ article small {
     color: #555;
 }
 
+.addPlan {
+    margin: 1.5em 5px;
+    display: block;
+    padding: 0.7em;
+    background: #2e3c7e;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    font-weight: border;
+}
+
 /* regionTab */
 #regionArea {
     display: none;

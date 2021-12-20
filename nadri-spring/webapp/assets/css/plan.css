@@ -335,6 +335,8 @@ article small {
      height: 425px;
 }
 
-/* #rightBox #selectArea .selectTab {
-    height: 500px;
-}  */
+ #selectArea #modifiedScroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
+     height: 660px;
+}

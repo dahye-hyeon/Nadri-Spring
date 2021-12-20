@@ -119,8 +119,7 @@ public class PlanController {
 	double endLat = 0;
 	double endLng = 0;
 	Map<String, ArrayList<String>> path = null;
-	Map<String,Object> globalPlaceAndRest = null;
-	Map<String, Object> globalHotel =null;
+	Map<String,Object> globalAllList = null;
 	Map<String, Object> start = null;
 	String endId = ""; 
 	String sDate = "";
@@ -132,8 +131,7 @@ public class PlanController {
 		start = new HashMap<>();
 		Map<String, Object> hotel = new HashMap<>();
 		Map<String, Double> distances = new HashMap<>();
-		globalPlaceAndRest = new HashMap<>();
-		globalHotel = new HashMap<>();
+		globalAllList = new HashMap<>();
 		path = new TreeMap<>();
 		
 		Map<String, Object> info = new Gson().fromJson(String.valueOf(data),
@@ -151,12 +149,12 @@ public class PlanController {
 				((Map<String, Object>)info.get(key)).forEach((k, v) -> {
 					hotel.put(k, v);
 					path.put(k, new ArrayList<String>());
-					globalHotel.put(k, v);
+					globalAllList.put(k, v);
 				});
 			} else if("placeAndRest".equals(key)){
 				((Map<String, Object>)info.get(key)).forEach((k, v) -> {
 					placeAndRest.put(k, v);
-					globalPlaceAndRest.put(k, v);
+					globalAllList.put(k, v);
 				});
 			} else if("date".equals(key)) {
 				sDate = ((Map<String, String>)info.get(key)).get("sDate");
@@ -182,8 +180,8 @@ public class PlanController {
 					placeAndRest.remove(minPath);
 					i++;
 				}
-				endId = "" + ((Map<String, Double>)hotel.get(key)).get("id").intValue();
-				path.get(key).add(endId);
+				endId = key;
+				path.get(key).add(key);
 				endLat = ((Map<String, Double>)hotel.get(key)).get("latitude");
 				endLng = ((Map<String, Double>)hotel.get(key)).get("longitude");
 				
@@ -198,15 +196,14 @@ public class PlanController {
 					placeAndRest.remove(minPath);
 					i++;
 				}
-				endId = "" + ((Map<String, Double>)hotel.get(key)).get("id").intValue();
-				path.get(key).add(endId);
+				endId = key;
+				path.get(key).add(key);
 				endLat = ((Map<String, Double>)hotel.get(key)).get("latitude");
 				endLng = ((Map<String, Double>)hotel.get(key)).get("longitude");
 			}
 			
 		});
 		
-		System.out.println(path);
 		return "success";
 	}
 	
@@ -251,13 +248,11 @@ public class PlanController {
 	
 	@RequestMapping(value = "/modify", method = RequestMethod.GET, produces = "application/text; charset=UTF-8")
 	public ModelAndView showPath(ModelAndView mav) {
-		JSONObject hotelJson =  new JSONObject(globalHotel);
-		JSONObject placeAndRestJson =  new JSONObject(globalPlaceAndRest);
+		JSONObject globalAllListJson = new JSONObject(globalAllList);
 		JSONObject startJson =  new JSONObject(start);
 		JSONObject pathJson =  new JSONObject(path);
 		mav.addObject("path", pathJson);
-		mav.addObject("hotelInfo", hotelJson);
-		mav.addObject("placeAndRestInfo", placeAndRestJson);
+		mav.addObject("info", globalAllListJson);
 		mav.addObject("startInfo", startJson);
 		mav.addObject("sDate", sDate);
 		mav.addObject("eDate", eDate);
@@ -266,7 +261,6 @@ public class PlanController {
 		mav.addObject("centerLat",globalLatitude);
 		mav.addObject("centerLng",globalLongitude);
 		mav.setViewName("plan/modifyMap");
-		System.out.println(sDate);
 		return mav;
 	}
 	

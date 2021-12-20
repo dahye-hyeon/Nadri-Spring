@@ -55,13 +55,9 @@
 				<div id="selectArea">
                     <h3>여행일정</h3>
                     <div id="complete">
-<<<<<<< HEAD
-                    	<a class="addPlan" href="#">일정 완료</a>
-=======
                     	<a href="javascript:;">일정 완료</a>
->>>>>>> refs/remotes/origin/master
                     </div>
-                    <div class="selectTab path"></div>
+                    <div id="modifiedScroll" class="selectTab path"></div>
                   </div>
 			</article>
 		</section>
@@ -75,15 +71,16 @@
 	var edate = new Date("${eDate}");
 	var centerLat = ${centerLat}
 	var centerLng = ${centerLng}
-	var hotelInfo = ${hotelInfo};
-	var placeAndRestInfo = ${placeAndRestInfo};
+	var info = ${info};
 	var startInfo = ${startInfo};
 	var path = ${path};
-	var linePath = [];
+	var linePathDict = {};
 	var savedOverlayList = [];
-	var polyline;
 	var diffDays = getDiff();
-
+	var colorSet = ['#FFFFFF', '#0000FF', '#FF0000', '#00FF00', '#808080', '#FFFF00']
+	var colorId = 0;
+	
+	console.log(path)
 	
 	function searchDetailAddrFromCoords(coords, callback) {
 		// 좌표로 법정동 상세 주소 정보를 요청합니다
@@ -103,84 +100,112 @@
 	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	// 지도에 표시할 선을 생성합니다
 	
-	for(var i in path){
-		showOverlay(path[i]);
-	}
-	
-	showPath(linePath);
-	
-	function initPath(){
-		/* var text="";
-		for(var i in path){
-			
-			text += "<li class='selectedCard card' value='" + path[i] + "'>"
-				+ 	"<figure>"
-				+	" <img src=" + mapInfo[path[i]]['url'] + " alt='" +  mapInfo[path[i]]['name'] + "'>"
-				+	"</figure>"
-				+	"<b>" + mapInfo[path[i]]['name'] +"</b>"
-				+	"</li>"
+	for(var day in path){
+		var startCheck = 1;
+		var linePath = []
+		if(day.match("#dayID1")){
+			startCheck = 0;
 		}
-		 
-			
-		$(".path").append(text); */
-	}
-	
-	function showPath(line){
-			polyline = new kakao.maps.Polyline({
-		    path: line, // 선을 구성하는 좌표배열 입니다
+		
+		for(const idx of path[day]){
+			showOverlay(idx, startCheck, linePath);
+			startCheck = 1;
+		}
+		
+		var	polyline = new kakao.maps.Polyline({
+		    path: linePath, // 선을 구성하는 좌표배열 입니다
 		    strokeWeight: 5, // 선의 두께 입니다
-		    strokeColor: '#800000', // 선의 색깔입니다
+		    strokeColor: colorSet[colorId%colorSet.length], // 선의 색깔입니다
 		    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
 		    strokeStyle: 'solid' // 선의 스타일입니다
 		});
-		
-		// 지도에 선을 표시합니다 
-		polyline.setMap(map);
+		colorId += 1;
+		linePathDict[day] = polyline;
 	}
 	
-	function showOverlay(i){
-
-		/* 	var localLat = mapInfo[i]['latitude'];
-			var localLng = mapInfo[i]['longitude'];
-			var position =  new kakao.maps.LatLng(localLat, localLng); 
-			linePath.push(new kakao.maps.LatLng(localLat, localLng));
-			var content = '<div class ="label"><span class="left"></span><span class="center">' + mapInfo[i]['name'] +'</span><span class="right"></span></div>';
-			var customOverlay = new kakao.maps.CustomOverlay({
-			    position: position,
-			    content: content   
-			});
-			savedOverlayList.push(customOverlay);
-			customOverlay.setMap(map);
+	showPath(linePathDict);
+	
+	function showPath(linePathDict){
+		$.each(linePathDict, function(key, value){
+			value.setMap(map);
+		});
+	}
+	
+	function showOverlay(i, startCheck, linePath){
+			if(startCheck == 0){
+				var localLat = startInfo['latitude'];
+				var localLng = startInfo['longitude'];
+				var position =  new kakao.maps.LatLng(localLat, localLng); 
+				linePath.push(new kakao.maps.LatLng(localLat, localLng));
+				var content = '<div class ="label"><span class="left"></span><span class="center">' + startInfo['name'] +'</span><span class="right"></span></div>';
+				var customOverlay = new kakao.maps.CustomOverlay({
+				    position: position,
+				    content: content   
+				});
+				savedOverlayList.push(customOverlay);
+				customOverlay.setMap(map);
+			} else {
+				var localLat = info[i]['latitude'];
+				var localLng = info[i]['longitude'];
+				var position =  new kakao.maps.LatLng(localLat, localLng); 
+				linePath.push(new kakao.maps.LatLng(localLat, localLng));
+				var content = '<div class ="label"><span class="left"></span><span class="center">' + info[i]['name'] +'</span><span class="right"></span></div>';
+				var customOverlay = new kakao.maps.CustomOverlay({
+				    position: position,
+				    content: content   
+				});
+				savedOverlayList.push(customOverlay);
+				customOverlay.setMap(map);
+			}
+		 	
 	}
 	
 	function closeOverlay(){
 		for(const overlay of savedOverlayList){
 			overlay.setMap(null);
-		} */
+		} 
 	}
 	
 	$(function(){
 		$("header").addClass("on");
-		initPath();	
-		
-		$.each(path, function(key, item){
-			console.log(key, item)
-		})
-		
 		showPlanFrame()
 		showList();
 		$(".sortable").sortable();
 	    $(".sortable").disableSelection();
 	    $(".sortable").sortable({
+	    	  connectWith: ".sortable",
 	    	  stop: function(event, ui) {
-	    		 linePath = []
-	  	    	polyline.setMap(null);
-	  	    	closeOverlay();
-	  	    	$(".sortable").children().each(function(){ 
-	  	    		var value = $(this).attr("value");
-	  	    		showOverlay(value)
-	  	    	});
-	  	    	showPath(linePath);
+	    			
+	    			var id = "#" + $(this).parent().attr("id");
+	    			console.log(id);
+	    			linePathDict[id].setMap(null);
+	    			
+	    			var linePath = []
+		  	    	$(id).children(".sortable").children().each(function(){ 
+		  	    		var value = $(this).attr("value");
+		  	    		var localLat 
+		  	    		var localLng 
+		  	    		if(value == "start"){
+		  	    			localLat = startInfo['latitude']
+			  	    		localLng = startInfo['longitude']
+		  	    		} else {
+		  	    			localLat = info[value]['latitude']
+			  	    		localLng = info[value]['longitude']
+		  	    		}
+		  	    		
+		  	    		linePath.push(new kakao.maps.LatLng(localLat, localLng))
+		  	    	});
+	    			
+	    			var	polyline = new kakao.maps.Polyline({
+	    			    path: linePath, // 선을 구성하는 좌표배열 입니다
+	    			    strokeWeight: 5, // 선의 두께 입니다
+	    			    strokeColor: colorSet[colorId%colorSet.length], // 선의 색깔입니다
+	    			    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+	    			    strokeStyle: 'solid' // 선의 스타일입니다
+	    			});
+	    			colorId += 1;
+	    			linePathDict[id] = polyline;
+	    			polyline.setMap(map);
 	    	  }
 	    });
 	});
@@ -209,7 +234,46 @@
 
 	
 	function showList(){
-		
+		var startCheck = 0;
+		$.each(path, function(key, item){
+			
+			$.each(item, function(index, data){
+				var url;
+				var name;
+				var id;
+				if(startCheck == 0){
+					url = "" + startInfo["url"] 
+					name = "" + startInfo["name"] 
+					id = "start"
+					startCheck = 1;
+				} else {
+					url = "" + info[data].url
+					name = "" + info[data].name 
+					id = "" + data
+				}
+				
+				
+				var text ="<div class='selectedCard card' value='" + id + "'>"
+					+	"<figure>"
+					+	"<img src=" + url + " alt= " + name + ">"
+					+	"</figure>"
+					+	"<b>" + name + "</b>"
+					+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
+					+	"</div>"
+					
+				$(key).children(".sortable").append(text);
+			});
+
+		})
+	}
+	
+	function clickedDayButton(id){
+		$("button.btnDay").css("backgroundColor","#ddd");
+	    $("#"+id).children("button.btnDay").css("backgroundColor", "#2e3c7e");
+	    $.each(linePathDict, function(key, value){
+	    	value.setMap(null);
+	    })
+	    linePathDict["#"+id].setMap(map);
 	}
 	</script>
 </body>

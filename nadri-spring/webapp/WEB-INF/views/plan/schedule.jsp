@@ -36,7 +36,18 @@
 	cal.setTime(time); 
 	cal.add(Calendar.DATE, +2);
 	String defaultDate = format1.format(cal.getTime());
+
+	Date time2 = new Date();
+	SimpleDateFormat format2 =  new SimpleDateFormat("MM.dd");
+	String defaultDay1 = format2.format(time);
 	
+	cal.setTime(time2);
+	cal.add(Calendar.DATE, +1);
+	String defaultDay2 = format2.format(cal.getTime());
+	
+	cal.setTime(time2);
+	cal.add(Calendar.DATE, +2);
+	String defaultDay3 = format2.format(cal.getTime());
 %>
 <title>나드리 - 계획하기</title>
 </head>
@@ -197,37 +208,6 @@
 		zindex : 1
 	});
 
-	// 지도를 클릭했을때 클릭한 위치에 마커를 추가하도록 지도에 클릭이벤트를 등록합니다
-/* 	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-		var latlng = mouseEvent.latLng;
-		searchDetailAddrFromCoords(latlng, function(result, status) {
-			if (status === kakao.maps.services.Status.OK) {
-				var detailAddr = !!result[0].road_address ? '<div>도로명주소 : '
-						+ result[0].road_address.address_name + '</div>'
-						: '';
-				detailAddr += '<div>지번 주소 : '
-						+ result[0].address.address_name + '</div>';
-
-				var content = '<div class="bAddr">'
-						+ '<span class="title">법정동 주소정보</span>'
-						+ detailAddr + '</div>';
-				// 클릭한 위치에 마커를 표시합니다 
-				marker = addMarker(latlng);
-
-				var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-				message += '경도는 ' + latlng.getLng() + ' 입니다';
-				dist = getDistanceFromLatLonInKm(centerLat, centerLng, latlng.getLat(), latlng.getLng());
-				var resultDiv = document.getElementById('clickLatlng');
-				resultDiv.innerHTML = message;
-				// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-				infowindow.setContent(content);
-				infowindow.open(map, marker);
-
-			}
-		});
-
-	}); */
-	
 	var allList = {}
 	var startPoint = {}
 	startPoint['latitude'] = centerLat
@@ -238,20 +218,27 @@
 	startPoint['id'] = ${startId}
 	allList[0] = startPoint
 
-	var hotelList = {}
+	var numOfHotel = 0;
 	var placeAndRest = {}
 	var placeAndRestHTML = ""
 	var hotelHTML = ""
+	var selectedHotelInfo = {} 
+	var selectedHotelIdList = []
 	var diffDays;
 	
 	var startDate;
 	var endDate;
-
+	
+	var sDate = "";
+    var eDate = "";
+    var month;
+    var day;
+    var currentDayId="";
+	
 	function addList(id, latitude, longtitude, url, name){
 		data = {}
-		
+		closeOverlay();
 		var itemId = "#" + id;
-		$(itemId).empty();
 		
 		data['latitude'] = latitude
 		data['longitude'] = longtitude
@@ -259,12 +246,13 @@
 		data['url'] = url
 		data['id'] = id
 		
+		//hotel
 		if(id>0 && id<100001){
-			hotelList[id] = id
 			id = -1	
 			selectHotel(url, name);
 			selectHotelFrame();
-		} else {
+		} else { //place and restaurant
+			$(itemId).empty();
 			placeAndRest[id] = id
 			selectPlaceAndRest(url, name)
 			selectPlaceAndRestFrame();
@@ -289,10 +277,7 @@
 							var jsonText = "";
 							$("#showList").empty();
 							$.each(jsonData,function(index, item) {
-								if (item.hotelId in hotelList){
-									return true;
-								}
-								
+							
 								 var text = "<div id="+ item.hotelId + ">" + "<div class='select tabcontent'>"
 									+  "<div class='selectTab'>"
 									+  "<div class='recommendCard card'>"
@@ -301,9 +286,8 @@
 									+  "</figure>"
 									+  "<b>" + item.hotelName + "</b>"
 									+  "<a href='javascript:;' class='info'><i class='fas fa-info'></i></a>"
-									+  "<div onmouseout='closeOverlay();' onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude + ",\"" + item.hotelName +"\")'>"
-									+  "<a class='plus' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude + ",\"" + item.hotelImageURL + "\",\"" + item.hotelName + "\")'" +" href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
-									+  "</div>"
+									+  "<a class='plus' onmouseout='closeOverlay();' onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude + ",\"" + item.hotelName +"\")' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude + ",\"" + item.hotelImageURL + "\",\"" + item.hotelName + "\")'" +" href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
+									
 									+  "</div>"
 									+  "</div></div>"
 							  
@@ -408,16 +392,31 @@
 	
 	
 	function selectHotelFrame(){
-		$("#selectTabHotel").empty();
+		/* $("#selectTabHotel").empty();
 		$("#selectTabPlace").empty();
 		var text = "<strong class='countHotel'>"+ Object.keys(hotelList).length +"</strong>"
 		+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
 		+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"
 		+	"<div id='scroll'><div id='seletedHotel'></div></div>"		
 		$("#selectTabHotel").append(text);
-		$("#seletedHotel").append(hotelHTML);		
+		$("#seletedHotel").append(hotelHTML);	 */	
+		$("#selectTabHotel").empty();
+		$("#selectTabPlace").empty(); 
+		
+		text1 = "<strong class='countHotel'>"+ numOfHotel +"</strong>"
+			+ 	"<button onclick='deleteHotelList()' href='javascript:;' class='btnrm'>호텔전체삭제</button>"
+			+	"<small>숙소는 일정의 시작 지점과 종료 지점으로 설정됩니다.<br>마지막 날은 시작 지점으로만 설정됩니다.</small>"			
+			+	"<div id='scroll'><div id='selectedHotel'>"
+			+	"</div></div>"	
+		$("#selectTabHotel").append(text1);
+		$("#selectedHotel").append(hotelHTML);
+		
+		for(let key in selectedHotelInfo){
+			$(key).children(".showSeletedHotel").empty();
+			$(key).children(".showSeletedHotel").append(selectedHotelInfo[key]);
+		}
+		
 	}
-	
 	function selectPlaceAndRestFrame(){
 		$("#selectTabHotel").empty();
 		$("#selectTabPlace").empty();
@@ -429,20 +428,22 @@
 	}
 	
  	function selectHotel(url, name){
-		var text ="";
-		for(var i=1; i<diffDays; i++){
-		text = "<div class='dayArea'>"
-		+	"<button href='javascript:;' class='btnDay'>DAY "+
-				i+"<span>12.09 - 12.10</span></button>" }
-		+	"<div class='hotelSelectCard card'>"
+		var text ="<div class='hotelSelectCard card'>"
 		+	"<figure>"
 		+	"<img src=" + url + " alt= " + name + ">"
 		+	"</figure>"
 		+	"<b>" + name + "</b>"
 		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
-		+	"</div></div>"
+		+	"</div>"
 		
-		hotelHTML += text;
+		if(currentDayId != ""){
+			selectedHotelInfo[currentDayId] = text
+			numOfHotel += 1
+		} else if(selectedHotelIdList.length > 0){
+			var id = selectedHotelIdList.shift()
+			selectedHotelInfo["#"+id] = text
+			numOfHotel += 1
+		}
 	}
 	
 	function selectPlaceAndRest(url, name){
@@ -465,21 +466,43 @@
 	}
 	
 	function deleteHotelList(){
+		numOfHotel = 0;
 		hotelList = {};
 		hotelHTML = "";
 		selectHotelFrame();
-		$("#selectHotel").empty();
-		showHotel();
+		selectedHotelInfo = {};
+		selectedHotelIdList = [];
+		$("#selectedHotel").empty();
+        var localDay = day;	    	
+        diffDays = getDiff(eDate, sDate);
+        
+    	for(var i=1; i<=diffDays; i++){	
+	        var id = 'dayID' + i;
+	    	text = "<div id=" + id + " class='dayArea'>"
+	    		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + id + "\")'>DAY" + i + " <span>"+month+"."+localDay+"-"+month+"."+(localDay+Number(1))+"</span></button>"
+	    		+   "<div class='showSeletedHotel'>" 
+	    		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+	    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+	    		+   "</div>"
+	    		+   "</div>"
+	    	selectedHotelIdList.push(id);
+	    	hotelHTML += text
+	    	localDay=localDay+Number(1);
+    	}
+    	selectHotelFrame();
+    	showHotel();
 	}
 	
 	function deletePlaceAndRestList(){
 		placeAndRest = {};
 		placeAndRestHTML = "";
+		closeOverlay();
 		selectPlaceAndRestFrame();
 		$("#seletedPlaceAndRest").empty();
 		showPlace();
 	}
 	
+	//jquery
 	$(function(){
 		$("header").addClass("on");
 		showHotel();
@@ -503,7 +526,8 @@
 			});
 		});
 		
-	
+		initShowHotel();
+		
 		$.datepicker.regional['ko'] = {
 		        closeText: '닫기',
 		        prevText: '이전달',
@@ -532,7 +556,6 @@
 		    };
 	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 
-
 		    $('#sdate').datepicker();
 		    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 		    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
@@ -541,35 +564,56 @@
 		        startDate = selectedDate;
 		    });
 
-	    var sDate = "";
-	    var eDate = "";
-	    var diffDays = "";
-	    
 	    $('#sdate').datepicker();
 	    $('#sdate').datepicker("option", "maxDate", $("#edate").val());
 	    $('#sdate').datepicker("option", "onClose", function ( selectedDate ) {
 	        $("#sdate").datepicker("option", "minDate", "today");
 	        $("#edate").datepicker( "option", "minDate", selectedDate );
 	        sDate = selectedDate;
+	        var date = $(this).datepicker('getDate')
+        	month = date.getMonth() + 1;
+        	day = date.getDate();
 	    });
 
 		    $('#edate').datepicker();
 		    $('#edate').datepicker("option", "minDate", $("#sdate").val());
 		    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
 		        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-		        endDate = selectedDate;
-
+		        eDate = selectedDate;
+		        deleteHotelList();
 		    });
-		$('#edate').datepicker();
-	    $('#edate').datepicker("option", "minDate", $("#sdate").val());
-	    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
-	        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-	        eDate = selectedDate;
+	});//jquery 
+	
+	function clickedDayButton(id){
+		$("button.btnDay").css("backgroundColor","#ddd");
+	    $("#"+id).children("button.btnDay").css("backgroundColor", "#2e3c7e");
+	    
+	    currentDayId = "#"+id;
+	}
+	
+	function initShowHotel(){
+		text2 = "<div id='dayId1' class='dayArea'>"
+	   		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + "dayId1" + "\")'>DAY" + 1 +" <span>"+'<%=defaultDay1 %>'+"-"+'<%=defaultDay2 %>'+ "</span></button>" 
+	   		+   "<div class='showSeletedHotel'>" 
+	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+	   		+   "</div>"
+			+	"</div>"
+		hotelHTML += text2
 			
-	        diffDays = getDiff(eDate, sDate);
-	        console.log(diffDays);
-	    });
-	});
+		text3 = "<div id='dayId2' class='dayArea'>"
+	   		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + "dayId2" + "\")'>DAY" + 2 +" <span>"+'<%=defaultDay2 %>'+"-"+'<%=defaultDay3 %>'+ "</span></button>" 
+	   		+   "<div class='showSeletedHotel'>" 
+	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
+	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
+	   		+   "</div>"
+			+	"</div>"		
+		hotelHTML += text3
+		$("#selectedHotel").append(hotelHTML);
+			
+		selectedHotelIdList.push('dayId1');
+		selectedHotelIdList.push('dayId2');
+	}
 	
 	//마지막 날짜-처음 날짜
 	function getDiff(eDate, sDate){
@@ -578,8 +622,7 @@
 		
 		var msDiff = edate.getTime()-sdate.getTime();
 		var diffDay = Math.floor(msDiff/(1000*60*60*24));
-		diffDays = ++diffDay;
-		return ++diffDay
+		return diffDay
 	}
 	
 </script>

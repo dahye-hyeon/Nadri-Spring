@@ -5,12 +5,19 @@
 
 <mapper namespace="users">
 
-	<!-- 유저 정보 불러오기 -->
+	<!--전체 유저 정보 불러오기 -->
 	<select id="usersList" resultType="usersVo">
 		SELECT u_id usersId, u_name usersName
 		FROM users
 	</select>
 
+	<!-- 특정 회원 유저 정보 불러오기 -->
+	<select id="usersOne" parameterType="Integer" resultType="usersVo">
+		SELECT u_id usersId, u_name usersName
+		FROM users
+		WHERE u_id = #{userId}
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="usersVo">
 		<![CDATA[

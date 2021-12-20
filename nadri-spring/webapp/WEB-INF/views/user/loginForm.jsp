@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -11,8 +12,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
-    <script src="/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="/assets/js/login.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/login.js"></script>
     <title>나드리 - 로그인</title>
 </head>
 <body>
@@ -28,7 +29,7 @@
                     <input type="text" name="usersEmail" id="email">
                     <label for="password">비밀번호</label>
                     <input type="password" name="usersPassword" id="password">
-                    <a href="#" class="missing">비밀번호를 잊으셨나요?</a>
+                    <a href="javascript:;" class="missing">비밀번호를 잊으셨나요?</a>
                     <button type="submit">로그인</button>
                 </form>
                 <a href="${pageContext.request.contextPath}/user/joinForm" class="join">회원가입하기</a>

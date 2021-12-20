@@ -55,7 +55,11 @@
 				<div id="selectArea">
                     <h3>여행일정</h3>
                     <div id="complete">
+<<<<<<< HEAD
                     	<a class="addPlan" href="#">일정 완료</a>
+=======
+                    	<a href="javascript:;">일정 완료</a>
+>>>>>>> refs/remotes/origin/master
                     </div>
                     <div class="selectTab path"></div>
                   </div>

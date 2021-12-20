@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -183,7 +184,12 @@ public class UsersController {
 		
 		session.setAttribute("usersVo", vo);
 		
-		
 		return "main/index";
+	}
+	
+	/*마이페이지 출력*/
+	@RequestMapping(value="/myPage", method=RequestMethod.GET)
+	public String myPage(@ModelAttribute UsersVo usersVo, HttpSession session) {
+		return "user/myPage";
 	}
 }

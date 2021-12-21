@@ -332,11 +332,11 @@ article small {
  #selectArea #scroll {
     overflow-x: hidden;
     overflow-y: scroll;
-     height: 425px;
+     height: 385px;
 }
 
  #selectArea #modifiedScroll {
     overflow-x: hidden;
     overflow-y: scroll;
-     height: 660px;
+     height: 620px;
 }

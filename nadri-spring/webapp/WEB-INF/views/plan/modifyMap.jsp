@@ -55,7 +55,7 @@
 				<div id="selectArea">
                     <h3>여행일정</h3>
                     <div id="complete">
-                    	<a href="javascript:;">일정 완료</a>
+                    	<a class="addPlan" href="javascript:;">일정 완료</a>
                     </div>
                     <div id="modifiedScroll" class="selectTab path"></div>
                   </div>
@@ -77,8 +77,10 @@
 	var linePathDict = {};
 	var savedOverlayList = [];
 	var diffDays = getDiff();
-	var colorSet = ['#FFFFFF', '#0000FF', '#FF0000', '#00FF00', '#808080', '#FFFF00']
+	var colorSet = ['#0000FF', '#8B4513', '#000000','#FFA500','#9ACD32','#87CEFA']
 	var colorId = 0;
+	var dayColorDict = {}
+	var lastId = "${lastId}"
 	
 	console.log(path)
 	
@@ -103,13 +105,15 @@
 	for(var day in path){
 		var startCheck = 1;
 		var linePath = []
+		var index = 0;
 		if(day.match("#dayID1")){
 			startCheck = 0;
 		}
-		
-		for(const idx of path[day]){
-			showOverlay(idx, startCheck, linePath);
+		for(const key of path[day]){
+			
+			showOverlay(key, startCheck, linePath, day, index);
 			startCheck = 1;
+			index += 1
 		}
 		
 		var	polyline = new kakao.maps.Polyline({
@@ -119,8 +123,10 @@
 		    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
 		    strokeStyle: 'solid' // 선의 스타일입니다
 		});
-		colorId += 1;
+		
 		linePathDict[day] = polyline;
+		dayColorDict[day] = colorSet[colorId%colorSet.length];
+		colorId += 1;
 	}
 	
 	showPath(linePathDict);
@@ -131,8 +137,8 @@
 		});
 	}
 	
-	function showOverlay(i, startCheck, linePath){
-			if(startCheck == 0){
+	function showOverlay(i, startCheck, linePath, day, index){
+			if(startCheck == 0 || (day == lastId && (path[day].length-1) == index)){
 				var localLat = startInfo['latitude'];
 				var localLng = startInfo['longitude'];
 				var position =  new kakao.maps.LatLng(localLat, localLng); 
@@ -199,7 +205,7 @@
 	    			var	polyline = new kakao.maps.Polyline({
 	    			    path: linePath, // 선을 구성하는 좌표배열 입니다
 	    			    strokeWeight: 5, // 선의 두께 입니다
-	    			    strokeColor: colorSet[colorId%colorSet.length], // 선의 색깔입니다
+	    			    strokeColor: dayColorDict[id], // 선의 색깔입니다
 	    			    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
 	    			    strokeStyle: 'solid' // 선의 스타일입니다
 	    			});
@@ -236,7 +242,7 @@
 	function showList(){
 		var startCheck = 0;
 		$.each(path, function(key, item){
-			
+			var lastCheckIdx = 0;
 			$.each(item, function(index, data){
 				var url;
 				var name;
@@ -247,7 +253,8 @@
 					id = "start"
 					startCheck = 1;
 				} else {
-					url = "" + info[data].url
+					url = "" + 
+					info[data].url
 					name = "" + info[data].name 
 					id = "" + data
 				}
@@ -262,6 +269,11 @@
 					+	"</div>"
 					
 				$(key).children(".sortable").append(text);
+				lastCheckIdx += 1;
+				
+				if(key == lastId && ((item.length-1) == lastCheckIdx)){
+					startCheck = 0;
+				}
 			});
 
 		})

@@ -225,12 +225,12 @@
 	var selectedHotelInfo = {} 
 	var selectedHotelIdList = []
 	var diffDays;
-	
+	var lastId;
 	var startDate;
 	var endDate;
 	
-	var sDate;
-    var eDate;
+	var sDate = "<%=today%>"
+    var eDate = "<%=defaultDate%>"
     var currentDayId="";
 	
 	function addList(id, latitude, longtitude, url, name){
@@ -463,14 +463,16 @@
 		selectHotelFrame();
 		selectedHotelInfo = {};
 		selectedHotelIdList = [];
-		$("#selectedHotel").empty();
-        var localDay = day;	    	
+		$("#selectedHotel").empty();	
         diffDays = getDiff(eDate, sDate);
         var sdate = new Date(sDate);
         var edate = new Date(eDate);
     	for(var i=1; i<=diffDays; i++){	
 	        var id = 'dayID' + i;
-	       
+	        if(i == diffDays){
+	        	lastId = id
+	        } 
+
 	        var prevDay = sdate.getDate();
 	        var prevMonth = sdate.getMonth()+1;
 	        var nextDay = sdate.setDate(prevDay+1);
@@ -484,7 +486,6 @@
 	    		+   "</div>"
 	    	selectedHotelIdList.push(id);
 	    	hotelHTML += text
-	    	localDay=localDay+Number(1);
     	}
     	selectHotelFrame();
     	showHotel();
@@ -511,8 +512,10 @@
 			params['start'] = startPoint;
 			params['date'] = {
 					'sDate' : sDate,
-					'eDate' : eDate
+					'eDate' : eDate,
+					'lastId' : lastId
 			}
+			
 			$.ajax({
 				url : "schedule",
 				type : "post",
@@ -597,27 +600,7 @@
 	}
 	
 	function initShowHotel(){
-		text2 = "<div id='dayId1' class='dayArea'>"
-	   		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + "dayId1" + "\")'>DAY" + 1 +" <span>"+'<%=defaultDay1 %>'+"-"+'<%=defaultDay2 %>'+ "</span></button>" 
-	   		+   "<div class='showSeletedHotel'>" 
-	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
-	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
-	   		+   "</div>"
-			+	"</div>"
-		hotelHTML += text2
-			
-		text3 = "<div id='dayId2' class='dayArea'>"
-	   		+	"<button href='javascript:;' class='btnDay' onclick='clickedDayButton(\"" + "dayId2" + "\")'>DAY" + 2 +" <span>"+'<%=defaultDay2 %>'+"-"+'<%=defaultDay3 %>'+ "</span></button>" 
-	   		+   "<div class='showSeletedHotel'>" 
-	   		+   "<small>날짜를 선택하고 호텔을 추가하세요.</small>"
-	   		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
-	   		+   "</div>"
-			+	"</div>"		
-		hotelHTML += text3
-		$("#selectedHotel").append(hotelHTML);
-			
-		selectedHotelIdList.push('dayId1');
-		selectedHotelIdList.push('dayId2');
+		deleteHotelList()
 	}
 	
 	//마지막 날짜-처음 날짜

@@ -1,5 +1,8 @@
 package com.nadri.controller;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,13 +127,17 @@ public class PlanController {
 	String endId = ""; 
 	String sDate = "";
 	String eDate = "";
+	String lastId = "";
+	int dayOffset;
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/schedule", method = RequestMethod.POST)
-	public @ResponseBody String makingSchedule(@RequestParam String data) {
+	public @ResponseBody String makingSchedule(@RequestParam String data) throws ParseException {
 		Map<String,Object> placeAndRest = new HashMap<>();
 		start = new HashMap<>();
 		Map<String, Object> hotel = new HashMap<>();
 		Map<String, Double> distances = new HashMap<>();
+		dayOffset = 0;
+		int limit = 6;
 		globalAllList = new HashMap<>();
 		path = new TreeMap<>();
 		
@@ -159,9 +166,25 @@ public class PlanController {
 			} else if("date".equals(key)) {
 				sDate = ((Map<String, String>)info.get(key)).get("sDate");
 				eDate = ((Map<String, String>)info.get(key)).get("eDate");
+				lastId = "#" + ((Map<String, String>)info.get(key)).get("lastId");
 			}
 		});
 		
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy.mm.dd");
+			Date FirstDate = format.parse(sDate);
+			Date SecondDate = format.parse(eDate);
+			long calDate = FirstDate.getTime() - SecondDate.getTime(); 
+			long calDateDays = calDate / ( 24*60*60*1000); 
+	 
+	        calDateDays = Math.abs(calDateDays);
+	        dayOffset = Math.round((placeAndRest.size()/calDateDays));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+       
+
 		path.forEach((key, value) -> {
 			int duration = 0;
 			double centerLat = 0;
@@ -174,7 +197,7 @@ public class PlanController {
 				centerLat = (Double)start.get("latitude");
 				centerLng = (Double)start.get("longitude");
 				int i = 0;
-				while(i<2) {
+				while(i<dayOffset && i<limit) {
 					String minPath = calculatePath(placeAndRest, centerLat, centerLng);
 					path.get(key).add(minPath);
 					placeAndRest.remove(minPath);
@@ -190,19 +213,23 @@ public class PlanController {
 				centerLat = endLat;
 				centerLng = endLng;
 				int i = 0;
-				while(i<2) {
+				while(i<dayOffset && i<limit) {
 					String minPath = calculatePath(placeAndRest, centerLat, centerLng);
 					path.get(key).add(minPath);
 					placeAndRest.remove(minPath);
 					i++;
 				}
-				endId = key;
-				path.get(key).add(key);
+				if(lastId.equals(key)) {
+					endId = key;
+					path.get(key).add(lastId);
+				}
 				endLat = ((Map<String, Double>)hotel.get(key)).get("latitude");
 				endLng = ((Map<String, Double>)hotel.get(key)).get("longitude");
 			}
 			
 		});
+		
+		System.out.println(path);
 		
 		return "success";
 	}
@@ -260,6 +287,7 @@ public class PlanController {
 		mav.addObject("cityEngName", globalCityEngName);
 		mav.addObject("centerLat",globalLatitude);
 		mav.addObject("centerLng",globalLongitude);
+		mav.addObject("lastId", lastId);
 		mav.setViewName("plan/modifyMap");
 		return mav;
 	}

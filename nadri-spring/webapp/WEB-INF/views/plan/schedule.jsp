@@ -4,6 +4,10 @@
 
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
+<%@ page import="com.nadri.dao.*"%>
+<%@ page import="com.nadri.vo.*"%>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -257,7 +261,7 @@
 		}
 	}
 
-		
+
 	function showHotel(){
 		var params = {
 				listId : 1,
@@ -273,7 +277,9 @@
 							var jsonText = "";
 							$("#showList").empty();
 							$.each(jsonData,function(index, item) {
-							
+								
+								 var hotelName = item.hotelName.replace(/\s/g, '');
+								
 								 var text = "<div id="+ item.hotelId + ">" + "<div class='select tabcontent'>"
 									+  "<div class='selectTab'>"
 									+  "<div class='recommendCard card'>"
@@ -281,9 +287,8 @@
 									+  "<img src="+ item.hotelImageURL+" alt="+ item.hotelName +">"
 									+  "</figure>"
 									+  "<b>" + item.hotelName + "</b>"
-									+  "<a href='javascript:;' class='info'><i class='fas fa-info'></i></a>"
+									+  "<a class='info' href='https://www.instagram.com/explore/tags/"+ hotelName +"'><i class='fas fa-info'></i></a>"
 									+  "<a class='plus' onmouseout='closeOverlay();' onMouseOver='panTo("+ item.hotelLatitude +","+ item.hotelLongitude + ",\"" + item.hotelName +"\")' onclick='addList("+item.hotelId+"," + item.hotelLatitude + "," + item.hotelLongitude + ",\"" + item.hotelImageURL + "\",\"" + item.hotelName + "\")'" +" href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
-									
 									+  "</div>"
 									+  "</div></div>"
 							  
@@ -318,6 +323,8 @@
 						return true;
 					}
 					
+					 var placeName = item.placeName.replace(/\s/g, '');
+
 					 var text = "<div id="+ item.placeId + ">" +  " <div class='select tabcontent'>"
 						+  "<div class='selectTab'>"
 						+  "<div class='recommendCard card'>"
@@ -325,7 +332,7 @@
 						+  "<img src="+ item.placeImageURL+" alt="+ item.placeName +">"
 						+  "</figure>"
 						+  "<b>" + item.placeName + "</b>"
-						+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
+						+  "<a class='info' href='https://www.instagram.com/explore/tags/"+ placeName +"'><i class='fas fa-info'></i></a>"
 						+  "<div onmouseout='closeOverlay();' onMouseOver='panTo("+ item.placeLatitude +","+ item.placeLongitude + ",\"" + item.placeName +"\")'>"
 						+  "<a class='plus' onclick='addList("+item.placeId+"," + item.placeLatitude + "," + item.placeLongitude+ ",\"" + item.placeImageURL + "\",\"" + item.placeName + "\")' href='javascript:;'><i class='fas fa-plus' ></i></a></div>"
 						+  "</div>"
@@ -361,6 +368,8 @@
 								if(item.restaurantId in placeAndRest){
 									return true;
 								}
+								 var restaurantName = item.restaurantName.replace(/\s/g, '');
+
 								 var text = "<div id="+ item.restaurantId + ">" + " <div class='select tabcontent'>"
 									+  "<div id='recommendHotel' class='selectTab'>"
 									+  "<div class='recommendCard card'>"
@@ -368,7 +377,7 @@
 									+  "<img src="+ item.restaurantImageURL+" alt="+ item.restaurantName +">"
 									+  "</figure>"
 									+  "<b>" + item.restaurantName + "</b>"
-									+  "<a href='avascript:;' class='info'><i class='fas fa-info'></i></a>"
+									+  "<a class='info' href='https://www.instagram.com/explore/tags/"+ restaurantName +"'><i class='fas fa-info'></i></a>"
 									+  "<div onmouseout='closeOverlay();' onMouseOver='panTo("+ item.restaurantLatitude +","+ item.restaurantLongitude +  ",\"" + item.restaurantName +"\")'>"
 									+  "<a class='plus' onclick='addList("+item.restaurantId+"," + item.restaurantLatitude + "," + item.restaurantLongitude+ ",\"" + item.restaurantImageURL + "\",\"" + item.restaurantName + "\")' href='javascript:;''><i class='fas fa-plus' ></i></a></div>"
 									+  "</div>"

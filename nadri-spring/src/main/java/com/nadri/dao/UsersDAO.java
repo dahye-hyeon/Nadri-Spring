@@ -26,7 +26,7 @@ public class UsersDAO {
 
 	/* 유저 한명 using email */
 	public UsersVo getOne(String email) {
-		return null;
+		return sqlSession.selectOne("users.usersOneEmail", email);
 	}
 
 	/* 회원가입 */

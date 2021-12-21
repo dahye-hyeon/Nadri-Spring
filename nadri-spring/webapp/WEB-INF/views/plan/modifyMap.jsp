@@ -1,33 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="java.util.*" %>
-<%@ page import="java.text.*" %>
+<%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/all.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/plan.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/caleander.css">
-<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
-<script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
+<link rel="shortcut icon" type="image/x-icon"
+	href="${pageContext.request.contextPath}/favicon.png">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/jquery-ui.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/all.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/reset.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/fonts.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/header.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/plan.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/caleander.css">
+<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"
+	src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script
+	src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script>
-  <style>
-.label * {display: inline-block;vertical-align: top;}
-.label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
-.label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
-.label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+<style>
+.label * {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.label .left {
+	background:
+		url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png")
+		no-repeat;
+	display: inline-block;
+	height: 24px;
+	overflow: hidden;
+	vertical-align: top;
+	width: 7px;
+}
+
+.label .center {
+	background:
+		url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png)
+		repeat-x;
+	display: inline-block;
+	height: 24px;
+	font-size: 12px;
+	line-height: 24px;
+}
+
+.label .right {
+	background:
+		url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png")
+		-1px 0 no-repeat;
+	display: inline-block;
+	height: 24px;
+	overflow: hidden;
+	width: 6px;
+}
 </style>
 <title>나드리 - 계획하기</title>
 </head>
@@ -35,12 +79,11 @@
 <body>
 	<div id="wrap">
 		<div id="mapArea">
-			<div id="map"
-				style="width: 100%; height: 100vh;"></div>
+			<div id="map" style="width: 100%; height: 100vh;"></div>
 			<div id="clickLatlng"></div>
 		</div>
 
-		 <c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		<!-- //header -->
 
 		<section id="fl">
@@ -48,21 +91,21 @@
 				<h2>${cityName}</h2>
 				<small>${cityEngName}</small>
 				<div class="calendar">
-					<input id="sdate" type="text" name="date"
-						placeholder="${sDate}"> <span>-</span> <input
-						id="edate" type="text" name="date" placeholder="${eDate}">
+					<input id="sdate" type="text" name="date" placeholder="${sDate}">
+					<span>-</span> <input id="edate" type="text" name="date"
+						placeholder="${eDate}">
 				</div>
 				<div id="selectArea">
-                    <h3>여행일정</h3>
-                    <div id="complete">
-                    	<a class="addPlan" href="javascript:;">일정 완료</a>
-                    </div>
-                    <div id="modifiedScroll" class="selectTab path"></div>
-                  </div>
+					<h3>여행일정</h3>
+					<div id="complete">
+						<a class="addPlan" href="javascript:;">일정 완료</a>
+					</div>
+					<div id="modifiedScroll" class="selectTab path"></div>
+				</div>
 			</article>
 		</section>
 	</div>
-	
+
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
 	<script>
@@ -75,7 +118,7 @@
 	var startInfo = ${startInfo};
 	var path = ${path};
 	var linePathDict = {};
-	var savedOverlayList = [];
+	var savedOverlayDict= {};
 	var diffDays = getDiff();
 	var colorSet = ['#0000FF', '#8B4513', '#000000','#FFA500','#9ACD32','#87CEFA']
 	var colorId = 0;
@@ -106,12 +149,12 @@
 		var startCheck = 1;
 		var linePath = []
 		var index = 0;
+		var overlayList = []
 		if(day.match("#dayID1")){
 			startCheck = 0;
 		}
 		for(const key of path[day]){
-			
-			showOverlay(key, startCheck, linePath, day, index);
+			showOverlay(key, startCheck, linePath, day, index, overlayList);
 			startCheck = 1;
 			index += 1
 		}
@@ -126,36 +169,32 @@
 		
 		linePathDict[day] = polyline;
 		dayColorDict[day] = colorSet[colorId%colorSet.length];
+		savedOverlayDict[day] = overlayList;
 		colorId += 1;
 	}
 	
 	showPath(linePathDict);
 	
+
 	function showPath(linePathDict){
 		$.each(linePathDict, function(key, value){
 			value.setMap(map);
 		});
 	}
 	
-	function showOverlay(i, startCheck, linePath, day, index){
-			if(startCheck == 0 || (day == lastId && (path[day].length-1) == index)){
+	function showOverlay(i, startCheck, linePath, day, index, overlayList){
+			if(startCheck == 0 || (day == "#last" && (path[day].length-1) == index)){
 				var localLat = startInfo['latitude'];
 				var localLng = startInfo['longitude'];
 				var position =  new kakao.maps.LatLng(localLat, localLng); 
 				linePath.push(new kakao.maps.LatLng(localLat, localLng));
 				var content = '<div class="wrap">' + 
-		        '    <div class="infomation">' + 
-		        '    <span class="fa-stack fa-lg">' +
-	            '    <i class="fa fa-circle fa-stack-2x fa-inverse"></i>' +
-	            '    <i class="fas fa-landmark fa-stack-1x"></i>' +
-	            '    </span>' +
-		        '        </div>' + 
-		        '        </div>';
+		        '<div class="circle">' + startInfo['name'].substring(0,2) +'</div></div>'
 				var customOverlay = new kakao.maps.CustomOverlay({
 				    position: position,
 				    content: content   
 				});
-				savedOverlayList.push(customOverlay);
+		        overlayList.push(customOverlay)
 				customOverlay.setMap(map);
 			} else {
 				var localLat = info[i]['latitude'];
@@ -163,30 +202,19 @@
 				var position =  new kakao.maps.LatLng(localLat, localLng); 
 				linePath.push(new kakao.maps.LatLng(localLat, localLng));
 				var content = '<div class="wrap">' + 
-		        '    <div class="infomation">' + 
-		        '    <span class="fa-stack fa-lg">' +
-	            '    <i class="fa fa-circle fa-stack-2x fa-inverse"></i>' +
-	            '    <i class="fas fa-landmark fa-stack-1x"></i>' +
-	            '    </span>' +
-		        '        </div>' + 
-		        '        </div>';
+		        '<div class="circle">' + info[i]['name'].substring(0,2) +'</div></div>'
 		        
 				var customOverlay = new kakao.maps.CustomOverlay({
 				    position: position,
 				    content: content   
 				});
-				savedOverlayList.push(customOverlay);
+		        overlayList.push(customOverlay)
 				customOverlay.setMap(map);
 			}
 		 	
 	}
 	
-	
-	function closeOverlay(){
-		for(const overlay of savedOverlayList){
-			overlay.setMap(null);
-		} 
-	}
+
 	
 	$(function(){
 		$("header").addClass("on");
@@ -230,6 +258,25 @@
 	    			polyline.setMap(map);
 	    	  }
 	    });
+	    
+	    $("#complete").on("click", function(){
+	    	var params = {}
+	    	params['test'] = "test";
+			$.ajax({
+				url : "insertDB",
+				type : "post",
+				data : {
+				       data: JSON.stringify(params) //params --> string
+			     },
+				datatype : "text",
+				success : function(data) {
+					console.log(data)
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
+				}
+			});
+		});
 	});
 	
 	function getDiff(){
@@ -240,8 +287,14 @@
 	}
 	
 	function showPlanFrame(){
-		  for(var i=1; i<=diffDays; i++){	
-		        var id = 'dayID' + i;
+		  for(var i=1; i<=diffDays+1; i++){	
+		        var id;
+		        if (i == diffDays+1){
+		        	id = "last";
+		        } else {
+		        	id = 'dayID' + i;
+		        }
+		        	
 		        var prevDay = sdate.getDate();
 		        var prevMonth = sdate.getMonth()+1;
 		        var nextDay = sdate.setDate(prevDay+1);
@@ -268,14 +321,17 @@
 					name = "" + startInfo["name"] 
 					id = "start"
 					startCheck = 1;
+				} else if (key=="#last" && index == item.length-1){
+					url = "" + startInfo["url"] 
+					name = "" + startInfo["name"] 
+					id = "start"
 				} else {
 					url = "" + 
 					info[data].url
 					name = "" + info[data].name 
 					id = "" + data
 				}
-				
-				
+
 				var text ="<div class='selectedCard card' value='" + id + "'>"
 					+	"<figure>"
 					+	"<img src=" + url + " alt= " + name + ">"
@@ -300,6 +356,15 @@
 	    $("#"+id).children("button.btnDay").css("backgroundColor", "#2e3c7e");
 	    $.each(linePathDict, function(key, value){
 	    	value.setMap(null);
+	    })
+	     $.each(savedOverlayDict, function(key, value){
+	    	$.each(value, function(k, v){
+	    		v.setMap(null);
+	    	})
+	    })
+	    
+	    $.each(savedOverlayDict["#"+id], function(key, value){
+	    	value.setMap(map); 
 	    })
 	    linePathDict["#"+id].setMap(map);
 	}

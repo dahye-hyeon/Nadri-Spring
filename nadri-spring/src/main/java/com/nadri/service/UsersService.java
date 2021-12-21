@@ -23,6 +23,10 @@ public class UsersService {
 		return usersDao.getOne(userId);
 	}
 	
+	public UsersVo getOne(String email) {
+		return usersDao.getOne(email);
+	}
+	
 	/* 회원가입 */
 	public int add(UsersVo userVo) {
 		return usersDao.add(userVo);

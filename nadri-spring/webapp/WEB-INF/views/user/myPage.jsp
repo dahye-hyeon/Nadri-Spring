@@ -1,57 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ page import="com.nadri.dao.*"%>
 <%@ page import="com.nadri.vo.*"%>
-<%@ page import="com.nadri.controller.*"%>
+<%@ page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나드리 - 마이페이지</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/myPage.css">
-	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/myPage.css">
 <script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script> 
- </head>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
+<title>나드리 - 모두보기</title>
+</head>
+<%
+	UsersVo vo = (UsersVo)session.getAttribute("usersVo");
+%>
 <body>
-    <div class="wrapper">
+
+	<div id="wrap">
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
+		 <div class="wrapper">
         <div class="container">
             <div class="top-background-div"></div>
             <div class="top-container">
                 <div class="profilePhotoContainer">
-                    <div class="profilePhoto-text" id="profilePhote"></div>
-                </div>
-
-                <div class="text">${vo.usersName}</div>
-                <form class="btn-normal" onclick="">프로필 수정</form>
-            </div>
-            <div>
-                <div class="row">
-                    <div class="index-section">
-                        <div class="index-circle" onclick="">
-                            <h5 style="font-family: 'Montserrat' !important">
-                                <b>나의 일정</b>
-                            </h5>
-                            <div>
-                                <h2 style="line-height: 1; font-weight: 700" id="myPlan"></h2>
-                            </div>
-                        </div>
-                        <div class="index-circle" onclick="">
-                            <h5 style="font-family: 'Montserrat' !important">
-                                <b>나의 리뷰</b>
-                            </h5>
-                            <div>
-                                <h2 style="line-height: 1; font-weight: 700" id="myReview">0</h2>
-                            </div>
-                        </div>
+                    <div class="profilePhoto-text" id="profilePhote">
+                    	<figure>
+                    		<img class="profile" src=<%=vo.getUsersImageName()%> alt="">
+                    	</figure>
                     </div>
                 </div>
+
+                <div class="text"><%=vo.getUsersName()%></div>
+                <form class="btn-normal" onclick="">프로필 수정</form>
             </div>
         </div>
     </div>
@@ -65,7 +53,6 @@
                     <div class="content-1">
                         <div class="travel-title">JEJU</div>
                         <div class="uk-text-meta">대한민국 제주도</div>
-                        <div class="uk-text-meta" style="font-size: 12px; margin-top: 8px;">사용자 계정</div>
                     </div>
                     <div class="content-2">
                         <div class="second-content-1">
@@ -88,16 +75,18 @@
                                 <div class="small-text">12</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="botton-content">
+                     <div class="botton-content">
                         <button>일정수정</button>
                         <button>일정표</button>
                         <button>일정공유</button>
                         <button>삭제</button>
                     </div>
+                    </div>
+                  
                 </div>
             </div>
         </div>
-    </div>
+	
+	</div>
 </body>
 </html>

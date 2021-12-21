@@ -18,6 +18,13 @@
 		WHERE u_id = #{userId}
 	</select>
 	
+	<!-- 특정 회원 유저 정보 불러오기 -->
+	<select id="usersOneEmail" parameterType="String" resultType="usersVo">
+		SELECT u_id usersId, u_name usersName
+		FROM users
+		WHERE u_email = #{email}
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="usersVo">
 		<![CDATA[

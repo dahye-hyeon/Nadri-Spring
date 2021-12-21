@@ -1,30 +1,24 @@
 @charset "UTF-8";
 
-
-
-* {
-    margin: 0;
-    padding: 0;
-    outline: none;
-    box-sizing: border-box;
+html {
+    font: 300 10px "Noto Sans KR", sans-serif;
+    color: #222;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
+
 body {
-    min-height: 100vh;
-    width: 100%;
+    font-size: 1.4rem;
     background: #fff;
-    color: #000;
-    margin: 0;
+    height: 100vh;
+    
 }
-div {
-    display: block;
-}
-.wrapper {
+
+.wrapper{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background: #fff;
-    min-height: 100vh;
     padding: 100px 30px;
 }
 
@@ -42,6 +36,7 @@ div {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 .profilePhoto-text {
     font-size: 1.4rem;
@@ -49,8 +44,15 @@ div {
     font-family: 'Montserrat';
 }
 
+.profile {
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .container {
-    width: 100vw;
+	margin: 0 auto;
+    width: 90%;
     display: block;
     background: #fff;
     max-width: 1400px;
@@ -80,7 +82,7 @@ div {
     margin: 8px;
     border-radius: 4;
     border: 2px solid #2E3C7E;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     text-align: center;
     outline: none;
     cursor: pointer;
@@ -150,12 +152,12 @@ img{
     float: left;
 }
 .travel-title {
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #000;
 }
 .uk-text-meta {
-    font-size: 0.875rem;
+    font-size: 1.575rem;
     line-height: 1.4;
     color: #999;
 }
@@ -194,13 +196,13 @@ img{
 }
 
 .small-title {
-    font-size: 1rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #2E3C7E;
     margin-right: 10px;
 }
 .small-text{
-    font-size: 0.9rem;
+    font-size: 1.8rem;
     color: gray;
 }
 .botton-content {

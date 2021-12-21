@@ -160,7 +160,6 @@
 		var shortName = name.substring(0,2);
 		// 이동할 위도 경도 위치를 생성합니다 
 		var moveLatLon = new kakao.maps.LatLng(centerLat, centerLng);
-		console.log(shortName);
 		var content = '<div class="wrap">' + 
         '        <div class="circle">' + shortName +'</div></div>';
 		customOverlay = new kakao.maps.CustomOverlay({
@@ -255,7 +254,7 @@
 		
 		//hotel
 		if(id>0 && id<100001){
-			selectHotel(url, name, data);
+			selectHotel(url, name);
 			selectHotelFrame();
 		} else { //place and restaurant
 			$(itemId).empty();
@@ -431,25 +430,35 @@
 	}
 	
  	function selectHotel(url, name){
+ 		var id="";
+ 		if(currentDayId != ""){
+			id = currentDayId
+		} else if(selectedHotelIdList.length > 0){
+			id = selectedHotelIdList.shift()
+		}
+ 		
 		var text ="<div class='hotelSelectCard card'>"
 		+	"<figure>"
 		+	"<img src=" + url + " alt= " + name + ">"
 		+	"</figure>"
 		+	"<b>" + name + "</b>"
-		+	"<a href='javascript:;' class='del'><i class='fas fa-times'></i></a>"
+		+	"<a href='javascript:;' class='del' onclick='delHotelCard(\"" + id + "\")'><i class='fas fa-times'></i></a>"
 		+	"</div>"
 		
-		if(currentDayId != ""){
-			selectedHotelInfo[currentDayId] = text
-			hotelList[currentDayId] = data
-			numOfHotel += 1
-		} else if(selectedHotelIdList.length > 0){
-			var id = selectedHotelIdList.shift()
-			selectedHotelInfo["#"+id] = text
-			hotelList["#"+id] = data
+		if(!(id in selectedHotelInfo) && id!=""){
+			selectedHotelInfo[id] = text
+			hotelList[id] = data
 			numOfHotel += 1
 		}
 	}
+ 	
+ 	function delHotelCard(id){
+ 		delete selectedHotelInfo[id]
+ 		delete hotelList[id]
+ 		selectedHotelIdList.push(id);
+ 		numOfHotel -= 1;
+ 		selectHotelFrame()
+ 	}
 	
 	function selectPlaceAndRest(url, name){
 		var text = "<div class='selectedCard card'>"
@@ -498,7 +507,7 @@
 	    		+	"<a class='plus' href='javascript:;'><i class='fas fa-plus'></i></a>"
 	    		+   "</div>"
 	    		+   "</div>"
-	    	selectedHotelIdList.push(id);
+	    	selectedHotelIdList.push("#"+id);
 	    	hotelHTML += text
     	}
     	selectHotelFrame();

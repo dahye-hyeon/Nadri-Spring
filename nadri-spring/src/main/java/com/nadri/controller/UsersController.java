@@ -57,7 +57,6 @@ public class UsersController {
 		usersVo.setUsersRoute("nadri");
 		System.out.println(usersVo.toString());
 		usersService.add(usersVo);
-		System.out.println("1");
 		return "/main/index";
 	}
 	
@@ -173,6 +172,7 @@ public class UsersController {
 		} else {
 			vo.setUsersEmailAgreement("1");
 		}
+		
 		vo.setUsersRegDate(date);
 		vo.setUsersRoute("Kakao");
 		vo.setUsersPassword(date+vo.getUsersEmail());
@@ -180,6 +180,9 @@ public class UsersController {
 		
 		if("true".equals(usersService.emailChk(vo.getUsersEmail()))) {
 			usersService.add(vo);
+		} else {
+			UsersVo resultVo = usersService.getOne(vo.getUsersEmail());
+			vo.setUsersId(resultVo.getUsersId());
 		}
 		
 		session.setAttribute("usersVo", vo);

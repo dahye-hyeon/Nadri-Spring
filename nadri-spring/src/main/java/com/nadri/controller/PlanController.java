@@ -119,8 +119,6 @@ public class PlanController {
 	String id = "";
 	Double lat = 0.0;
 	Double lng = 0.0;
-	double endLat = 0;
-	double endLng = 0;
 	Map<String, ArrayList<String>> path = null;
 	Map<String,Object> globalAllList = null;
 	Map<String, Object> start = null;
@@ -129,6 +127,12 @@ public class PlanController {
 	String eDate = "";
 	String lastId = "";
 	int dayOffset;
+	double centerLat = 0;
+	double centerLng = 0;
+	double endLat = 0;
+	double endLng = 0;
+	int listLength = 0;
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/schedule", method = RequestMethod.POST)
 	public @ResponseBody String makingSchedule(@RequestParam String data) throws ParseException {
@@ -166,10 +170,11 @@ public class PlanController {
 			} else if("date".equals(key)) {
 				sDate = ((Map<String, String>)info.get(key)).get("sDate");
 				eDate = ((Map<String, String>)info.get(key)).get("eDate");
-				lastId = "#" + ((Map<String, String>)info.get(key)).get("lastId");
+				lastId = "" + ((Map<String, String>)info.get(key)).get("lastId");
 			}
 		});
-		
+		listLength = placeAndRest.size();
+		path.put("#last", new ArrayList<String>());
 		
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy.mm.dd");
@@ -179,55 +184,72 @@ public class PlanController {
 			long calDateDays = calDate / ( 24*60*60*1000); 
 	 
 	        calDateDays = Math.abs(calDateDays);
-	        dayOffset = Math.round((placeAndRest.size()/calDateDays));
+	        dayOffset = (int) Math.ceil((double)(placeAndRest.size()/(double)(calDateDays+1)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
        
 
 		path.forEach((key, value) -> {
-			int duration = 0;
-			double centerLat = 0;
-			double centerLng = 0;
-			double endLat = 0;
-			double endLng = 0;
+			centerLat = 0;
+			centerLng = 0;
+			endLat = 0;
+			endLng = 0;
 			
 			if ("#dayID1".equals(key)) {
 				path.get(key).add(start.get("id").toString());
 				centerLat = (Double)start.get("latitude");
 				centerLng = (Double)start.get("longitude");
 				int i = 0;
-				while(i<dayOffset && i<limit) {
+				while(i<dayOffset && i<listLength && i<limit) {
 					String minPath = calculatePath(placeAndRest, centerLat, centerLng);
 					path.get(key).add(minPath);
 					placeAndRest.remove(minPath);
 					i++;
+					listLength -= 1;
 				}
 				endId = key;
 				path.get(key).add(key);
 				endLat = ((Map<String, Double>)hotel.get(key)).get("latitude");
 				endLng = ((Map<String, Double>)hotel.get(key)).get("longitude");
 				
-			} else {
+			} else if("#last".equals(key)){
+				path.get("#last").add(endId);
+				centerLat = endLat;
+				centerLng = endLng;
+				int i = 0;
+				while(i<dayOffset && i<listLength && i<limit) {
+					String minPath = calculatePath(placeAndRest, centerLat, centerLng);
+					path.get("#last").add(minPath);
+					placeAndRest.remove(minPath);
+					i++;
+					listLength -= 1;
+				}
+				
+				path.get("#last").add(start.get("id").toString());	
+			}
+			else {
 				path.get(key).add(endId);
 				centerLat = endLat;
 				centerLng = endLng;
 				int i = 0;
-				while(i<dayOffset && i<limit) {
+				while(i<dayOffset&& i<listLength && i<limit) {
 					String minPath = calculatePath(placeAndRest, centerLat, centerLng);
 					path.get(key).add(minPath);
 					placeAndRest.remove(minPath);
 					i++;
+					listLength -= 1;
 				}
-				if(lastId.equals(key)) {
-					endId = key;
-					path.get(key).add(lastId);
-				}
+				
+				endId = key;
+				path.get(key).add(key);
 				endLat = ((Map<String, Double>)hotel.get(key)).get("latitude");
 				endLng = ((Map<String, Double>)hotel.get(key)).get("longitude");
 			}
 			
 		});
+		
+		
 		
 		System.out.println(path);
 		
@@ -290,6 +312,12 @@ public class PlanController {
 		mav.addObject("lastId", lastId);
 		mav.setViewName("plan/modifyMap");
 		return mav;
+	}
+	
+	@RequestMapping(value = "/insertDB", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	public @ResponseBody String insertDatabase(@RequestParam String data) {
+		System.out.println(data);
+		return "insert!";
 	}
 	
 

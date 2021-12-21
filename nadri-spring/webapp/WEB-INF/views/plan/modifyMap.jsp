@@ -143,7 +143,14 @@
 				var localLng = startInfo['longitude'];
 				var position =  new kakao.maps.LatLng(localLat, localLng); 
 				linePath.push(new kakao.maps.LatLng(localLat, localLng));
-				var content = '<div class ="label"><span class="left"></span><span class="center">' + startInfo['name'] +'</span><span class="right"></span></div>';
+				var content = '<div class="wrap">' + 
+		        '    <div class="infomation">' + 
+		        '    <span class="fa-stack fa-lg">' +
+	            '    <i class="fa fa-circle fa-stack-2x fa-inverse"></i>' +
+	            '    <i class="fas fa-landmark fa-stack-1x"></i>' +
+	            '    </span>' +
+		        '        </div>' + 
+		        '        </div>';
 				var customOverlay = new kakao.maps.CustomOverlay({
 				    position: position,
 				    content: content   
@@ -155,7 +162,15 @@
 				var localLng = info[i]['longitude'];
 				var position =  new kakao.maps.LatLng(localLat, localLng); 
 				linePath.push(new kakao.maps.LatLng(localLat, localLng));
-				var content = '<div class ="label"><span class="left"></span><span class="center">' + info[i]['name'] +'</span><span class="right"></span></div>';
+				var content = '<div class="wrap">' + 
+		        '    <div class="infomation">' + 
+		        '    <span class="fa-stack fa-lg">' +
+	            '    <i class="fa fa-circle fa-stack-2x fa-inverse"></i>' +
+	            '    <i class="fas fa-landmark fa-stack-1x"></i>' +
+	            '    </span>' +
+		        '        </div>' + 
+		        '        </div>';
+		        
 				var customOverlay = new kakao.maps.CustomOverlay({
 				    position: position,
 				    content: content   
@@ -165,6 +180,7 @@
 			}
 		 	
 	}
+	
 	
 	function closeOverlay(){
 		for(const overlay of savedOverlayList){

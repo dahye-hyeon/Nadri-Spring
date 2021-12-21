@@ -356,6 +356,7 @@ article small {
     height: 28px;
     color: #fff;
     text-align: center;
+    font-weight: 500;
     background-color: #2e3c7e;
     border-radius: 50%;
 }

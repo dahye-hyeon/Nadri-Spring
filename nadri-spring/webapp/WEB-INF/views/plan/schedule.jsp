@@ -157,9 +157,12 @@
 	}
 
 	function panTo(centerLat, centerLng, name) {
+		var shortName = name.substring(0,2);
 		// 이동할 위도 경도 위치를 생성합니다 
 		var moveLatLon = new kakao.maps.LatLng(centerLat, centerLng);
-		var content = '<div class ="label"><span class="left"></span><span class="center">' + name +'</span><span class="right"></span></div>';
+		console.log(shortName);
+		var content = '<div class="wrap">' + 
+        '        <div class="circle">' + shortName +'</div></div>';
 		customOverlay = new kakao.maps.CustomOverlay({
 		    position: moveLatLon,
 		    content: content   
@@ -168,6 +171,8 @@
 		// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		customOverlay.setMap(map);
 		map.panTo(moveLatLon);
+		
+
 	}
 	
 	function closeOverlay(){

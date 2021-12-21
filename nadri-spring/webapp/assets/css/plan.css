@@ -340,3 +340,28 @@ article small {
     overflow-y: scroll;
      height: 660px;
 }
+
+/* map design */
+.wrap {
+	 display: flex;
+     justify-content: center;
+     
+     margin: 0 auto;
+     padding: 30px;
+}
+.circle {
+	margin: 0 auto;
+	padding-top: 12px;
+    width: 40px;
+    height: 28px;
+    color: #fff;
+    text-align: center;
+    background-color: #2e3c7e;
+    border-radius: 50%;
+}
+
+.infomation {
+	top: 50px;
+	color : #2e3c7e;
+}
+

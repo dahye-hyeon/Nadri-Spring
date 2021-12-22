@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="plan">
+
+
+	<!-- 특정 회원 유저 정보 불러오기 -->
+	<select id="planList" parameterType="Integer" resultType="planVo">
+		SELECT P_ID planId, P_START planStart, P_END planEnd, P_CITY_ID planCityId, P_NAME planName
+		FROM plan
+		WHERE P_USER_ID = #{userId} AND P_Id = P_NO
+		ORDER BY P_ID DESC
+	</select>
+	
+	<!-- 특정 회원 유저 정보 불러오기 -->
+	<select id="getCurVal" resultType="Integer">
+		SELECT *
+		FROM (SELECT P_ID
+				FROM plan
+				ORDER BY P_ID DESC)
+		WHERE ROWNUM= 1
+	</select>
+	
+	<!-- 특정 회원 유저 정보 불러오기 -->
+	<insert id="addPlan" parameterType="planVo">
+		<![CDATA[
+			INSERT INTO plan(P_ID, P_NAME, P_START, P_END, P_NO, P_DAY, P_HOTEL_ID, P_USER_ID, P_PLACE_ID, P_RESTAURANT_ID, P_CITY_ID, P_START_ID)
+			VALUES(#{planId}, 
+			       #{planName}, 
+			       to_date(#{planStart}, 'yyyy-mm-dd hh24:mi'), 
+			       to_date(#{planEnd}, 'yyyy-mm-dd hh24:mi'),
+			       #{planNo},
+			       #{planDay},
+			       #{planHotelId},
+			       #{planUserID},
+			       #{planPlaceID},
+			       #{planRestaurantId},
+			       #{planCityId},
+			       #{planStartId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 특정 plan 정보 -->
+<!-- 	<select id="getPlan" parameterType="Integer" resultType="planVo">
+		SELECT P_NAME, P_START, P_END, P_NO
+		FROM plan
+		WHERE P_ID = #{planId}
+	</select> -->
+</mapper>

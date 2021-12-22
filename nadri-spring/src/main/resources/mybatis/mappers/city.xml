@@ -33,5 +33,19 @@
 		from city
 		where city_Region_Id = #{regionId}
 	</select>
+	
+	<select id="cityOne" resultType="cityVo">
+		select CITY_ID cityId,
+				CITY_NAME cityName,
+				CITY_LATITUDE cityLatitude,
+				CITY_LONGITUDE cityLongitude,
+				CITY_IMAGE_URL cityImageURL,
+				CITY_REGION_ID cityRegionId,
+				CITY_IMAGE_DATA cityImageData,
+				CITY_CONTENT cityContent,
+				CITY_ENGNAME cityEngName
+		from city
+		where CITY_ID = #{cityId}
+	</select>
 
 </mapper>

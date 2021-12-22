@@ -261,7 +261,10 @@
 	    
 	    $("#complete").on("click", function(){
 	    	var params = {}
-	    	params['test'] = "test";
+	    	params['path'] = path;
+	    	params['info'] = info;
+	    	params['title'] = "${cityName} 여행" ; 
+	    	params['start'] = startInfo
 			$.ajax({
 				url : "insertDB",
 				type : "post",
@@ -271,6 +274,7 @@
 				datatype : "text",
 				success : function(data) {
 					console.log(data)
+					location.href = "myPage"
 				},
 				error : function(XHR, status, error) {
 					console.error(status + " : " + error);

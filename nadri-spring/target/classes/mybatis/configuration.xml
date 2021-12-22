@@ -16,6 +16,7 @@
     <typeAlias alias="restaurantVo" type="com.nadri.vo.RestaurantVo"></typeAlias>
     <typeAlias alias="placeVo" type="com.nadri.vo.PlaceVo"></typeAlias>
     <typeAlias alias="startingVo" type="com.nadri.vo.StartingVo"></typeAlias>
+    <typeAlias alias="planVo" type="com.nadri.vo.PlanVo"></typeAlias>
   </typeAliases>
   
   <mappers>
@@ -26,6 +27,7 @@
      <mapper resource="mybatis/mappers/restaurant.xml" />     
   	 <mapper resource="mybatis/mappers/place.xml" />
   	 <mapper resource="mybatis/mappers/starting.xml" />
+  	 <mapper resource="mybatis/mappers/plan.xml" />
   </mappers>
 
 </configuration>

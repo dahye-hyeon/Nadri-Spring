@@ -42,51 +42,64 @@
                 <form class="btn-normal" onclick="">프로필 수정</form>
             </div>
         </div>
-    </div>
+    	</div>
     <!--나의 일정-->
     <div>
         <div class="content">
             <h3 style="text-align: left;">나의 일정</h3>
             <div class="planContent-1">
-                <div class="cardContent">
-                    <img style="float: left;" src="images/mountain.jpg">
-                    <div class="content-1">
-                        <div class="travel-title">JEJU</div>
-                        <div class="uk-text-meta">대한민국 제주도</div>
-                    </div>
-                    <div class="content-2">
-                        <div class="second-content-1">
-                            <div class="text-content-1">
-                                <div class="small-title">여행이름</div>
-                                <div class="small-text">혼자 가는 제주도</div>
-                            </div>
-                            <div class="text-content-2">
-                                <div class="small-title">최종수정</div>
-                                <div class="small-text">2021.12.10</div>
-                            </div>
-                        </div>
-                        <div class="second-content-2">
-                            <div class="text-content-1">
-                                <div class="small-title">여행일자</div>
-                                <div class="small-text">2021.12.12-2021.12.20</div>
-                            </div>
-                            <div class="text-content-2">
-                                <div class="small-title">선택장소</div>
-                                <div class="small-text">12</div>
-                            </div>
-                        </div>
-                     <div class="botton-content">
-                        <button>일정수정</button>
-                        <button>일정표</button>
-                        <button>일정공유</button>
-                        <button>삭제</button>
-                    </div>
-                    </div>
-                  
-                </div>
             </div>
         </div>
-	
+    </div>
 	</div>
 </body>
+
+<script>
+	$(function(){
+		
+		$.ajax({
+			url : "getMyPageList",
+			type : "post",
+			datatype : "text",
+			data : {
+				userId : <%=vo.getUsersId()%>
+			},
+			success : function(data) {
+				var jsonData = JSON.parse(data);
+				$.each(jsonData,function(key, item) {
+					var text = "<div class='cardContent'>" 
+						+	"<img style='float: left;' src=" + item.url + ">"
+						+	"<div class='content-1'>"
+						+	"<div class='travel-title'>" + item.name + "</div>"
+						+	"<div class='uk-text-meta'>" + item.engName + "</div>"
+						+	"</div>"
+						+	"<div class='content-2'>"
+						+	"<div class='second-content-1'>"
+						+	"<div class='text-content-1'>"
+						+	"<div class='small-title'>여행이름</div>"
+						+	"<div class='small-text'>" + item.title + "</div>"
+						+	"</div></div>"
+						+	"<div class='second-content-2'>"
+						+	"<div class='text-content-1'>"
+						+	"<div class='small-title'>여행일자</div>"
+						+	"<div class='small-text'>" + item.startDate + " - " + item.endDate + "</div>"
+						+	"</div></div>"
+						+	"<div class='botton-content'>"
+						+	"<button onclick='modifyPlan(" + key + ")'>일정수정</button>"
+						+	"<button>삭제</button>"
+						+	" </div></div></div>"
+						
+					$(".planContent-1").append(text);
+				});
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	});
+	
+	function modifyPlan(planNo){
+		console.log(planNo);
+	}
+</script>
 </html>

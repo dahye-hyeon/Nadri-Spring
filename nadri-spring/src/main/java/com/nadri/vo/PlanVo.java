@@ -6,11 +6,28 @@ public class PlanVo {
 	private String planStart;
 	private String planEnd;
 	private int planNo;
-	private int planDay;
+	private String planDay;
+	private int planCityId;
 	private int planHotelId;
 	private int planUserID;
 	private int planPlaceID;
 	private int planRestaurantId;
+	private int planStartId;
+	
+	
+	public int getPlanStartId() {
+		return planStartId;
+	}
+	public void setPlanStartId(int planStartId) {
+		this.planStartId = planStartId;
+	}
+	public int getPlanCityId() {
+		return planCityId;
+	}
+	public void setPlanCityId(int planCityId) {
+		this.planCityId = planCityId;
+	}
+
 	public int getPlanId() {
 		return planId;
 	}
@@ -41,10 +58,10 @@ public class PlanVo {
 	public void setPlanNo(int planNo) {
 		this.planNo = planNo;
 	}
-	public int getPlanDay() {
+	public String getPlanDay() {
 		return planDay;
 	}
-	public void setPlanDay(int planDay) {
+	public void setPlanDay(String planDay) {
 		this.planDay = planDay;
 	}
 	public int getPlanHotelId() {
@@ -74,11 +91,10 @@ public class PlanVo {
 	@Override
 	public String toString() {
 		return "PlanVo [planId=" + planId + ", planName=" + planName + ", planStart=" + planStart + ", planEnd="
-				+ planEnd + ", planNo=" + planNo + ", planDay=" + planDay + ", planHotelId=" + planHotelId
-				+ ", planUserID=" + planUserID + ", planPlaceID=" + planPlaceID + ", planRestaurantId="
-				+ planRestaurantId + "]";
+				+ planEnd + ", planNo=" + planNo + ", planDay=" + planDay + ", planCityId=" + planCityId
+				+ ", planHotelId=" + planHotelId + ", planUserID=" + planUserID + ", planPlaceID=" + planPlaceID
+				+ ", planRestaurantId=" + planRestaurantId + ", planStartId=" + planStartId + "]";
 	}
-	
-	
+
 
 }

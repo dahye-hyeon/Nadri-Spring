@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,37 +21,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.nadri.api.KakaoService;
 import com.nadri.bo.NaverLoginBO;
+import com.nadri.service.CategoryService;
+import com.nadri.service.PlanService;
 import com.nadri.service.UsersService;
 import com.nadri.util.LoginUtil;
+import com.nadri.vo.CityVo;
+import com.nadri.vo.PlanVo;
 import com.nadri.vo.UsersVo;
 
 @Controller
-@RequestMapping(value="/user")
+@RequestMapping(value = "/user")
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
 	@Autowired
 	private NaverLoginBO naverLoginBO;
-	
-	
-	/*회원가입 폼 출력*/
-	@RequestMapping(value="/joinForm", method=RequestMethod.GET)
+	@Autowired
+	private PlanService planService;
+	@Autowired
+	private CategoryService categoryService;
+
+	/* 회원가입 폼 출력 */
+	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
 	public String joinForm() {
-		
+
 		return "user/joinForm";
 	}
-	
-	/*회원가입*/
-	@RequestMapping(value="/join", method=RequestMethod.POST)
+
+	/* 회원가입 */
+	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(@ModelAttribute UsersVo usersVo) {
 		Date time = new Date();
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String date = format1.format(time);
-		
+
 		usersVo.setUsersRegDate(date);
 		usersVo.setUsersUpdateDate(date);
 		usersVo.setUsersEmailAgreement("1");
@@ -59,96 +68,97 @@ public class UsersController {
 		usersService.add(usersVo);
 		return "/main/index";
 	}
-	
+
 	/* 이메일 중복체크 */
 	@ResponseBody
-	@RequestMapping(value="/emailChk", method=RequestMethod.POST)
+	@RequestMapping(value = "/emailChk", method = RequestMethod.POST)
 	public String emailChk(@RequestParam("email") String email) {
 		return usersService.emailChk(email);
 	}
-	
-	/*로그인폼 출력*/
-	@RequestMapping(value="/loginForm", method=RequestMethod.GET)
+
+	/* 로그인폼 출력 */
+	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public String loginForm() {
 		return "user/loginForm";
 	}
-	
-	/*로그인*/
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+
+	/* 로그인 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@ModelAttribute UsersVo usersVo, HttpSession session) {
 		UsersVo authUser = usersService.login(usersVo);
-		
-		if(authUser != null) {
+
+		if (authUser != null) {
 			session.setAttribute("usersVo", authUser);
-			//로그인 성공
+			// 로그인 성공
 			return "main/index";
-		}else {
-			//로그인 실패
+		} else {
+			// 로그인 실패
 			return "user/loginForm";
 		}
 	}
-	
-	/*네이버 로그인*/
-	@RequestMapping(value="/naverLogin", method= {RequestMethod.POST, RequestMethod.GET})
+
+	/* 네이버 로그인 */
+	@RequestMapping(value = "/naverLogin", method = { RequestMethod.POST, RequestMethod.GET })
 	public RedirectView Naverlogin(HttpSession session) throws Exception {
-		
+
 		RedirectView rv = new RedirectView();
-		
+
 		/* 네아로 인증 URL을 생성하기 위하여 getAuthorizationUrl을 호출 */
 		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-		
+
 		rv.setUrl(naverAuthUrl);
 		return rv;
 	}
-	
+
 	/* 네이버 로그인 성공시 callback 호출(NaverLoginBO에서 설정) */
 	@RequestMapping("/callback")
-	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
+	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session)
+			throws IOException, ParseException {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
 		System.out.println("apiResult:" + apiResult);
-		
+
 		UsersVo vo = new UsersVo();
-				
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		
+
 		map = new ObjectMapper().readValue(apiResult, HashMap.class);
 		map = (HashMap<String, Object>) map.get("response");
-		vo.setUsersEmail((String)map.get("email"));
-		vo.setUsersName((String)map.get("name"));
-		vo.setUsersImageName((String)map.get("profile_image"));
-		
-		System.out.println("vo출력:"+vo.toString());
-		
+		vo.setUsersEmail((String) map.get("email"));
+		vo.setUsersName((String) map.get("name"));
+		vo.setUsersImageName((String) map.get("profile_image"));
+
+		System.out.println("vo출력:" + vo.toString());
+
 		Date time = new Date();
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String date = format1.format(time);
-		
+
 		vo.setUsersRegDate(date);
 		vo.setUsersRoute("Naver");
-		vo.setUsersPassword(date+vo.getUsersEmail());
+		vo.setUsersPassword(date + vo.getUsersEmail());
 		vo.setUsersUpdateDate(date);
 		vo.setUsersEmailAgreement("1");
-	
-		if("true".equals(usersService.emailChk(vo.getUsersEmail()))) {
+
+		if ("true".equals(usersService.emailChk(vo.getUsersEmail()))) {
 			usersService.add(vo);
 		}
 		session.setAttribute("usersVo", vo);
-		
-    	return "main/index";
+
+		return "main/index";
 	}
-	
-	@RequestMapping(value="/logout", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "main/index";
 	}
-	
-	/*카카오로그인*/
-	@RequestMapping(value="/loginKakao", method=RequestMethod.GET)
-	public String kakaoLogin(@RequestParam("code")String code, HttpSession session) {
-		
+
+	/* 카카오로그인 */
+	@RequestMapping(value = "/loginKakao", method = RequestMethod.GET)
+	public String kakaoLogin(@RequestParam("code") String code, HttpSession session) {
+
 		KakaoService kakaoService = new KakaoService();
 		UsersVo vo = new UsersVo();
 		String access_Token = kakaoService.getAccessToken(code);
@@ -162,37 +172,75 @@ public class UsersController {
 				vo.setUsersEmail((String) value);
 			}
 		});
-		
+
 		Date time = new Date();
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String date = format1.format(time);
-		
+
 		if (vo.getUsersEmail().contains("Kakao")) {
 			vo.setUsersEmailAgreement("0");
 		} else {
 			vo.setUsersEmailAgreement("1");
 		}
-		
+
 		vo.setUsersRegDate(date);
 		vo.setUsersRoute("Kakao");
-		vo.setUsersPassword(date+vo.getUsersEmail());
+		vo.setUsersPassword(date + vo.getUsersEmail());
 		vo.setUsersUpdateDate(date);
-		
-		if("true".equals(usersService.emailChk(vo.getUsersEmail()))) {
+
+		if ("true".equals(usersService.emailChk(vo.getUsersEmail()))) {
 			usersService.add(vo);
 		} else {
 			UsersVo resultVo = usersService.getOne(vo.getUsersEmail());
 			vo.setUsersId(resultVo.getUsersId());
 		}
-		
+
 		session.setAttribute("usersVo", vo);
-		
+
 		return "main/index";
 	}
-	
-	/*마이페이지 출력*/
-	@RequestMapping(value="/myPage", method=RequestMethod.GET)
+
+	/* 마이페이지 출력 */
+	@RequestMapping(value = "/myPage", method = RequestMethod.GET)
 	public String myPage(@ModelAttribute UsersVo usersVo, HttpSession session) {
 		return "user/myPage";
+	}
+
+	@RequestMapping(value = "/getMyPageList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	public @ResponseBody String getMyPageList(@RequestParam("userId") String userId) throws JsonProcessingException, java.text.ParseException {
+		List<PlanVo> list = planService.getList(Integer.valueOf(userId));
+		String startDate = "";
+		String endDate = "";
+		Integer cityId = -1;
+		Integer planId = -1;
+		Map<String, Object> map = new HashMap<>();
+		Date time = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String date = format.format(time);
+		
+		for (PlanVo vo : list) {
+			Map<String, Object> data = new HashMap<>();
+			startDate = vo.getPlanStart(); 
+			  endDate = vo.getPlanEnd(); 
+			  Date formatStartDate = format.parse(startDate);
+			  Date formatEndDate = format.parse(endDate);
+			  startDate = format.format(formatStartDate).replace("-",".");
+			  endDate = format.format(formatEndDate).replace("-",".");
+			  
+			  cityId = vo.getPlanCityId(); 
+			  CityVo cityVo = categoryService.getOne(cityId);
+			  data.put("startDate", startDate);
+			  data.put("endDate", endDate);
+			  data.put("url", cityVo.getCityImageURL());
+			  data.put("name", cityVo.getCityName());
+			  data.put("engName", cityVo.getCityEngName());
+			  data.put("title", vo.getPlanName());
+			  map.put(""+vo.getPlanId(), data);			 
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+		String result = "";
+		result = mapper.writeValueAsString(map);
+		return result;
 	}
 }

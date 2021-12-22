@@ -19,8 +19,11 @@ public class CategoryService {
 	}
 
 	/* 특정 도시정보 가져오기 */
-	public List<CityVo> getList(int cityId) {
-		return cityDao.getList(cityId);
+	public List<CityVo> getList(int regionId) {
+		return cityDao.getList(regionId);
 	}
-
+	
+	public CityVo getOne(int cityId) {
+		return cityDao.getOne(cityId);
+	}
 }

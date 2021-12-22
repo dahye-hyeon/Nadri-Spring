@@ -613,6 +613,43 @@
 		        eDate = selectedDate;
 		        deleteHotelList();
 		    });
+		    
+		    var $leftTabnav = $("#leftBox #selectArea .tabnav li");
+		    var $rightTabnav = $("#rightBox #selectArea .tabnav li")
+		    var $leftIndicator = $("#leftBox #selectArea .indicator");
+		    var $rightIndicator = $("#rightBox #selectArea .indicator");
+		    var ani = "500, 'swing'";
+		    
+		    $($leftTabnav).first().on('click', function() {
+		    	console.log("click");
+		        $($leftIndicator).stop().animate({
+		            left:0
+		        },ani)
+		    })
+		    $($leftTabnav).eq(1).on('click', function() {
+		    	console.log("click");
+		        $($leftIndicator).stop().animate({
+		            left : "150px"
+		        },ani)
+		    })
+		    $($rightTabnav).first().on('click', function() {
+		    	console.log("click");
+		        $($rightIndicator).stop().animate({
+		            left:0
+		        },ani)
+		    })
+		    $($rightTabnav).eq(1).on('click', function() {
+		    	console.log("click");
+		        $($rightIndicator).stop().animate({
+		            left:100
+		        },ani)
+		    })
+		    $($rightTabnav).eq(2).on('click', function() {
+		    	console.log("click");
+		        $($rightIndicator).stop().animate({
+		            left:200
+		        },ani)
+		    })
 	});//jquery 
 	
 	function clickedDayButton(id){

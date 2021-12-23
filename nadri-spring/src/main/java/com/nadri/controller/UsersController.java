@@ -2,10 +2,12 @@ package com.nadri.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,19 +21,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nadri.api.KakaoService;
 import com.nadri.bo.NaverLoginBO;
 import com.nadri.service.CategoryService;
+import com.nadri.service.HotelService;
+import com.nadri.service.PlaceService;
 import com.nadri.service.PlanService;
+import com.nadri.service.RestaurantService;
+import com.nadri.service.StartingService;
 import com.nadri.service.UsersService;
 import com.nadri.util.LoginUtil;
 import com.nadri.vo.CityVo;
+import com.nadri.vo.HotelVo;
+import com.nadri.vo.PlaceVo;
 import com.nadri.vo.PlanVo;
+import com.nadri.vo.RestaurantVo;
+import com.nadri.vo.StartingVo;
 import com.nadri.vo.UsersVo;
 
 @Controller
@@ -44,7 +57,15 @@ public class UsersController {
 	@Autowired
 	private PlanService planService;
 	@Autowired
+	private HotelService hotelService;
+	@Autowired
+	private PlaceService placeService;
+	@Autowired
+	private RestaurantService restaurantService;
+	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private StartingService startingService;
 
 	/* 회원가입 폼 출력 */
 	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
@@ -242,5 +263,112 @@ public class UsersController {
 		String result = "";
 		result = mapper.writeValueAsString(map);
 		return result;
+	}
+	
+	@RequestMapping(value = "/showPlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	public @ResponseBody ModelAndView showPlan(ModelAndView mav, String planId) throws JsonProcessingException, java.text.ParseException {
+		List<PlanVo> planVoList = planService.getPlan(Integer.valueOf(planId));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Map<String, ArrayList<Map<String, Object>>> info = new TreeMap<>();
+		Date formatStartDate = null;
+		Date formatEndDate = null;
+		String startDate = "";
+		String endDate = "";
+		Integer cityId = -1;
+		String name = "";
+		String nameEng = "";
+		Double centerLat = 0.0;
+		Double centerLng = 0.0;
+		for(PlanVo vo:planVoList) {
+			formatStartDate = format.parse(vo.getPlanStart());
+			formatEndDate = format.parse(vo.getPlanEnd());
+			startDate = format.format(formatStartDate).replace("-",".");
+			endDate = format.format(formatEndDate).replace("-",".");
+			cityId = vo.getPlanCityId();
+			String day = vo.getPlanDay();
+			info.put(day, new ArrayList<Map<String, Object>>());
+		}
+		
+		for(PlanVo vo:planVoList) {
+			formatStartDate = format.parse(vo.getPlanStart());
+			formatEndDate = format.parse(vo.getPlanEnd());
+			startDate = format.format(formatStartDate).replace("-",".");
+			endDate = format.format(formatEndDate).replace("-",".");
+			cityId = vo.getPlanCityId();
+			String day = vo.getPlanDay();
+			if(vo.getPlanHotelId() != 0) {
+				HotelVo hotelVo = hotelService.getOne(vo.getPlanHotelId());
+				Map<String, Object> map = new HashMap<>();
+				
+				map.put("id", hotelVo.getHotelId());
+				map.put("name", hotelVo.getHotelName());
+				map.put("url", hotelVo.getHotelImageURL());
+				map.put("latitude", hotelVo.getHotelLatitude());
+				map.put("longitude", hotelVo.getHotelLongitude());
+				info.get(day).add(map);
+			} else if(vo.getPlanPlaceID() != 0) {
+				PlaceVo placeVo = placeService.getOne(vo.getPlanPlaceID());
+				Map<String, Object> map = new HashMap<>();
+				
+				map.put("id", placeVo.getPlaceId());
+				map.put("name", placeVo.getPlaceName());
+				map.put("url", placeVo.getPlaceImageURL());
+				map.put("latitude", placeVo.getPlaceLatitude());
+				map.put("longitude", placeVo.getPlaceLongitude());
+				info.get(day).add(map);
+				
+			} else if(vo.getPlanRestaurantId() != 0) {
+				RestaurantVo restaurantVo = restaurantService.getOne(vo.getPlanRestaurantId());
+				Map<String, Object> map = new HashMap<>();
+				
+				map.put("id", restaurantVo.getRestaurantId());
+				map.put("name", restaurantVo.getRestaurantName());
+				map.put("url", restaurantVo.getRestaurantImageURL());
+				map.put("latitude", restaurantVo.getRestaurantLatitude());
+				map.put("longitude", restaurantVo.getRestaurantLongitude());
+				info.get(day).add(map);
+			} else if(vo.getPlanStartId() != 0) {
+				StartingVo startingVo = startingService.getOne(vo.getPlanStartId());
+				Map<String, Object> map = new HashMap<>();
+				
+				map.put("name", startingVo.getStartName());
+				map.put("url", startingVo.getStartImageURL());
+				map.put("latitude", startingVo.getStartLatitude());
+				map.put("longitude", startingVo.getStartLongitude());
+				info.get(day).add(map);
+			}
+		}
+		
+		CityVo cityVo = categoryService.getOne(cityId);
+		name = cityVo.getCityName();
+		nameEng = cityVo.getCityEngName();
+		centerLat = cityVo.getCityLatitude();
+		centerLng = cityVo.getCityLongitude();
+		
+		JSONObject infoJson = new JSONObject(info);
+		mav.addObject("info", infoJson);
+		mav.addObject("name", name);
+		mav.addObject("nameEng", nameEng);
+		mav.addObject("sDate", startDate);
+		mav.addObject("eDate", endDate);
+		mav.addObject("centerLat", centerLat);
+		mav.addObject("centerLng", centerLng);
+		mav.setViewName("user/showMap");
+
+		return mav;
+		
+	}
+	
+	@RequestMapping(value = "/updatePlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	public @ResponseBody String insertDatabase(@RequestParam String data) throws ParseException {
+		Map<String, Object> info = new Gson().fromJson(String.valueOf(data), new TypeToken<Map<String, Object>>() {
+		}.getType());
+		
+		info.forEach((k, v)->{
+			System.out.println(k);
+			System.out.println(v);
+		});
+		
+		return "insert!";
 	}
 }

@@ -85,7 +85,10 @@
 						+	"<div class='small-text'>" + item.startDate + " - " + item.endDate + "</div>"
 						+	"</div></div>"
 						+	"<div class='botton-content'>"
-						+	"<button onclick='modifyPlan(" + key + ")'>일정수정</button>"
+						+ 	"<form action='showPlan' method='post'>"
+						+ 	"<input type='hidden' name='planId' value=" + key + ">"
+						+	"<button type='submit'>일정수정</button>"
+						+ 	"</form>"
 						+	"<button>삭제</button>"
 						+	" </div></div></div>"
 						

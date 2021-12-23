@@ -36,5 +36,20 @@
 		from restaurant
 		where R_CITY_ID = #{cityId}
 	</select>
+	
+	<select id="getOne" parameterType="Integer" resultType="restaurantVo">
+		select R_ID restaurantId,
+				R_NAME restaurantName,
+				R_CONTENT restaurantContent,
+				R_LATITUDE restaurantLatitude,
+				R_LONGITUDE restaurantLongitude,
+				R_CITY_ID restaurantCityId,
+				R_ADDRESS restaurantAddress,
+				R_ADD restaurantAdd,
+				R_IMAGE_URL restaurantImageURL,
+				R_IMAGE_DATA restaurantImageData
+		from restaurant
+		where R_ID = #{restaurantId}
+	</select>
 
 </mapper>

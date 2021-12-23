@@ -35,4 +35,8 @@ public class PlaceDAO {
 	public List<PlaceVo> getPlaceList(int cityId){
 		return sqlSession.selectList("place.PlaceList", cityId);
 	}
+	
+	public PlaceVo getOne(int placeId){
+		return sqlSession.selectOne("place.getOne", placeId);
+	}
 }

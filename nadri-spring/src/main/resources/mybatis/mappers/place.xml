@@ -36,5 +36,20 @@
 		from place
 		where PL_CITY_ID = #{cityId}
 	</select>
+	
+	<select id="getOne" parameterType="Integer" resultType="placeVo">
+		select PL_ID placeId,
+				PL_NAME placeName,
+				PL_CONTENT placeContent,
+				PL_LATITUDE placeLatitude,
+				PL_LONGITUDE placeLongitude,
+				PL_CITY_ID placeCityId,
+				PL_ADDRESS placeAddress,
+				PL_ADD placeAdd,
+				PL_IMAGE_URL placeImageURL,
+				PL_IMAGE_DATA placeImageData
+		from place
+		where PL_ID = #{placeId}
+	</select>
 
 </mapper>

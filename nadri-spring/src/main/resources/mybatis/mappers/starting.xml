@@ -34,5 +34,19 @@
 		from starting
 		where S_CITY_ID = #{cityId}
 	</select>
+	
+	<select id="getOne" parameterType="Integer" resultType="startingVo">
+		select S_ID startId,
+				S_NAME startName,
+				S_LATITUDE startLatitude,
+				S_LONGITUDE startLongitude,
+				S_IMAGE_URL startImageURL,
+				S_CITY_ID startCityId,
+				S_ADDRESS startAddress,
+				S_IMAGE_URL startImageURL,
+				S_IMAGE_DATA startImageData
+		from starting
+		where S_ID = #{startId}
+	</select>
 
 </mapper>

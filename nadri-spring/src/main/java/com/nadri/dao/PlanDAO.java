@@ -30,10 +30,10 @@ public class PlanDAO {
 		return result;
 	}
 	
-	/*
-	 * public PlanVo getPlan(Integer planId) { return
-	 * sqlSession.selectOne("plan.getPlan", planId); }
-	 * 
-	 */
+	
+	  public List<PlanVo> getPlan(Integer planId) { 
+		  return sqlSession.selectList("plan.getPlan", planId); 
+	  }
+	
 
 }

@@ -36,5 +36,20 @@
 		from hotel
 		where H_CITY_ID = #{cityId}
 	</select>
+	
+	<select id="getOne" parameterType="Integer" resultType="hotelVo">
+		select H_ID hotelId,
+				H_NAME hotelName,
+				H_CONTENT hotelContent,
+				H_LATITUDE hotelLatitude,
+				H_LONGITUDE hotelLongitude,
+				H_CITY_ID hotelCityId,
+				H_ADDRESS hotelAddress,
+				H_ADD hotelAdd,
+				H_IMAGE_URL hotelImageURL,
+				H_IMAGE_DATA hotelImageData
+		from hotel
+		where H_ID = #{hotelId}
+	</select>
 
 </mapper>

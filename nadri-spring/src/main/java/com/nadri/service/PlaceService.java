@@ -23,4 +23,8 @@ public class PlaceService {
 	public List<PlaceVo> getPlaceList(int cityId){
 		return placeDao.getPlaceList(cityId);
 	}
+	
+	public PlaceVo getOne(int placeId){
+		return placeDao.getOne(placeId);
+	}
 }

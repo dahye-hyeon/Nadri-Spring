@@ -19,6 +19,10 @@ public class PlanService {
 		return planDao.getList(userId);
 	}
 	
+	public List<PlanVo> getPlan(Integer planId) {
+		return planDao.getPlan(planId);
+	}
+	
 	public int addPlan(PlanVo vo) {
 		return planDao.addPlan(vo);
 	}

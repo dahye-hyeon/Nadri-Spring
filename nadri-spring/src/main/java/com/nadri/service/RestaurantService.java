@@ -23,4 +23,8 @@ public class RestaurantService {
 	public List<RestaurantVo> getRestaurantList(int cityId){
 		return restaurantDao.getRestaurantList(cityId);
 	}
+	
+	public RestaurantVo getOne(int restaurantId){
+		return restaurantDao.getOne(restaurantId);
+	}
 }

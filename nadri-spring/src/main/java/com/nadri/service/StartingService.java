@@ -25,4 +25,8 @@ public class StartingService {
 	public List<StartingVo> getStartingList(int cityId){
 		return startingDao.getList(cityId);
 	}
+	
+	public StartingVo getOne(int startId){
+		return startingDao.getOne(startId);
+	}
 }

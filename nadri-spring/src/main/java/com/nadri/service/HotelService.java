@@ -23,4 +23,8 @@ public class HotelService {
 	public List<HotelVo> getHotelList(int cityId){
 		return hotelDao.getHotelList(cityId);
 	}
+	
+	public HotelVo getOne(int hotelId){
+		return hotelDao.getOne(hotelId);
+	}
 }

@@ -22,5 +22,9 @@ public class StartingDAO {
 	public List<StartingVo> getList(int cityId){
 		return sqlSession.selectList("starting.startingPointList", cityId);
 	}
+	
+	public StartingVo getOne(int startId){
+		return sqlSession.selectOne("starting.getOne", startId);
+	}
 
 }

@@ -323,9 +323,9 @@ public class PlanController {
 	}
 
 	String title = "";
-	int idx=0;
 	int curVal;
-	int nextVal ;
+	int nextVal;
+
 	@RequestMapping(value = "/insertDB", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	public @ResponseBody String insertDatabase(@RequestParam String data, HttpSession session) throws ParseException {
 
@@ -333,7 +333,7 @@ public class PlanController {
 		Map<String, Object> info = new HashMap<>();
 		Map<String, Object> startInfo = new HashMap<>();
 		UsersVo userVo = (UsersVo) session.getAttribute("usersVo");
-		
+
 		Map<String, Object> params = new Gson().fromJson(String.valueOf(data), new TypeToken<Map<String, Object>>() {
 		}.getType());
 
@@ -355,7 +355,7 @@ public class PlanController {
 				});
 			}
 		});
-		
+
 		curVal = planService.getCurVal() + 1;
 		nextVal = curVal;
 		p.forEach((k, v) -> {
@@ -369,35 +369,31 @@ public class PlanController {
 				vo.setPlanEnd(eDate);
 				vo.setPlanDay(k);
 				vo.setPlanNo(curVal);
-				
-				if(idx == 0) {
-					vo.setPlanStartId(Integer.valueOf(id));
+
+				if (id.matches("(.*)#(.*)")) {
+					vo.setPlanHotelId(((Double) ((Map<String, Object>) info.get(id)).get("id")).intValue());
 				} else {
-					if(id.matches("(.*)#(.*)")) {
-						vo.setPlanHotelId(((Double)((Map<String, Object>)info.get(id)).get("id")).intValue());
+					int intId = Integer.valueOf(id);
+					if (intId > 100000 && intId < 200001) {
+						vo.setPlanPlaceID(intId);
+					} else if (intId > 200000) {
+						vo.setPlanRestaurantId(intId);
 					} else {
-						int intId = Integer.valueOf(id);
-						if(intId>100000 && intId<200001) {
-							vo.setPlanPlaceID(intId);
-						} else {
-							
-							vo.setPlanRestaurantId(intId);
-						}
+						vo.setPlanStartId(Integer.valueOf(id));
 					}
 				}
 
 				planService.addPlan(vo);
-				idx += 1;
+
 			}
 		});
 
-
 		return "insert!";
 	}
-	
+
 	@RequestMapping(value = "/myPage", method = RequestMethod.GET)
 	public String myPage(@ModelAttribute UsersVo usersVo, HttpSession session) {
 		return "redirect:/user/myPage";
 	}
-		
+
 }

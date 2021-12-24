@@ -36,9 +36,7 @@
                 <h3>SNS 간편 로그인</h3>
                 <div class="snsIcon">
                     <div id="naver"><a href="naverLogin" title="네이버"></a></div>
-                    <div id="kakao"><a href="https://kauth.kakao.com/oauth/authorize?client_id=205f5731512f02607419fe81babedfc8&redirect_uri=http://localhost:8088/user/loginKakao&response_type=code" title="카카오톡"></a></div>
-                    <div id="facebook"><a href="#" title="페이스북"></a></div>
-                    
+                    <div id="kakao"><a href="https://kauth.kakao.com/oauth/authorize?client_id=205f5731512f02607419fe81babedfc8&redirect_uri=http://localhost:8088/user/loginKakao&response_type=code" title="카카오톡"></a></div>             
                 </div>
             </div>
         </div>

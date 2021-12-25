@@ -62,7 +62,7 @@
 				<div id="selectArea">
 					<h3>여행일정</h3>
 					<div id="complete">
-						<a class="addPlan" href="javascript:;">확인</a>
+						<a class="addPlan" href="javascript:;">수정 완료</a>
 					</div>
 					<div id="modifiedScroll" class="selectTab path"></div>
 				</div>
@@ -197,7 +197,7 @@
 					data : JSON.stringify(params)
 				},
 				success : function(data) {
-					console.log(data)
+					location.href = "myPage"
 				},
 				error : function(XHR, status, error) {
 					console.error(status + " : " + error);

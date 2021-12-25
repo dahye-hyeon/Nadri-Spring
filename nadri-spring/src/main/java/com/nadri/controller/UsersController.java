@@ -265,9 +265,10 @@ public class UsersController {
 		return result;
 	}
 	
+	Integer basePlanId;
 	@RequestMapping(value = "/showPlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public @ResponseBody ModelAndView showPlan(ModelAndView mav, String planId) throws JsonProcessingException, java.text.ParseException {
-		List<PlanVo> planVoList = planService.getPlan(Integer.valueOf(planId));
+	public @ResponseBody ModelAndView showPlan(ModelAndView mav, String planNo) throws JsonProcessingException, java.text.ParseException {
+		List<PlanVo> planVoList = planService.getPlan(Integer.valueOf(planNo));
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Map<String, ArrayList<Map<String, Object>>> info = new TreeMap<>();
 		Date formatStartDate = null;
@@ -279,6 +280,7 @@ public class UsersController {
 		String nameEng = "";
 		Double centerLat = 0.0;
 		Double centerLng = 0.0;
+		
 		for(PlanVo vo:planVoList) {
 			formatStartDate = format.parse(vo.getPlanStart());
 			formatEndDate = format.parse(vo.getPlanEnd());
@@ -287,6 +289,7 @@ public class UsersController {
 			cityId = vo.getPlanCityId();
 			String day = vo.getPlanDay();
 			info.put(day, new ArrayList<Map<String, Object>>());
+			basePlanId = vo.getPlanNo();
 		}
 		
 		for(PlanVo vo:planVoList) {
@@ -305,11 +308,13 @@ public class UsersController {
 				map.put("url", hotelVo.getHotelImageURL());
 				map.put("latitude", hotelVo.getHotelLatitude());
 				map.put("longitude", hotelVo.getHotelLongitude());
+				map.put("type", "hotel");
 				info.get(day).add(map);
 			} else if(vo.getPlanPlaceID() != 0) {
 				PlaceVo placeVo = placeService.getOne(vo.getPlanPlaceID());
 				Map<String, Object> map = new HashMap<>();
 				
+				map.put("type", "place");
 				map.put("id", placeVo.getPlaceId());
 				map.put("name", placeVo.getPlaceName());
 				map.put("url", placeVo.getPlaceImageURL());
@@ -321,6 +326,7 @@ public class UsersController {
 				RestaurantVo restaurantVo = restaurantService.getOne(vo.getPlanRestaurantId());
 				Map<String, Object> map = new HashMap<>();
 				
+				map.put("type", "restaurant");
 				map.put("id", restaurantVo.getRestaurantId());
 				map.put("name", restaurantVo.getRestaurantName());
 				map.put("url", restaurantVo.getRestaurantImageURL());
@@ -331,6 +337,8 @@ public class UsersController {
 				StartingVo startingVo = startingService.getOne(vo.getPlanStartId());
 				Map<String, Object> map = new HashMap<>();
 				
+				map.put("type", "start");
+				map.put("id", startingVo.getStartId());
 				map.put("name", startingVo.getStartName());
 				map.put("url", startingVo.getStartImageURL());
 				map.put("latitude", startingVo.getStartLatitude());
@@ -359,16 +367,49 @@ public class UsersController {
 		
 	}
 	
+	Integer curPlanId;
 	@RequestMapping(value = "/updatePlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public @ResponseBody String insertDatabase(@RequestParam String data) throws ParseException {
+	public @ResponseBody String updatePlan(@RequestParam String data) throws ParseException {
 		Map<String, Object> info = new Gson().fromJson(String.valueOf(data), new TypeToken<Map<String, Object>>() {
 		}.getType());
 		
+		curPlanId = basePlanId;
+		
 		info.forEach((k, v)->{
 			System.out.println(k);
-			System.out.println(v);
+			for(Map<String, Object> map : (ArrayList<Map<String, Object>>)v) {
+				PlanVo planVo = new PlanVo();
+				String type = map.get("type").toString();
+				Integer id = Double.valueOf(map.get("id").toString()).intValue();
+				
+				planVo.setPlanRestaurantId(0);
+				planVo.setPlanHotelId(0);
+				planVo.setPlanPlaceID(0);
+				planVo.setPlanStartId(0);
+				planVo.setPlanId(curPlanId);
+				if("hotel".equals(type)) {
+					planVo.setPlanHotelId(id);
+				} else if("place".equals(type)) {
+					planVo.setPlanPlaceID(id);
+				} else if("restaurant".equals(type)){
+					planVo.setPlanRestaurantId(id);
+				} else if("start".equals(type)) {
+					planVo.setPlanStartId(id);
+				}
+				planService.updatePlan(planVo);
+				
+				curPlanId += 1;
+				
+			}
 		});
 		
-		return "insert!";
+		return "user/myPage";
+	}
+	
+	@RequestMapping(value = "/deletePlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	public String deletePlan(String planNo) throws ParseException {
+		planService.deletePlan(Integer.valueOf(planNo));
+		
+		return "redirect:myPage";
 	}
 }

@@ -47,15 +47,21 @@
  	<select id="getPlan" parameterType="Integer" resultType="planVo">
 		SELECT P_NO planNo, P_NAME planName, P_START planStart, P_END planEnd, P_DAY planDay, P_HOTEL_ID planHotelId, P_PLACE_ID planPlaceID, P_RESTAURANT_ID planRestaurantId, P_CITY_ID planCityId , P_START_ID planStartId
 		FROM plan
-		WHERE P_NO = #{planId}
+		WHERE P_NO = #{planNo}
 	</select>
 	
 	<update id="updatePlan" parameterType="planVo">
 		UPDATE plan set
-			P_HOTEL_ID = ${hotelId}
-			P_PLACE_ID = ${placeId}
-			P_RESTAURANT_ID = ${restaurantId}
-			P_START_ID = {startId}
-		WHERE P_ID = ${planId}
+			P_HOTEL_ID = #{planHotelId},
+			P_PLACE_ID = #{planPlaceID},
+			P_RESTAURANT_ID = #{planRestaurantId},
+			P_START_ID = #{planStartId}
+		WHERE P_ID = #{planId}
 	</update>
+	
+	
+	<delete id="deletePlan" parameterType="Integer">
+		DELETE FROM plan 
+		WHERE P_NO = #{planNo}
+	</delete>
 </mapper>

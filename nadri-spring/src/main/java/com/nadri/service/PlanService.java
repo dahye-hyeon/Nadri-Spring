@@ -30,4 +30,12 @@ public class PlanService {
 	public int getCurVal() {
 		return planDao.getCurVal();
 	}
+	
+	public int updatePlan(PlanVo planVo) {
+		return planDao.updatePlan(planVo);
+	}
+	
+	public int deletePlan(Integer planNo) {
+		 return planDao.deletePlan(planNo);
+	 }
 }

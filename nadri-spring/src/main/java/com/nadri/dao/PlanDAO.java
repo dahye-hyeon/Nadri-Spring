@@ -31,9 +31,17 @@ public class PlanDAO {
 	}
 	
 	
-	  public List<PlanVo> getPlan(Integer planId) { 
-		  return sqlSession.selectList("plan.getPlan", planId); 
+	  public List<PlanVo> getPlan(Integer planNo) { 
+		  return sqlSession.selectList("plan.getPlan", planNo); 
 	  }
+	  
+	 public int updatePlan(PlanVo planVo) {
+		 System.out.println(planVo);
+		 return sqlSession.update("plan.updatePlan", planVo);
+	 }
 	
+	 public int deletePlan(Integer planNo) {
+		 return sqlSession.delete("plan.deletePlan", planNo);
+	 }
 
 }

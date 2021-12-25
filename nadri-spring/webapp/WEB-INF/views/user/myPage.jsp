@@ -86,10 +86,13 @@
 						+	"</div></div>"
 						+	"<div class='botton-content'>"
 						+ 	"<form action='showPlan' method='post'>"
-						+ 	"<input type='hidden' name='planId' value=" + key + ">"
+						+ 	"<input type='hidden' name='planNo' value=" + key + ">"
 						+	"<button type='submit'>일정수정</button>"
 						+ 	"</form>"
+						+ 	"<form action='deletePlan' method='post'>"
+						+ 	"<input type='hidden' name='planNo' value=" + key + ">"
 						+	"<button>삭제</button>"
+						+ 	"</form>"
 						+	" </div></div></div>"
 						
 					$(".planContent-1").append(text);
@@ -100,9 +103,6 @@
 			}
 		});
 	});
-	
-	function modifyPlan(planNo){
-		console.log(planNo);
-	}
+
 </script>
 </html>

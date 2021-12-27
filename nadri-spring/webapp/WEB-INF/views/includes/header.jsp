@@ -9,7 +9,7 @@
 	<div class="container clear">
 		<div>
 			<a href="/"><h1 class="logo">
-					NADRI<span>국내여행 나드리 갈래?</span>
+					NADRI<span>우리나라로 나드리 갈래?</span>
 				</h1></a>
 		</div>
 		<nav>

@@ -360,6 +360,8 @@ public class PlanController {
 		nextVal = curVal;
 		p.forEach((k, v) -> {
 			for (String id : v) {
+				if(!id.matches("(.*)#(.*)"))
+					id = Double.valueOf(id).intValue() + "";
 				PlanVo vo = new PlanVo();
 				vo.setPlanId(nextVal++);
 				vo.setPlanName(title);

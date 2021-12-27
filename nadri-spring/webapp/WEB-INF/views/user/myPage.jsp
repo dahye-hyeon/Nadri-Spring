@@ -66,6 +66,7 @@
 			},
 			success : function(data) {
 				var jsonData = JSON.parse(data);
+				console.log(jsonData)
 				$.each(jsonData,function(key, item) {
 					var text = "<div class='cardContent'>" 
 						+	"<img style='float: left;' src=" + item.url + ">"
@@ -95,7 +96,7 @@
 						+ 	"</form>"
 						+	" </div></div></div>"
 						
-					$(".planContent-1").append(text);
+					$(".planContent-1").prepend(text);
 				});
 			},
 			error : function(XHR, status, error) {

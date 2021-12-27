@@ -71,7 +71,7 @@
 	</div>
 
 	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=09f2b2fa3047367e09a83ad2e1752c03&libraries=services"></script>
 	<script>
 	var data = [];
 	var sdate = new Date("${sDate}");
@@ -85,12 +85,6 @@
 	var colorSet = ['#0000FF', '#8B4513', '#000000','#FFA500','#9ACD32','#87CEFA']
 	var colorId = 0;
 	var dayColorDict = {}
-	
-	
-	function searchDetailAddrFromCoords(coords, callback) {
-		// 좌표로 법정동 상세 주소 정보를 요청합니다
-		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-	}
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 	mapOption = {

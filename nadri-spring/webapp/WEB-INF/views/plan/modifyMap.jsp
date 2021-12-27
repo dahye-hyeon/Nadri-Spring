@@ -71,7 +71,7 @@
 	</div>
 
 	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=09f2b2fa3047367e09a83ad2e1752c03&libraries=services"></script>
 	<script>
 	var data = [];
 	var sdate = new Date("${sDate}");
@@ -90,13 +90,6 @@
 	var lastId = "${lastId}"
 	
 	console.log(path)
-	
-	function searchDetailAddrFromCoords(coords, callback) {
-		// 좌표로 법정동 상세 주소 정보를 요청합니다
-		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-	}
-
-	
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 	mapOption = {
@@ -191,7 +184,6 @@
 	    	  stop: function(event, ui) {
 	    			
 	    			var id = "#" + $(this).parent().attr("id");
-	    			console.log(id);
 	    			linePathDict[id].setMap(null);
 	    			
 	    			var linePath = []
@@ -199,13 +191,13 @@
 		  	    		var value = $(this).attr("value");
 		  	    		var localLat 
 		  	    		var localLng 
-		  	    		if(value == "start"){
-		  	    			localLat = startInfo['latitude']
-			  	    		localLng = startInfo['longitude']
-		  	    		} else {
-		  	    			localLat = info[value]['latitude']
-			  	    		localLng = info[value]['longitude']
-		  	    		}
+			  	    		if(value == "start"){
+			  	    			localLat = startInfo['latitude']
+				  	    		localLng = startInfo['longitude']
+			  	    		} else {
+			  	    			localLat = info[value]['latitude']
+				  	    		localLng = info[value]['longitude']
+			  	    		}
 		  	    		
 		  	    		linePath.push(new kakao.maps.LatLng(localLat, localLng))
 		  	    	});
@@ -225,11 +217,30 @@
 	    
 	    $("#complete").on("click", function(){
 	    	var params = {}
-	    	params['path'] = path;
 	    	params['info'] = info;
 	    	params['title'] = "${cityName} 여행" ; 
 	    	params['start'] = startInfo
-			$.ajax({
+	    	
+	    	$(".selectedCard").each(function(){
+	    		var id = "#" + $(this).parents(".dayArea").attr("id");
+	    		path[id] = []
+  	    	});
+	    	
+	    	 $(".selectedCard").each(function(){
+	    		var id = "#" + $(this).parents(".dayArea").attr("id");
+	    		var idx = $(this).attr("value");
+ 	    		if(idx == "start"){
+ 	    			path[id].push(String(startInfo['id']))
+ 	    		}  else {
+ 	    			path[id].push(idx)
+ 	    		}
+	    		
+  	    	}); 
+	    	 
+	    	console.log(startInfo);
+	    	console.log(path);
+	    	params['path'] = path;
+	    	 	$.ajax({
 				url : "insertDB",
 				type : "post",
 				data : {
@@ -243,7 +254,7 @@
 				error : function(XHR, status, error) {
 					console.error(status + " : " + error);
 				}
-			});
+			}); 
 	    	
 	    	
 		});

@@ -112,7 +112,7 @@
 	</div>
 	
 	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f4cf056636b11d74c3ba9e1dd9980ee&libraries=services"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=09f2b2fa3047367e09a83ad2e1752c03&libraries=services"></script>
 	<script>
 	var data = [];
 	var markers = [];
@@ -151,11 +151,6 @@
 		setMarkers(null);
 	}
 
-	function searchDetailAddrFromCoords(coords, callback) {
-		// 좌표로 법정동 상세 주소 정보를 요청합니다
-		geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-	}
-
 	function panTo(centerLat, centerLng, name) {
 		var shortName = name.substring(0,2);
 		// 이동할 위도 경도 위치를 생성합니다 
@@ -177,20 +172,7 @@
 	function closeOverlay(){
 		customOverlay.setMap(null);
 	}
-	
-	function getDistanceFromLatLonInKm(lat1,lng1,lat2,lng2) { 
-		function deg2rad(deg) { return deg * (Math.PI/180) } 
-		var R = 6371; // Radius of the earth in km 
-		var dLat = deg2rad(lat2-lat1); // deg2rad below 
-		var dLon = deg2rad(lng2-lng1); 
-		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-		var d = R * c; // Distance in km 
-		
-		console.log("두 지점간의 거리는" + d.toFixed(3)*1000 + "m 입니다.");
-		
-		return d.toFixed(3)*1000; 
-	}
+
 	
 	var centerLat = ${startLatitude}
 	var centerLng = ${startLongitude}
@@ -211,7 +193,6 @@
 	centerMarker.setMap(map);
 	markers.push(centerMarker);
 	var customOverlay;
-	var geocoder = new kakao.maps.services.Geocoder();
 	infowindow = new kakao.maps.InfoWindow({
 		zindex : 1
 	});

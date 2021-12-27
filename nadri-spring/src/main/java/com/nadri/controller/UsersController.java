@@ -240,6 +240,7 @@ public class UsersController {
 		String date = format.format(time);
 		
 		for (PlanVo vo : list) {
+			System.out.println("result: " + vo);
 			Map<String, Object> data = new HashMap<>();
 			startDate = vo.getPlanStart(); 
 			  endDate = vo.getPlanEnd(); 

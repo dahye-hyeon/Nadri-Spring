@@ -12,9 +12,9 @@ import com.nadri.vo.CityVo;
 public class CategoryService {
 	@Autowired
 	private CityDAO cityDao;
-	
+
 	/* 모든 도시 정보 가져오기 */
-	public List<CityVo> getList(){
+	public List<CityVo> getList() {
 		return cityDao.getList();
 	}
 
@@ -22,7 +22,7 @@ public class CategoryService {
 	public List<CityVo> getList(int regionId) {
 		return cityDao.getList(regionId);
 	}
-	
+
 	public CityVo getOne(int cityId) {
 		return cityDao.getOne(cityId);
 	}

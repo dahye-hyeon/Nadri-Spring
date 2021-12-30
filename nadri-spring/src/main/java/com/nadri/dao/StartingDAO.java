@@ -13,17 +13,18 @@ import com.nadri.vo.StartingVo;
 public class StartingDAO {
 	@Autowired
 	private SqlSession sqlSession;
-	//도시 정보
-	public List<StartingVo> getList(){
+
+	// 도시 정보
+	public List<StartingVo> getList() {
 		return sqlSession.selectList("starting.allStartingPointList");
 	}
-	
-	//특정 도시 정보
-	public List<StartingVo> getList(int cityId){
+
+	// 특정 도시 정보
+	public List<StartingVo> getList(int cityId) {
 		return sqlSession.selectList("starting.startingPointList", cityId);
 	}
-	
-	public StartingVo getOne(int startId){
+
+	public StartingVo getOne(int startId) {
 		return sqlSession.selectOne("starting.getOne", startId);
 	}
 

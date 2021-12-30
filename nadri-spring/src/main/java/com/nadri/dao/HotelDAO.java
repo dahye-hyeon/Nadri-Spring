@@ -12,18 +12,18 @@ import com.nadri.vo.HotelVo;
 public class HotelDAO {
 	@Autowired
 	private SqlSession sqlSession;
-	
-	//전체 hotel 정보
-	public List<HotelVo> getList(){
+
+	// 전체 hotel 정보
+	public List<HotelVo> getList() {
 		return sqlSession.selectList("hotel.allHotelList");
 	}
-	
-	//특정 city의 hotel 정보
-	public List<HotelVo> getHotelList(int cityId){
+
+	// 특정 city의 hotel 정보
+	public List<HotelVo> getHotelList(int cityId) {
 		return sqlSession.selectList("hotel.HotelList", cityId);
 	}
-	
-	public HotelVo getOne(int hotelId){
+
+	public HotelVo getOne(int hotelId) {
 		return sqlSession.selectOne("hotel.getOne", hotelId);
 	}
 }

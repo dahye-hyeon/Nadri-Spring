@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MainController {
 
 	/* 메인화면 출력 */
-	
-	@RequestMapping(value="/", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main() {
 		return "main/index";
 	}

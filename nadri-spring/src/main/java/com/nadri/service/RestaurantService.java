@@ -13,18 +13,18 @@ public class RestaurantService {
 
 	@Autowired
 	private RestaurantDAO restaurantDao;
-	
+
 	/* 모든 음식점 정보 가져오기 */
-	public List<RestaurantVo> getList(){
+	public List<RestaurantVo> getList() {
 		return restaurantDao.getList();
 	}
 
 	/* 특정 도시의 음식점 가져오기 */
-	public List<RestaurantVo> getRestaurantList(int cityId){
+	public List<RestaurantVo> getRestaurantList(int cityId) {
 		return restaurantDao.getRestaurantList(cityId);
 	}
-	
-	public RestaurantVo getOne(int restaurantId){
+
+	public RestaurantVo getOne(int restaurantId) {
 		return restaurantDao.getOne(restaurantId);
 	}
 }

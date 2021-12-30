@@ -24,24 +24,23 @@ public class PlanDAO {
 	public int addPlan(PlanVo vo) {
 		return sqlSession.insert("plan.addPlan", vo);
 	}
-	
+
 	public int getCurVal() {
 		Integer result = sqlSession.selectOne("plan.getCurVal");
 		return result;
 	}
-	
-	
-	  public List<PlanVo> getPlan(Integer planNo) { 
-		  return sqlSession.selectList("plan.getPlan", planNo); 
-	  }
-	  
-	 public int updatePlan(PlanVo planVo) {
-		 System.out.println(planVo);
-		 return sqlSession.update("plan.updatePlan", planVo);
-	 }
-	
-	 public int deletePlan(Integer planNo) {
-		 return sqlSession.delete("plan.deletePlan", planNo);
-	 }
+
+	public List<PlanVo> getPlan(Integer planNo) {
+		return sqlSession.selectList("plan.getPlan", planNo);
+	}
+
+	public int updatePlan(PlanVo planVo) {
+		System.out.println(planVo);
+		return sqlSession.update("plan.updatePlan", planVo);
+	}
+
+	public int deletePlan(Integer planNo) {
+		return sqlSession.delete("plan.deletePlan", planNo);
+	}
 
 }

@@ -13,18 +13,18 @@ public class HotelService {
 
 	@Autowired
 	private HotelDAO hotelDao;
-	
+
 	/* 모든 호텔 정보 가져오기 */
-	public List<HotelVo> getList(){
+	public List<HotelVo> getList() {
 		return hotelDao.getList();
 	}
 
 	/* 특정 도시의 호텔 정보 가져오기 */
-	public List<HotelVo> getHotelList(int cityId){
+	public List<HotelVo> getHotelList(int cityId) {
 		return hotelDao.getHotelList(cityId);
 	}
-	
-	public HotelVo getOne(int hotelId){
+
+	public HotelVo getOne(int hotelId) {
 		return hotelDao.getOne(hotelId);
 	}
 }

@@ -18,8 +18,8 @@ public class UsersDAO {
 	public List<UsersVo> getList(UsersVo usersVo) {
 		return sqlSession.selectList("users.usersList");
 	}
-	
-	/* 특정 유저 정보 가져오기*/
+
+	/* 특정 유저 정보 가져오기 */
 	public UsersVo getOne(int userId) {
 		return sqlSession.selectOne("users.usersOne", userId);
 	}
@@ -54,9 +54,9 @@ public class UsersDAO {
 		System.out.println(email);
 		return sqlSession.selectOne("users.emailCheck", email);
 	}
-	
+
 	/* 로그인 */
-	
+
 	public UsersVo selectUsersVo(UsersVo usersVo) {
 		return sqlSession.selectOne("users.selectUserForLogin", usersVo);
 	}

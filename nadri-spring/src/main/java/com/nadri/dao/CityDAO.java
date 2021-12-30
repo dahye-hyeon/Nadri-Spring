@@ -10,21 +10,22 @@ import com.nadri.vo.CityVo;
 
 @Repository
 public class CityDAO {
-	
+
 	@Autowired
 	private SqlSession sqlSession;
-	//도시 정보
-	public List<CityVo> getList(){
+
+	// 도시 정보
+	public List<CityVo> getList() {
 		return sqlSession.selectList("city.allCityList");
 	}
-	
-	//특정 도시 정보
-	public List<CityVo> getList(int regionId){
+
+	// 특정 도시 정보
+	public List<CityVo> getList(int regionId) {
 		return sqlSession.selectList("city.cityList", regionId);
 	}
-	
-	//특정 도시 정보
-	public CityVo getOne(int cityId){
+
+	// 특정 도시 정보
+	public CityVo getOne(int cityId) {
 		return sqlSession.selectOne("city.cityOne", cityId);
 	}
 }

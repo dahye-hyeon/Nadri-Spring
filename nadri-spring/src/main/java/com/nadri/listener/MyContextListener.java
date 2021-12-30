@@ -7,8 +7,8 @@ import javax.servlet.annotation.WebListener;
 import com.nadri.util.SSHConnection;
 
 @WebListener
-public class MyContextListener implements ServletContextListener{
-	
+public class MyContextListener implements ServletContextListener {
+
 	private SSHConnection sshConnection;
 
 	@Override
@@ -16,7 +16,7 @@ public class MyContextListener implements ServletContextListener{
 		System.out.println("init start!");
 		try {
 			sshConnection = new SSHConnection();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

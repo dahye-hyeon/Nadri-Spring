@@ -228,7 +228,8 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/getMyPageList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public @ResponseBody String getMyPageList(@RequestParam("userId") String userId) throws JsonProcessingException, java.text.ParseException {
+	public @ResponseBody String getMyPageList(@RequestParam("userId") String userId)
+			throws JsonProcessingException, java.text.ParseException {
 		List<PlanVo> list = planService.getList(Integer.valueOf(userId));
 		String startDate = "";
 		String endDate = "";
@@ -238,26 +239,26 @@ public class UsersController {
 		Date time = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String date = format.format(time);
-		
+
 		for (PlanVo vo : list) {
 			System.out.println("result: " + vo);
 			Map<String, Object> data = new HashMap<>();
-			startDate = vo.getPlanStart(); 
-			  endDate = vo.getPlanEnd(); 
-			  Date formatStartDate = format.parse(startDate);
-			  Date formatEndDate = format.parse(endDate);
-			  startDate = format.format(formatStartDate).replace("-",".");
-			  endDate = format.format(formatEndDate).replace("-",".");
-			  
-			  cityId = vo.getPlanCityId(); 
-			  CityVo cityVo = categoryService.getOne(cityId);
-			  data.put("startDate", startDate);
-			  data.put("endDate", endDate);
-			  data.put("url", cityVo.getCityImageURL());
-			  data.put("name", cityVo.getCityName());
-			  data.put("engName", cityVo.getCityEngName());
-			  data.put("title", vo.getPlanName());
-			  map.put(""+vo.getPlanId(), data);			 
+			startDate = vo.getPlanStart();
+			endDate = vo.getPlanEnd();
+			Date formatStartDate = format.parse(startDate);
+			Date formatEndDate = format.parse(endDate);
+			startDate = format.format(formatStartDate).replace("-", ".");
+			endDate = format.format(formatEndDate).replace("-", ".");
+
+			cityId = vo.getPlanCityId();
+			CityVo cityVo = categoryService.getOne(cityId);
+			data.put("startDate", startDate);
+			data.put("endDate", endDate);
+			data.put("url", cityVo.getCityImageURL());
+			data.put("name", cityVo.getCityName());
+			data.put("engName", cityVo.getCityEngName());
+			data.put("title", vo.getPlanName());
+			map.put("" + vo.getPlanId(), data);
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -265,10 +266,12 @@ public class UsersController {
 		result = mapper.writeValueAsString(map);
 		return result;
 	}
-	
+
 	Integer basePlanId;
+
 	@RequestMapping(value = "/showPlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public @ResponseBody ModelAndView showPlan(ModelAndView mav, String planNo) throws JsonProcessingException, java.text.ParseException {
+	public @ResponseBody ModelAndView showPlan(ModelAndView mav, String planNo)
+			throws JsonProcessingException, java.text.ParseException {
 		List<PlanVo> planVoList = planService.getPlan(Integer.valueOf(planNo));
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Map<String, ArrayList<Map<String, Object>>> info = new TreeMap<>();
@@ -281,29 +284,29 @@ public class UsersController {
 		String nameEng = "";
 		Double centerLat = 0.0;
 		Double centerLng = 0.0;
-		
-		for(PlanVo vo:planVoList) {
+
+		for (PlanVo vo : planVoList) {
 			formatStartDate = format.parse(vo.getPlanStart());
 			formatEndDate = format.parse(vo.getPlanEnd());
-			startDate = format.format(formatStartDate).replace("-",".");
-			endDate = format.format(formatEndDate).replace("-",".");
+			startDate = format.format(formatStartDate).replace("-", ".");
+			endDate = format.format(formatEndDate).replace("-", ".");
 			cityId = vo.getPlanCityId();
 			String day = vo.getPlanDay();
 			info.put(day, new ArrayList<Map<String, Object>>());
 			basePlanId = vo.getPlanNo();
 		}
-		
-		for(PlanVo vo:planVoList) {
+
+		for (PlanVo vo : planVoList) {
 			formatStartDate = format.parse(vo.getPlanStart());
 			formatEndDate = format.parse(vo.getPlanEnd());
-			startDate = format.format(formatStartDate).replace("-",".");
-			endDate = format.format(formatEndDate).replace("-",".");
+			startDate = format.format(formatStartDate).replace("-", ".");
+			endDate = format.format(formatEndDate).replace("-", ".");
 			cityId = vo.getPlanCityId();
 			String day = vo.getPlanDay();
-			if(vo.getPlanHotelId() != 0) {
+			if (vo.getPlanHotelId() != 0) {
 				HotelVo hotelVo = hotelService.getOne(vo.getPlanHotelId());
 				Map<String, Object> map = new HashMap<>();
-				
+
 				map.put("id", hotelVo.getHotelId());
 				map.put("name", hotelVo.getHotelName());
 				map.put("url", hotelVo.getHotelImageURL());
@@ -311,10 +314,10 @@ public class UsersController {
 				map.put("longitude", hotelVo.getHotelLongitude());
 				map.put("type", "hotel");
 				info.get(day).add(map);
-			} else if(vo.getPlanPlaceID() != 0) {
+			} else if (vo.getPlanPlaceID() != 0) {
 				PlaceVo placeVo = placeService.getOne(vo.getPlanPlaceID());
 				Map<String, Object> map = new HashMap<>();
-				
+
 				map.put("type", "place");
 				map.put("id", placeVo.getPlaceId());
 				map.put("name", placeVo.getPlaceName());
@@ -322,11 +325,11 @@ public class UsersController {
 				map.put("latitude", placeVo.getPlaceLatitude());
 				map.put("longitude", placeVo.getPlaceLongitude());
 				info.get(day).add(map);
-				
-			} else if(vo.getPlanRestaurantId() != 0) {
+
+			} else if (vo.getPlanRestaurantId() != 0) {
 				RestaurantVo restaurantVo = restaurantService.getOne(vo.getPlanRestaurantId());
 				Map<String, Object> map = new HashMap<>();
-				
+
 				map.put("type", "restaurant");
 				map.put("id", restaurantVo.getRestaurantId());
 				map.put("name", restaurantVo.getRestaurantName());
@@ -334,10 +337,10 @@ public class UsersController {
 				map.put("latitude", restaurantVo.getRestaurantLatitude());
 				map.put("longitude", restaurantVo.getRestaurantLongitude());
 				info.get(day).add(map);
-			} else if(vo.getPlanStartId() != 0) {
+			} else if (vo.getPlanStartId() != 0) {
 				StartingVo startingVo = startingService.getOne(vo.getPlanStartId());
 				Map<String, Object> map = new HashMap<>();
-				
+
 				map.put("type", "start");
 				map.put("id", startingVo.getStartId());
 				map.put("name", startingVo.getStartName());
@@ -347,13 +350,13 @@ public class UsersController {
 				info.get(day).add(map);
 			}
 		}
-		
+
 		CityVo cityVo = categoryService.getOne(cityId);
 		name = cityVo.getCityName();
 		nameEng = cityVo.getCityEngName();
 		centerLat = cityVo.getCityLatitude();
 		centerLng = cityVo.getCityLongitude();
-		
+
 		JSONObject infoJson = new JSONObject(info);
 		mav.addObject("info", infoJson);
 		mav.addObject("name", name);
@@ -365,52 +368,51 @@ public class UsersController {
 		mav.setViewName("user/showMap");
 
 		return mav;
-		
 	}
-	
+
 	Integer curPlanId;
+
 	@RequestMapping(value = "/updatePlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	public @ResponseBody String updatePlan(@RequestParam String data) throws ParseException {
 		Map<String, Object> info = new Gson().fromJson(String.valueOf(data), new TypeToken<Map<String, Object>>() {
 		}.getType());
-		
+
 		curPlanId = basePlanId;
-		
-		info.forEach((k, v)->{
+
+		info.forEach((k, v) -> {
 			System.out.println(k);
-			for(Map<String, Object> map : (ArrayList<Map<String, Object>>)v) {
+			for (Map<String, Object> map : (ArrayList<Map<String, Object>>) v) {
 				PlanVo planVo = new PlanVo();
 				String type = map.get("type").toString();
 				Integer id = Double.valueOf(map.get("id").toString()).intValue();
-				
+
 				planVo.setPlanRestaurantId(0);
 				planVo.setPlanHotelId(0);
 				planVo.setPlanPlaceID(0);
 				planVo.setPlanStartId(0);
 				planVo.setPlanId(curPlanId);
-				if("hotel".equals(type)) {
+				if ("hotel".equals(type)) {
 					planVo.setPlanHotelId(id);
-				} else if("place".equals(type)) {
+				} else if ("place".equals(type)) {
 					planVo.setPlanPlaceID(id);
-				} else if("restaurant".equals(type)){
+				} else if ("restaurant".equals(type)) {
 					planVo.setPlanRestaurantId(id);
-				} else if("start".equals(type)) {
+				} else if ("start".equals(type)) {
 					planVo.setPlanStartId(id);
 				}
 				planService.updatePlan(planVo);
-				
+
 				curPlanId += 1;
-				
 			}
 		});
-		
+
 		return "user/myPage";
 	}
-	
+
 	@RequestMapping(value = "/deletePlan", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	public String deletePlan(String planNo) throws ParseException {
 		planService.deletePlan(Integer.valueOf(planNo));
-		
+
 		return "redirect:myPage";
 	}
 }

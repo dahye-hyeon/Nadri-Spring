@@ -13,18 +13,18 @@ public class PlaceService {
 
 	@Autowired
 	private PlaceDAO placeDao;
-	
+
 	/* 모든 place 정보 가져오기 */
-	public List<PlaceVo> getList(){
+	public List<PlaceVo> getList() {
 		return placeDao.getList();
 	}
 
 	/* 특정 city의 place 정보 가져오기 */
-	public List<PlaceVo> getPlaceList(int cityId){
+	public List<PlaceVo> getPlaceList(int cityId) {
 		return placeDao.getPlaceList(cityId);
 	}
-	
-	public PlaceVo getOne(int placeId){
+
+	public PlaceVo getOne(int placeId) {
 		return placeDao.getOne(placeId);
 	}
 }

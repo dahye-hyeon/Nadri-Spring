@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/join.css">
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
+<link rel="shortcut icon" type="image/x-icon"
+	href="${pageContext.request.contextPath}/favicon.png">
 <title>나드리 - 회원가입</title>
 </head>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -75,8 +76,7 @@
 		});
 
 	}); //documenet.ready
-	
-	
+
 	function checkEmail() {
 		if ("true" == test) {
 			return true;
@@ -150,7 +150,8 @@
 		<div id="join">
 			<div class="container">
 				<h2 class="joinHead">SIGN IN</h2>
-				<form action="${pageContext.request.contextPath}/user/join" method="post" onsubmit="return joinChk();">
+				<form action="${pageContext.request.contextPath}/user/join"
+					method="post" onsubmit="return joinChk();">
 					<div class="email">
 						<label for="email">이메일</label> <input type="email"
 							name="usersEmail" id="email" value="" required>
@@ -170,8 +171,7 @@
 						style="color: red; margin-top: -10px; margin-bottom: 10px; display: block;'"></b>
 
 					<label for="name">이름</label> <input type="text" name="usersName"
-						id="name" required>
-					<b id="chkName"
+						id="name" required> <b id="chkName"
 						style="color: red; margin-top: -10px; margin-bottom: 10px; display: block;'"></b>
 					<button type="submit">회원가입</button>
 				</form>

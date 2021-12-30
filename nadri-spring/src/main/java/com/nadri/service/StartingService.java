@@ -15,18 +15,16 @@ public class StartingService {
 
 	@Autowired
 	private StartingDAO startingDao;
-	
-	
-	public List<StartingVo> getList(){
+
+	public List<StartingVo> getList() {
 		return startingDao.getList();
 	}
 
-	
-	public List<StartingVo> getStartingList(int cityId){
+	public List<StartingVo> getStartingList(int cityId) {
 		return startingDao.getList(cityId);
 	}
-	
-	public StartingVo getOne(int startId){
+
+	public StartingVo getOne(int startId) {
 		return startingDao.getOne(startId);
 	}
 }

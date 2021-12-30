@@ -17,16 +17,16 @@ public class UsersService {
 	public List<UsersVo> getList(UsersVo usersVo) {
 		return usersDao.getList(usersVo);
 	}
-	
-	/* 특정 유저 정보 가져오기*/
+
+	/* 특정 유저 정보 가져오기 */
 	public UsersVo getOne(int userId) {
 		return usersDao.getOne(userId);
 	}
-	
+
 	public UsersVo getOne(String email) {
 		return usersDao.getOne(email);
 	}
-	
+
 	/* 회원가입 */
 	public int add(UsersVo userVo) {
 		return usersDao.add(userVo);
@@ -42,7 +42,7 @@ public class UsersService {
 		else
 			return "true";
 	}
-	
+
 	/* 로그인 */
 	public UsersVo login(UsersVo usersVo) {
 		UsersVo authUser = usersDao.selectUsersVo(usersVo);

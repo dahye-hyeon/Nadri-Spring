@@ -18,24 +18,24 @@ public class PlanService {
 	public List<PlanVo> getList(Integer userId) {
 		return planDao.getList(userId);
 	}
-	
+
 	public List<PlanVo> getPlan(Integer planId) {
 		return planDao.getPlan(planId);
 	}
-	
+
 	public int addPlan(PlanVo vo) {
 		return planDao.addPlan(vo);
 	}
-	
+
 	public int getCurVal() {
 		return planDao.getCurVal();
 	}
-	
+
 	public int updatePlan(PlanVo planVo) {
 		return planDao.updatePlan(planVo);
 	}
-	
+
 	public int deletePlan(Integer planNo) {
-		 return planDao.deletePlan(planNo);
-	 }
+		return planDao.deletePlan(planNo);
+	}
 }

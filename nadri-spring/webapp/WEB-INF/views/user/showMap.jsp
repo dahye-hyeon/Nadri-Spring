@@ -9,32 +9,19 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" type="image/x-icon"
-	href="${pageContext.request.contextPath}/favicon.png">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/jquery-ui.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/all.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/reset.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/fonts.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/header.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/plan.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/caleander.css">
-<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-	rel="stylesheet" type="text/css" />
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript"
-	src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.png">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jquery-ui.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/all.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/reset.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/plan.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/caleander.css">
+<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-3.6.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script>
 
 <title>나드리 - 계획하기</title>
@@ -105,22 +92,20 @@
 	}
 	
 	function showOverlay(data, overlayList, linePath){
-				var localLat = data.latitude
-				var localLng = data.longitude
-				var position =  new kakao.maps.LatLng(localLat, localLng); 
-				linePath.push(new kakao.maps.LatLng(localLat, localLng));
-				var content = '<div class="wrap">' + 
-		        '<div class="circle">' + (data.name).substring(0,2) +'</div></div>'
-		        
-				var customOverlay = new kakao.maps.CustomOverlay({
-				    position: position,
-				    content: content   
-				});
-		        overlayList.push(customOverlay)
-				customOverlay.setMap(map);
+		var localLat = data.latitude
+		var localLng = data.longitude
+		var position =  new kakao.maps.LatLng(localLat, localLng); 
+		linePath.push(new kakao.maps.LatLng(localLat, localLng));
+		var content = '<div class="wrap">' + 
+        '<div class="circle">' + (data.name).substring(0,2) +'</div></div>'
+        
+		var customOverlay = new kakao.maps.CustomOverlay({
+		    position: position,
+		    content: content   
+		});
+        overlayList.push(customOverlay)
+		customOverlay.setMap(map);
 	}
-	
-
 	
 	 $(function(){
 		$("header").addClass("on");
@@ -197,8 +182,6 @@
 					console.error(status + " : " + error);
 				}
 			});
-	    	
-	    	
 		});
 	}); 
 	
@@ -265,8 +248,7 @@
 			linePathDict[day] = polyline;
 			dayColorDict[day] = colorSet[colorId%colorSet.length];
 			savedOverlayDict[day] = overlayList;
-			colorId += 1;
-			
+			colorId += 1;			
 		})
 	}
 	

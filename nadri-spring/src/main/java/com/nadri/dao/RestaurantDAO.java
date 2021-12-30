@@ -12,18 +12,18 @@ import com.nadri.vo.RestaurantVo;
 public class RestaurantDAO {
 	@Autowired
 	private SqlSession sqlSession;
-	
-	//전체 restaurant 정보
-	public List<RestaurantVo> getList(){
+
+	// 전체 restaurant 정보
+	public List<RestaurantVo> getList() {
 		return sqlSession.selectList("restaurant.allRestaurantList");
 	}
-	
-	//특정 city의 restaurant 정보
-	public List<RestaurantVo> getRestaurantList(int cityId){
+
+	// 특정 city의 restaurant 정보
+	public List<RestaurantVo> getRestaurantList(int cityId) {
 		return sqlSession.selectList("restaurant.allRestaurantList", cityId);
 	}
-	
-	public RestaurantVo getOne(int restaurantId){
+
+	public RestaurantVo getOne(int restaurantId) {
 		return sqlSession.selectOne("restaurant.getOne", restaurantId);
 	}
 }

@@ -19,7 +19,7 @@ NADRI(나드리)
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849363-dde3cf9c-ea33-4f57-bc32-c3ac8a0017ae.png">
 
 * 일정 생성 화면
-![image](https://user-images.githubusercontent.com/67157818/147849434-afe4e1de-8577-440f-9391-17cc25c5dcca.png)
+![image](https://user-images.githubusercontent.com/67157818/147849611-3cdc6164-ffda-45fe-b171-82acb51b6d90.png)
 
 * 마이 페이지
 ![image](https://user-images.githubusercontent.com/67157818/147849478-7a32c42a-a0c0-4c7a-b318-3ea3c8d58954.png)

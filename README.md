@@ -9,6 +9,8 @@ NADRI(나드리)
 ---------------------------------------
 
 ## 구동화면
+#### [프로그램 동작 youtube 영상](https://youtu.be/sSeUrVEvGl0, "youtube link")
+
 * 메인 화면
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849239-ded2e822-bd02-4b7d-acdb-5bfcf099b47f.png">
 

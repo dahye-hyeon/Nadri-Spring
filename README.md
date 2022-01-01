@@ -2,10 +2,20 @@ NADRI(나드리)
 =============
 #### * 국내여행 Planner 웹 프로젝트
 #### * 기간:2021.11.15~2021.12.27(36일간)
+#### * 팀원소개: 정선일(팀장) | Frontend: 안서영, 정선아, 정선일 | Backend: 이성현, 이태경, 정선일, 현다혜
 #### * 사용언어:JAVA(JDK 1.8), JSP/Servlet, HTML5, CSS, Javscript, Oracle SQL(11g Express)
 #### * 사용기술:Spring Framework, MyBatis, jQuery, Ajax, Open API(kakao Login, kakao map, Naver Login)
 #### * Server:AWS, Apache Tomcat 8.5
 
+---------------------------------------
+
+## 개발목적
+* 코로나로 해외 여행이 어려워져 국내 여행의 수요 증가
+  → 국내 여행 플랜 사이트는 해외 여행에 비해 상대적으로 작음
+    → 관광지 뿐만 아니라 숙박, 음식점 등 함께 소개
+    → 여행 경로(루트) 추천
+              ↓
+  보다 쉽게 여행 계획을 세우는데에 도움을 주고자 함
 ---------------------------------------
 
 ## 구동화면
@@ -34,3 +44,10 @@ NADRI(나드리)
 * 회원가입 화면
   * 비밀번호에 validation 설정(영소문자+숫자 6문자 이상)
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147850180-fcb0e0d9-4e96-49b6-ad8f-1884bfea2820.png">
+
+---------------------------------------
+
+## 추천 경로 알고리즘 - Greedy 알고리즘 채택
+#### 전제조건 : 여행 가고자 하는 도시에는 대중교통을 이용하여 도착(= 시작점은 고속버스터미널)
+![image](https://user-images.githubusercontent.com/67157818/147850720-7ba654b0-2ed7-4afb-a536-879854c8d6fe.png)
+

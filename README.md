@@ -56,3 +56,4 @@ NADRI(나드리)
 ---------------------------------------
 
 ## ERD 및 테이블 명세
+<img width="960" alt="ERD" src="https://user-images.githubusercontent.com/67157818/147875514-62b7e08a-c109-4843-9247-36caa1bcb929.png">

@@ -1,11 +1,11 @@
 NADRI(나드리)
 =============
-#### * 국내여행 Planner 웹 프로젝트
-#### * 기간:2021.11.15~2021.12.27(36일간)
-#### * 팀원소개: 정선일(팀장) | Frontend: 안서영, 정선아, 정선일 | Backend: 이성현, 이태경, 정선일, 현다혜
-#### * 사용언어:JAVA(JDK 1.8), JSP/Servlet, HTML5, CSS, Javscript, Oracle SQL(11g Express)
-#### * 사용기술:Spring Framework, MyBatis, jQuery, Ajax, Open API(kakao Login, kakao map, Naver Login)
-#### * Server:AWS, Apache Tomcat 8.5
+* 국내여행 Planner 웹 프로젝트
+* 기간:2021.11.15~2021.12.27(36일간)
+* 팀원소개: 정선일(팀장) | Frontend: 안서영, 정선아, 정선일 | Backend: 이성현, 이태경, 정선일, 현다혜
+* 사용언어:JAVA(JDK 1.8), JSP/Servlet, HTML5, CSS, Javscript, Oracle SQL(11g Express)
+* 사용기술:Spring Framework, MyBatis, jQuery, Ajax, Open API(kakao Login, kakao map, Naver Login)
+* Server:AWS, Apache Tomcat 8.5
 
 ---------------------------------------
 

@@ -14,7 +14,8 @@ NADRI(나드리)
   → 국내 여행 플랜 사이트는 해외 여행에 비해 상대적으로 작음
     → 관광지 뿐만 아니라 숙박, 음식점 등 함께 소개하여 여행 경로(루트) 추천   
  
- → 보다 쉽게 여행 계획을 세우는데에 도움을 주고자 함
+     → 보다 쉽게 여행 계획을 세우는데에 도움을 주고자 함
+ 
 ---------------------------------------
 
 ## 구동화면
@@ -23,8 +24,10 @@ NADRI(나드리)
 * 메인 화면
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849239-ded2e822-bd02-4b7d-acdb-5bfcf099b47f.png">
 
+
 * 여행지 선택 화면
-![image](https://user-images.githubusercontent.com/67157818/147849310-b6f13782-7ef7-4506-8eb5-501c448d0a8b.png)
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849310-b6f13782-7ef7-4506-8eb5-501c448d0a8b.png">
+
 
 * 일정 만들기 화면(여행 시작 지점:각 지역 버스터미널)
   * 달력으로 여행 일정 설정 가능하며 선택된 날짜에 따라 일정 수(Day1, Day2, Day3 ...)가 증가
@@ -32,13 +35,16 @@ NADRI(나드리)
 
 * 일정 생성 화면
   * 각 여행 일차 별로 선의 색을 다르게 하였으며, 방문 예정 장소나 음식점을 드래그하여 위치이동이 가능함(->경로를 재탐색 ) 
-![image](https://user-images.githubusercontent.com/67157818/147849611-3cdc6164-ffda-45fe-b171-82acb51b6d90.png)
-
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849611-3cdc6164-ffda-45fe-b171-82acb51b6d90.png">
+   
+   
 * 마이 페이지
-![image](https://user-images.githubusercontent.com/67157818/147849478-7a32c42a-a0c0-4c7a-b318-3ea3c8d58954.png)
-
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849478-7a32c42a-a0c0-4c7a-b318-3ea3c8d58954.png">
+   
+   
 * 로그인 화면
-![image](https://user-images.githubusercontent.com/67157818/147849499-5e7e6b28-bceb-4232-84a3-fec173acbd24.png)
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/67157818/147849499-5e7e6b28-bceb-4232-84a3-fec173acbd24.png">
+
 
 * 회원가입 화면
   * 비밀번호에 validation 설정(영소문자+숫자 6문자 이상)
